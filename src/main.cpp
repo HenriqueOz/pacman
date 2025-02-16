@@ -1,12 +1,17 @@
-#include "SDL3/SDL.h"
-#include "game/game.h"
-#include <iostream>
+#include "game/game.hpp"
+#include "game/input_manager.hpp"
+#include "world.hpp"
 
 int
-main(int argc, char **argv)
+main(int argc, char ** argv)
 {
+    InputManager inputManager = InputManager();
+    Registry registry = Registry();
 
-    pm::Game game();
+    World world = World(registry);
+
+    Game game(world, inputManager);
+    game.run();
 
     return 0;
 }

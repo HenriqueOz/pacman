@@ -1,5 +1,0 @@
-C:/Users/maboz/Documents/minhas_coisas/Programacao/paman/build/CMakeFiles/edit_cache.dir
-C:/Users/maboz/Documents/minhas_coisas/Programacao/paman/build/CMakeFiles/rebuild_cache.dir
-C:/Users/maboz/Documents/minhas_coisas/Programacao/paman/build/src/CMakeFiles/paman.dir
-C:/Users/maboz/Documents/minhas_coisas/Programacao/paman/build/src/CMakeFiles/edit_cache.dir
-C:/Users/maboz/Documents/minhas_coisas/Programacao/paman/build/src/CMakeFiles/rebuild_cache.dir

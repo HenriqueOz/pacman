@@ -1,3 +1,0 @@
-C:\mingw64\bin\cmake.exe -E rm -f CMakeFiles\paman.dir/objects.a
-C:\mingw64\bin\llvm-ar.exe qc CMakeFiles\paman.dir/objects.a @CMakeFiles\paman.dir\objects1.rsp
-C:\mingw64\bin\clang++.exe -g -Wl,--whole-archive CMakeFiles\paman.dir/objects.a -Wl,--no-whole-archive -o ..\bin\paman.exe -Wl,--out-implib,libpaman.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\paman.dir\linkLibs.rsp

@@ -1,8 +1,0 @@
-[
-{
-  "directory": "C:/Users/maboz/Documents/minhas_coisas/Programacao/paman/build/src",
-  "command": "C:\\mingw64\\bin\\clang++.exe  @CMakeFiles/paman.dir/includes_CXX.rsp -g -std=gnu++17 -o CMakeFiles\\paman.dir\\main.cpp.obj -c C:\\Users\\maboz\\Documents\\minhas_coisas\\Programacao\\paman\\src\\main.cpp",
-  "file": "C:/Users/maboz/Documents/minhas_coisas/Programacao/paman/src/main.cpp",
-  "output": "src/CMakeFiles/paman.dir/main.cpp.obj"
-}
-]

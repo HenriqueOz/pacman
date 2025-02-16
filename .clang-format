@@ -1,4 +1,6 @@
 BasedOnStyle: Mozilla
-PointerAlignment: Right
+PointerAlignment: Middle
 IndentWidth: 4
 ColumnLimit: 100
+SortIncludes: false
+TabWidth: 4
