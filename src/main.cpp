@@ -20,10 +20,24 @@ main(int argc, char **argv)
     entities.push_back(&pacman);
     entities.push_back(&ghost);
 
+    const Uint16 FPS = 60;
+    const Uint16 frameDelay = 1000 / FPS;
+
+    Uint64 frameStart;
+    Uint64 frameDuration;
+
     while (game->isRunning()) {
+        frameStart = SDL_GetTicks();
+
         game->handleInput(&inputManager);
         game->update(entities);
         game->render(entities);
+
+        frameDuration = SDL_GetTicks() - frameStart;
+
+        if (frameDelay > frameDuration) {
+            SDL_Delay(frameDelay - frameDuration);
+        }
     }
 
     return 0;

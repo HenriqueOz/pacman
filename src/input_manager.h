@@ -14,6 +14,8 @@ class InputManager
 
   private:
     std::unordered_map<SDL_Keycode, bool> keyStates;
+    std::unordered_map<SDL_Keycode, bool> releasedKeys;
+    SDL_Keycode m_releasedKey = NULL;
     bool m_quitRequested = false;
 };
 
