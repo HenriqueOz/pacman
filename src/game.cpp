@@ -1,6 +1,5 @@
 #include "game.h"
 #include "SDL3/SDL.h"
-#include "entity.h"
 #include <cstddef>
 #include <iostream>
 #include <memory>
@@ -9,19 +8,18 @@
 const Uint32 WINDOW_WIDTH = 400;
 const Uint32 WINDOW_HEIGHT = 400;
 
-Engine::Game *Engine::Game::m_instance = nullptr;
+pm::Game *pm::Game::m_instance = nullptr;
 
-Engine::Game::Game()
+pm::Game::Game()
   : m_isRunning(false)
   , m_windowWidth(WINDOW_WIDTH)
   , m_windowHeight(WINDOW_HEIGHT)
-  , m_time(std::make_unique<Time>())
   , m_windowName("pacman")
 {
 }
 
 void
-Engine::Game::init()
+pm::Game::init()
 {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         std::cout << "ERROR::SDL::FAILED_TO_INIT_VIDEO_SUBMODULE: " << SDL_GetError() << std::endl;
@@ -42,65 +40,30 @@ Engine::Game::init()
         return;
     }
 
-    m_registry = std::make_unique<ECS::Registry>();
-
     m_isRunning = true;
 }
 
 bool
-Engine::Game::isRunning() const
+pm::Game::isRunning() const
 {
     return m_isRunning;
 }
 
 void
-Engine::Game::readInput()
+pm::Game::render()
 {
-    SDL_Event event;
-
-    while (SDL_PollEvent(&event)) {
-        switch (event.type) {
-            case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
-                m_isRunning = false;
-                break;
-        }
-    }
-}
-
-void
-Engine::Game::render()
-{
-    for (auto &e : getRegistry()->entityRegistry) {
-        Entity *entity = e.second.get();
-        entity->draw(m_renderer);
-    }
+    SDL_RenderClear(m_renderer);
 
     SDL_RenderPresent(m_renderer);
 }
 
-ECS::Registry *
-Engine::Game::getRegistry() const
+void
+pm::Game::update()
 {
-    return m_registry.get();
-}
-
-Time *
-Engine::Game::getTime() const
-{
-    return m_time.get();
 }
 
 void
-Engine::Game::update(SDL_Time deltaTime)
-{
-    for (auto &e : getRegistry()->entityRegistry) {
-        Entity *entity = e.second.get();
-        entity->update(deltaTime);
-    }
-}
-
-void
-Engine::Game::clean()
+pm::Game::clean()
 {
     SDL_DestroyWindow(m_window);
     SDL_DestroyRenderer(m_renderer);

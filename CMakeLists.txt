@@ -11,5 +11,7 @@ set(SDL3_ttf_DIR "C:/SDL3_ttf-3.2.0/cmake")
 find_package(SDL3 CONFIG REQUIRED)
 find_package(SDL3_ttf CONFIG REQUIRED)
 
+set(link_assets ${CMAKE_SOURCE_DIR}/assets)
+
 add_subdirectory(src)
 
