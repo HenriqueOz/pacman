@@ -9,9 +9,23 @@ InputManager::processInput()
             case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
                 m_quitRequested = true;
                 break;
-            default:
+            case SDL_EVENT_KEY_DOWN:
+                if (!event.key.repeat) {
+                    keyStates[event.key.key] = true;
+                }
+                break;
+            case SDL_EVENT_KEY_UP:
+                keyStates[event.key.key] = false;
+                break;
         }
     }
+}
+
+bool
+InputManager::isKeyPressed(SDL_Keycode key)
+{
+    std::unordered_map<SDL_Keycode, bool>::iterator it = keyStates.find(key);
+    return it != keyStates.end() && it->second;
 }
 
 bool

@@ -8,8 +8,8 @@ class InputManager
 {
   public:
     void processInput();
-    void isKeyPressed(SDL_Keycode key);
-    void isKeyReleased(SDL_Keycode key);
+    bool isKeyPressed(SDL_Keycode key);
+    bool isKeyReleased(SDL_Keycode key);
     bool quitRequested() const;
 
   private:

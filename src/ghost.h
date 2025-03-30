@@ -7,6 +7,9 @@ class Ghost : public Entity
 {
 
   public:
+    Ghost(InputManager *const inputManager);
+    ~Ghost() override{};
+
     void update() override;
 };
 

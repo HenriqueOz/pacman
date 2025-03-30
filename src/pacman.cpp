@@ -2,9 +2,16 @@
 
 #include <iostream>
 
+Pacman::Pacman(InputManager *const inputManager)
+  : Entity(inputManager)
+{
+}
+
 void
 Pacman::update()
 {
-    std::cout << "PACMAN"
-              << "\n";
+    if (m_inputManager->isKeyPressed(SDLK_D)) {
+        std::cout << "VAGABUNDO APERTOU D"
+                  << "\n";
+    }
 }

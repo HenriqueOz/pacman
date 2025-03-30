@@ -7,6 +7,9 @@ class Pacman : public Entity
 {
 
   public:
+    Pacman(InputManager *const inputManager);
+    ~Pacman() override{};
+
     void update() override;
 };
 

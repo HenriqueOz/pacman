@@ -16,8 +16,8 @@ main(int argc, char **argv)
 
     std::vector<Entity *> entities;
 
-    Pacman pacman = Pacman();
-    Ghost ghost = Ghost();
+    Pacman pacman = Pacman(&inputManager);
+    Ghost ghost = Ghost(&inputManager);
     entities.push_back(&pacman);
     entities.push_back(&ghost);
 
