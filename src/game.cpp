@@ -1,5 +1,6 @@
 #include "game.h"
 #include "SDL3/SDL.h"
+#include "input_manager.h"
 #include <cstddef>
 #include <iostream>
 #include <memory>
@@ -8,9 +9,9 @@
 const Uint32 WINDOW_WIDTH = 400;
 const Uint32 WINDOW_HEIGHT = 400;
 
-pm::Game *pm::Game::m_instance = nullptr;
+Game *Game::m_instance = nullptr;
 
-pm::Game::Game()
+Game::Game()
   : m_isRunning(false)
   , m_windowWidth(WINDOW_WIDTH)
   , m_windowHeight(WINDOW_HEIGHT)
@@ -19,7 +20,7 @@ pm::Game::Game()
 }
 
 void
-pm::Game::init()
+Game::init()
 {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         std::cout << "ERROR::SDL::FAILED_TO_INIT_VIDEO_SUBMODULE: " << SDL_GetError() << std::endl;
@@ -44,30 +45,47 @@ pm::Game::init()
 }
 
 bool
-pm::Game::isRunning() const
+Game::isRunning() const
 {
     return m_isRunning;
 }
 
 void
-pm::Game::render()
+Game::handleInput(InputManager *inputManager)
+{
+    inputManager->processInput();
+    if (inputManager->quitRequested()) {
+        m_isRunning = false;
+    }
+}
+
+void
+Game::render(std::vector<Entity *> entities)
 {
     SDL_RenderClear(m_renderer);
-
     SDL_RenderPresent(m_renderer);
 }
 
 void
-pm::Game::update()
+Game::update(std::vector<Entity *> entities)
 {
+    for (Entity *const entity : entities) {
+        entity->update();
+    }
 }
 
 void
-pm::Game::clean()
+Game::clean()
 {
     SDL_DestroyWindow(m_window);
     SDL_DestroyRenderer(m_renderer);
     SDL_Quit();
 
     delete m_instance;
+}
+
+void
+Game::closeGame()
+{
+    m_isRunning = false;
 }

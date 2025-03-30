@@ -1,12 +1,14 @@
 #ifndef _GAME_H
 #define _GAME_H
 
+#include "entity.h"
+#include "input_manager.h"
 #include <SDL3/SDL.h>
 #include <cstddef>
 #include <memory>
 #include <string>
+#include <vector>
 
-namespace pm {
 class Game
 {
   public:
@@ -21,11 +23,13 @@ class Game
 
     bool isRunning() const;
 
-    void init();
+    void handleInput(InputManager *inputManager);
 
-    void render();
-    void update();
+    void init();
+    void render(std::vector<Entity *> entities);
+    void update(std::vector<Entity *> entities);
     void clean();
+    void closeGame();
 
   private:
     Game();
@@ -41,6 +45,5 @@ class Game
 
     bool m_isRunning;
 };
-}
 
 #endif
