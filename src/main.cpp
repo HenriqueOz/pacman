@@ -1,4 +1,3 @@
-#include "main.h"
 #include "entity.h"
 #include "game.h"
 #include "ghost.h"
