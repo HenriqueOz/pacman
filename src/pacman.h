@@ -11,6 +11,7 @@ class Pacman : public Entity
     ~Pacman() override{};
 
     void update() override;
+    void render(SDL_Renderer *renderer) const override;
 };
 
 #endif

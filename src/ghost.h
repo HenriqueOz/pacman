@@ -11,6 +11,7 @@ class Ghost : public Entity
     ~Ghost() override{};
 
     void update() override;
+    void render(SDL_Renderer *renderer) const override;
 };
 
 #endif

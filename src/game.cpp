@@ -63,6 +63,9 @@ void
 Game::render(std::vector<Entity *> entities)
 {
     SDL_RenderClear(m_renderer);
+    for (Entity *const entity : entities) {
+        entity->render(m_renderer);
+    }
     SDL_RenderPresent(m_renderer);
 }
 

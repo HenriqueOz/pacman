@@ -1,7 +1,7 @@
 #include "entity.h"
 
 void
-Entity::render() const
+Entity::render(SDL_Renderer *renderer) const
 {
 }
 
