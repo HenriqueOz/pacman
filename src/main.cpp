@@ -8,8 +8,10 @@
 int
 main(int argc, char **argv)
 {
+    Window window = Window("Pacman", 400, 400);
+
     Game *const game = Game::getInstance();
-    game->init();
+    game->init(&window);
 
     InputManager inputManager = InputManager();
 

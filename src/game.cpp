@@ -13,28 +13,20 @@ Game *Game::m_instance = nullptr;
 
 Game::Game()
   : m_isRunning(false)
-  , m_windowWidth(WINDOW_WIDTH)
-  , m_windowHeight(WINDOW_HEIGHT)
-  , m_windowName("pacman")
+  , m_window(nullptr)
 {
 }
 
 void
-Game::init()
+Game::init(Window *const window)
 {
-    if (!SDL_Init(SDL_INIT_VIDEO)) {
-        std::cout << "ERROR::SDL::FAILED_TO_INIT_VIDEO_SUBMODULE: " << SDL_GetError() << std::endl;
-        return;
-    }
-
-    m_window = SDL_CreateWindow(m_windowName.c_str(), m_windowWidth, m_windowHeight, 0);
-    if (m_window == nullptr) {
-        std::cout << "ERROR::GAME::COULD_NOT_CREATE_WINDOW: " << SDL_GetError() << std::endl;
+    m_window = window;
+    if (m_window->getWindow() == nullptr) {
         m_isRunning = false;
         return;
     }
 
-    m_renderer = SDL_CreateRenderer(m_window, 0);
+    m_renderer = SDL_CreateRenderer(m_window->getWindow(), 0);
     if (m_renderer == nullptr) {
         std::cout << "ERROR::GAME::COULD_NOT_CREATE_RENDERER: " << SDL_GetError() << std::endl;
         m_isRunning = false;
@@ -42,6 +34,12 @@ Game::init()
     }
 
     m_isRunning = true;
+}
+
+Window *
+Game::getWindow() const
+{
+    return m_window;
 }
 
 bool
@@ -80,7 +78,6 @@ Game::update(std::vector<Entity *> entities)
 void
 Game::clean()
 {
-    SDL_DestroyWindow(m_window);
     SDL_DestroyRenderer(m_renderer);
     SDL_Quit();
 

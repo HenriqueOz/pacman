@@ -3,9 +3,9 @@
 void
 InputManager::processInput()
 {
-    if (m_releasedKey != NULL) {
+    if (m_releaseKeyPressed) {
         releasedKeys[m_releasedKey] = false;
-        m_releasedKey = NULL;
+        m_releaseKeyPressed = false;
     }
 
     SDL_Event event;
@@ -17,15 +17,16 @@ InputManager::processInput()
                 break;
             case SDL_EVENT_KEY_DOWN:
                 if (!event.key.repeat) {
-                    keyStates[event.key.key] = true;
+                    keyPacmanStates[event.key.key] = true;
                 }
                 break;
             case SDL_EVENT_KEY_UP:
-                if (keyStates[event.key.key]) {
+                if (keyPacmanStates[event.key.key]) {
                     m_releasedKey = event.key.key;
+                    m_releaseKeyPressed = true;
                     releasedKeys[m_releasedKey] = true;
                 }
-                keyStates[event.key.key] = false;
+                keyPacmanStates[event.key.key] = false;
                 break;
         }
     }
@@ -34,8 +35,8 @@ InputManager::processInput()
 bool
 InputManager::isKeyPressed(SDL_Keycode key)
 {
-    auto it = keyStates.find(key);
-    return it != keyStates.end() && it->second;
+    auto it = keyPacmanStates.find(key);
+    return it != keyPacmanStates.end() && it->second;
 }
 
 bool

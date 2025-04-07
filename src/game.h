@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include "input_manager.h"
+#include "window.h"
 #include <SDL3/SDL.h>
 #include <cstddef>
 #include <memory>
@@ -21,11 +22,12 @@ class Game
 
     ~Game(){};
 
+    Window *getWindow() const;
     bool isRunning() const;
 
     void handleInput(InputManager *inputManager);
 
-    void init();
+    void init(Window *const window);
     void render(std::vector<Entity *> entities);
     void update(std::vector<Entity *> entities);
     void clean();
@@ -40,7 +42,7 @@ class Game
     std::size_t m_windowWidth;
     std::size_t m_windowHeight;
 
-    SDL_Window *m_window;
+    Window *m_window;
     SDL_Renderer *m_renderer;
 
     bool m_isRunning;
