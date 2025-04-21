@@ -28,8 +28,8 @@ class Game
     void handleInput(InputManager *inputManager);
 
     void init(Window *const window);
-    void render(std::vector<Entity *> entities);
-    void update(std::vector<Entity *> entities);
+    void render(std::vector<std::unique_ptr<Entity>> &entities);
+    void update(std::vector<std::unique_ptr<Entity>> &entities);
     void clean();
     void closeGame();
 

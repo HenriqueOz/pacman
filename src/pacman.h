@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "input_manager.h"
 #include "vec.h"
+#include "window.h"
 
 enum Direction
 {
@@ -42,9 +43,10 @@ class Pacman : public Entity
 
     PacmanState m_PacmanState = IDLE;
 
-    int m_speed = 5;
+    int m_speed = 2;
     int m_dirx = 0;
     int m_diry = 0;
+    Window *m_window = nullptr;
 
     const SDL_Keycode m_left = SDLK_LEFT;
     const SDL_Keycode m_right = SDLK_RIGHT;

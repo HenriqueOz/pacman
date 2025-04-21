@@ -9,6 +9,8 @@ Pacman::Pacman(InputManager *const inputManager)
     m_velocity.update(0.f, 0.f);
     m_dirx = 0;
     m_diry = 0;
+
+    m_window = Game::getInstance()->getWindow();
 }
 
 void
@@ -79,15 +81,17 @@ Pacman::moving()
 void
 Pacman::wrapOutOfBounds()
 {
-    const auto width = Game::getInstance()->getWindow()->getWidth();
-    const auto height = Game::getInstance()->getWindow()->getHeight();
+    const std::size_t width = m_window->getWidth();
+    const std::size_t height = m_window->getHeight();
+    const std::size_t pacmanWidth = 20;
+    const std::size_t pacmanHeight = 20;
 
-    if (m_position.x < 0) {
-        m_position.x = width - 20;
+    if (m_position.x + pacmanWidth < 0) {
+        m_position.x = width - pacmanWidth;
     } else if (m_position.x > width) {
         m_position.x = 0;
-    } else if (m_position.y < 0) {
-        m_position.y = height - 20;
+    } else if (m_position.y + pacmanHeight < 0) {
+        m_position.y = height - pacmanHeight;
     } else if (m_position.y > height) {
         m_position.y = 0;
     }
