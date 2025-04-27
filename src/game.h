@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include "input_manager.h"
+#include "map.h"
 #include "window.h"
 #include <SDL3/SDL.h>
 #include <cstddef>
@@ -23,11 +24,12 @@ class Game
     ~Game(){};
 
     Window *getWindow() const;
+    Map *getMap() const;
     bool isRunning() const;
 
     void handleInput(InputManager *inputManager);
 
-    void init(Window *const window);
+    void init(Window *const window, Map *const map);
     void render(std::vector<std::unique_ptr<Entity>> &entities);
     void update(std::vector<std::unique_ptr<Entity>> &entities);
     void clean();
@@ -44,6 +46,7 @@ class Game
 
     Window *m_window;
     SDL_Renderer *m_renderer;
+    Map *m_map;
 
     bool m_isRunning;
 };

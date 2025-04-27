@@ -10,7 +10,7 @@ Pacman::Pacman(InputManager *const inputManager)
     m_dirx = 0;
     m_diry = 0;
 
-    m_window = Game::getInstance()->getWindow();
+    m_map = Game::getInstance()->getMap();
 }
 
 void

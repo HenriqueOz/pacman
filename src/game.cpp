@@ -1,13 +1,12 @@
 #include "game.h"
 #include "SDL3/SDL.h"
+#include "config.h"
 #include "input_manager.h"
+#include "map.h"
 #include <cstddef>
 #include <iostream>
 #include <memory>
 #include <utility>
-
-const Uint32 WINDOW_WIDTH = 400;
-const Uint32 WINDOW_HEIGHT = 400;
 
 Game *Game::m_instance = nullptr;
 
@@ -18,7 +17,7 @@ Game::Game()
 }
 
 void
-Game::init(Window *const window)
+Game::init(Window *const window, Map *const map)
 {
     m_window = window;
     if (m_window->getWindow() == nullptr) {
@@ -40,6 +39,12 @@ Window *
 Game::getWindow() const
 {
     return m_window;
+}
+
+Map *
+Game::getMap() const
+{
+    return m_map;
 }
 
 bool

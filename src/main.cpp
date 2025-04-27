@@ -1,3 +1,4 @@
+#include "config.h"
 #include "entity.h"
 #include "game.h"
 #include "ghost.h"
@@ -5,19 +6,6 @@
 #include "map.h"
 #include "pacman.h"
 #include <vector>
-
-namespace Config {
-const std::string assetsPath = "assets";
-const std::string mapFilePath = assetsPath + "/map.csv";
-const std::string windowName = "Pacman";
-
-const unsigned windowWidth = TILE_WIDTH * VERTICAL_TILES * VERTICAL_SCALE;
-const unsigned windowHeight = TILE_HEIGHT * HORIZONTAL_TILES * HORIZONTAL_SCALE;
-const float aspectRatio = windowWidth / windowHeight;
-
-const Uint16 FPS = 60;
-const Uint16 frameDelay = 1000 / FPS;
-}
 
 void
 initializeGame(Game *game, Window &window, Map &map);
@@ -46,7 +34,7 @@ void
 initializeGame(Game *game, Window &window, Map &map)
 {
     map.printMapToFile();
-    game->init(&window);
+    game->init(&window, &map);
 }
 
 void

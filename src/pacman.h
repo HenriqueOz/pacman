@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include "input_manager.h"
+#include "map.h"
 #include "vec.h"
 #include "window.h"
 
@@ -46,7 +47,7 @@ class Pacman : public Entity
     int m_speed = 2;
     int m_dirx = 0;
     int m_diry = 0;
-    Window *m_window = nullptr;
+    Map *m_map = nullptr;
 
     const SDL_Keycode m_left = SDLK_LEFT;
     const SDL_Keycode m_right = SDLK_RIGHT;
