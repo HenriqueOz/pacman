@@ -25,12 +25,17 @@ Game::init(Window *const window, Map *const map)
         return;
     }
 
-    m_renderer = SDL_CreateRenderer(m_window->getWindow(), 0);
+    m_renderer = SDL_CreateRenderer(m_window->getWindow(), NULL);
     if (m_renderer == nullptr) {
         std::cout << "ERROR::GAME::COULD_NOT_CREATE_RENDERER: " << SDL_GetError() << std::endl;
         m_isRunning = false;
         return;
     }
+
+    SDL_SetRenderLogicalPresentation(m_renderer, 
+                                     Config::logicalWidth,
+                                     Config::logicalHeight,
+                                     SDL_LOGICAL_PRESENTATION_INTEGER_SCALE);
 
     m_isRunning = true;
 }

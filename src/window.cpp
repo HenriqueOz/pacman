@@ -11,7 +11,8 @@ Window::Window(const char *windowName, int windowWidth, int windowHeight)
         return;
     }
 
-    m_window = SDL_CreateWindow(m_windowName.c_str(), m_windowWidth, m_windowHeight, 0);
+    m_window = SDL_CreateWindow(
+      m_windowName.c_str(), m_windowWidth, m_windowHeight, SDL_WINDOW_HIGH_PIXEL_DENSITY);
     if (m_window == nullptr) {
         std::cout << "ERROR::GAME::COULD_NOT_CREATE_WINDOW: " << SDL_GetError() << std::endl;
     }
