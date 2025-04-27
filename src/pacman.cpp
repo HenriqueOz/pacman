@@ -81,8 +81,8 @@ Pacman::moving()
 void
 Pacman::wrapOutOfBounds()
 {
-    const std::size_t width = m_window->getWidth();
-    const std::size_t height = m_window->getHeight();
+    const std::size_t width = Config::logicalWidth;
+    const std::size_t height = Config::logicalHeight;
     const std::size_t pacmanWidth = 20;
     const std::size_t pacmanHeight = 20;
 

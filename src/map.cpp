@@ -1,4 +1,5 @@
 #include "map.h"
+#include "config.h"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -35,8 +36,8 @@ Map::loadMap(std::string filePath)
         }
 
         for (int i = 0; i < ids.size(); i++) {
-            const unsigned x = (i % HORIZONTAL_TILES) * TILE_WIDTH;
-            const unsigned y = row * TILE_HEIGHT;
+            const unsigned x = (i % Config::horizontalTiles) * Config::tileWidth;
+            const unsigned y = row * Config::tileHeight;
             const Vec2 pos = { static_cast<float>(x), static_cast<float>(y) };
             map[pos] = ids[i];
         }
@@ -55,10 +56,10 @@ Map::printMapToFile() const
         return;
     }
 
-    for (int j = 0; j < VERTICAL_TILES; j++) {
-        for (int i = 0; i < HORIZONTAL_TILES; i++) {
-            const unsigned x = i * TILE_WIDTH;
-            const unsigned y = j * TILE_HEIGHT;
+    for (int j = 0; j < Config::verticalTiles; j++) {
+        for (int i = 0; i < Config::horizontalTiles; i++) {
+            const unsigned x = i * Config::tileWidth;
+            const unsigned y = j * Config::tileHeight;
 
             const Vec2 pos = Vec2(static_cast<float>(x), static_cast<float>(y));
             const auto it = map.find(pos);

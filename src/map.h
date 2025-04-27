@@ -1,16 +1,10 @@
 #ifndef MAP_H_
 #define MAP_H_
 
+#include "config.h"
 #include "vec.h"
 #include <string>
 #include <unordered_map>
-
-const unsigned HORIZONTAL_TILES = 28;
-const unsigned VERTICAL_TILES = 31;
-const unsigned TILE_WIDTH = 16;
-const unsigned TILE_HEIGHT = 16;
-const unsigned HORIZONTAL_SCALE = 2;
-const unsigned VERTICAL_SCALE = 2;
 
 class Map
 {
