@@ -3,7 +3,7 @@
 #include <iostream>
 
 Pacman::Pacman(InputManager *const inputManager)
-  : Entity(inputManager)
+  : Entity()
 {
     m_position.update(0.f, 0.f);
     m_velocity.update(0.f, 0.f);

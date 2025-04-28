@@ -8,12 +8,10 @@ class Entity
   public:
     virtual ~Entity(){};
     virtual void update() = 0;
-    virtual void render(SDL_Renderer *renderer) const;
+    virtual void render(SDL_Renderer *renderer) const {};
 
   protected:
-    Entity(InputManager *const inputManager);
-
-    InputManager *const m_inputManager;
+    Entity(){};
 };
 
 #endif

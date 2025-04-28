@@ -8,8 +8,8 @@
 class Collider : public Entity
 {
   public:
-    Collider(InputManager *const inputManager, const Vec2 &position)
-      : Entity(inputManager)
+    Collider(const Vec2 &position)
+      : Entity()
       , m_position(position){};
     ~Collider(){};
 

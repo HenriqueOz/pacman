@@ -64,9 +64,6 @@ createEntities(InputManager &inputManager)
 {
     std::vector<std::unique_ptr<Entity>> entities;
 
-    Pacman *pacman = new Pacman(&inputManager);
-    Ghost *ghost = new Ghost(&inputManager);
-
     entities.push_back(std::make_unique<Pacman>(&inputManager));
     entities.push_back(std::make_unique<Ghost>(&inputManager));
 

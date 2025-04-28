@@ -2,7 +2,7 @@
 #include <iostream>
 
 Ghost::Ghost(InputManager *const inputManager)
-  : Entity(inputManager)
+  : Entity()
 {
 }
 
