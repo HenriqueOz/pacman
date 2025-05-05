@@ -62,5 +62,5 @@ gameLoop(Game *game, InputManager &inputManager, std::vector<std::unique_ptr<Ent
 void
 createEntities(InputManager &inputManager, Entities &entities)
 {
-    entities.addEntity(std::make_unique<Pacman>(&inputManager));
+    entities.addEntity(std::make_unique<Pacman>(&inputManager, &entities));
 }

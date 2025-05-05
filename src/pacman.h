@@ -1,6 +1,7 @@
 #ifndef _PACMAN_H
 #define _PACMAN_H
 
+#include "entities.h"
 #include "entity.h"
 #include "input_manager.h"
 #include "map.h"
@@ -26,7 +27,7 @@ class Pacman : public Entity
 {
 
   public:
-    Pacman(InputManager *const inputManager);
+    Pacman(InputManager *const inputManager, Entities *entitiesRegistry);
     ~Pacman() override{};
 
     void update() override;
@@ -41,6 +42,7 @@ class Pacman : public Entity
 
   private:
     InputManager *m_inputManager = nullptr;
+    Entities *m_entitiesRegistry = nullptr;
     Vec2 m_position;
     Vec2 m_velocity;
 
@@ -49,7 +51,6 @@ class Pacman : public Entity
     int m_speed = 2;
     int m_dirx = 0;
     int m_diry = 0;
-    Map *m_map = nullptr;
 
     const SDL_Keycode m_left = SDLK_LEFT;
     const SDL_Keycode m_right = SDLK_RIGHT;
