@@ -40,9 +40,8 @@ Map::loadMap(std::string filePath)
         for (int i = 0; i < ids.size(); i++) {
             const unsigned x = (i % Config::horizontalTiles) * Config::tileWidth;
             const unsigned y = row * Config::tileHeight;
-            const Vec2 pos = { static_cast<float>(x), static_cast<float>(y) };
-            const Vec2 size = { static_cast<float>(Config::tileWidth),
-                                static_cast<float>(Config::tileHeight) };
+            const Vec2 pos = { x, y };
+            const Vec2 size = { Config::tileWidth, Config::tileHeight };
 
             m_entities.addEntity(std::make_unique<Collider>(pos, size));
         }
