@@ -1,4 +1,5 @@
 #include "map.h"
+#include "collider.h"
 #include "config.h"
 #include <filesystem>
 #include <fstream>
@@ -39,7 +40,8 @@ Map::loadMap(std::string filePath)
             const unsigned x = (i % Config::horizontalTiles) * Config::tileWidth;
             const unsigned y = row * Config::tileHeight;
             const Vec2 pos = { static_cast<float>(x), static_cast<float>(y) };
-            map[pos] = ids[i];
+
+            // m_entities[pos].push_back(std::make_unique<Collider>(pos));
         }
         row++;
     }
@@ -47,32 +49,32 @@ Map::loadMap(std::string filePath)
     file.close();
 }
 
-void
-Map::printMapToFile() const
-{
-    std::ofstream output("map.txt");
-    if (!output.is_open()) {
-        std::cerr << "Failed to open map.txt" << std::endl;
-        return;
-    }
+// void
+// Map::printMapToFile() const
+// {
+//     std::ofstream output("map.txt");
+//     if (!output.is_open()) {
+//         std::cerr << "Failed to open map.txt" << std::endl;
+//         return;
+//     }
 
-    for (int j = 0; j < Config::verticalTiles; j++) {
-        for (int i = 0; i < Config::horizontalTiles; i++) {
-            const unsigned x = i * Config::tileWidth;
-            const unsigned y = j * Config::tileHeight;
+//     for (int j = 0; j < Config::verticalTiles; j++) {
+//         for (int i = 0; i < Config::horizontalTiles; i++) {
+//             const unsigned x = i * Config::tileWidth;
+//             const unsigned y = j * Config::tileHeight;
 
-            const Vec2 pos = Vec2(static_cast<float>(x), static_cast<float>(y));
-            const auto it = map.find(pos);
-            const int value = (it != map.end()) ? it->second : 0;
+//             const Vec2 pos = Vec2(static_cast<float>(x), static_cast<float>(y));
+//             const auto it = map.find(pos);
+//             const int value = (it != map.end()) ? it->second : 0;
 
-            if (value < 0) {
-                output << "  ";
-            } else {
-                output << value << " ";
-            }
-        }
-        output << "\n";
-    }
+//             if (value < 0) {
+//                 output << "  ";
+//             } else {
+//                 output << value << " ";
+//             }
+//         }
+//         output << "\n";
+//     }
 
-    output.close();
-}
+//     output.close();
+// }

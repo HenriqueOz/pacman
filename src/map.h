@@ -2,23 +2,22 @@
 #define MAP_H_
 
 #include "config.h"
+#include "entity.h"
 #include "vec.h"
+#include <memory>
 #include <string>
 #include <unordered_map>
 
 class Map
 {
+  private:
+    void loadMap(std::string filePath);
+
   public:
     Map(std::string);
     ~Map(){};
 
-    void printMapToFile() const;
-
-  private:
-    void loadMap(std::string filePath);
-
-    // Block position as key and block ID as value
-    std::unordered_map<Vec2, int> map;
+    void printMapToFile() const {};
 };
 
 #endif

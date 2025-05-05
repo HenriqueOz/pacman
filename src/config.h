@@ -13,8 +13,8 @@ const unsigned horizontalTiles = 28;
 const unsigned verticalTiles = 31;
 const unsigned tileWidth = 16;
 const unsigned tileHeight = 16;
-const unsigned horizontalScale = 2;
-const unsigned verticalScale = 2;
+const unsigned horizontalScale = 1;
+const unsigned verticalScale = 1;
 
 const unsigned windowWidth = tileWidth * horizontalTiles * horizontalScale;
 const unsigned windowHeight = tileHeight * verticalTiles * horizontalScale;

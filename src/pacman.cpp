@@ -1,16 +1,18 @@
 #include "pacman.h"
+#include "collider.h"
 #include "game.h"
 #include <iostream>
 
 Pacman::Pacman(InputManager *const inputManager)
   : Entity()
+  , m_inputManager(inputManager)
+  , m_position(0.f, 0.f)
+  , m_velocity(0.f, 0.f)
+  , m_PacmanState(IDLE)
+  , m_speed(2)
+  , m_dirx(0)
+  , m_diry(0)
 {
-    m_position.update(0.f, 0.f);
-    m_velocity.update(0.f, 0.f);
-    m_dirx = 0;
-    m_diry = 0;
-
-    m_map = Game::getInstance()->getMap();
 }
 
 void

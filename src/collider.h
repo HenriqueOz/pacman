@@ -15,10 +15,10 @@ class Collider : public Entity
 
     void update() override;
     void render(SDL_Renderer *renderer) const override;
+    EntityType getType() const override { return COLLIDER; };
 
   private:
     Vec2 m_position;
-    Vec2 m_size;
 };
 
 #endif

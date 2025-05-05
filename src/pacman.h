@@ -31,6 +31,7 @@ class Pacman : public Entity
 
     void update() override;
     void render(SDL_Renderer *renderer) const override;
+    EntityType getType() const override { return PACMAN; };
 
     void handleInput();
     void idle();
@@ -39,6 +40,7 @@ class Pacman : public Entity
     void wrapOutOfBounds();
 
   private:
+    InputManager *m_inputManager = nullptr;
     Vec2 m_position;
     Vec2 m_velocity;
 
