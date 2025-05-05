@@ -19,6 +19,9 @@ class Entity
     virtual ~Entity(){};
     virtual void update() = 0;
     virtual void render(SDL_Renderer *renderer) const {};
+
+    virtual Vec2 getPosition() const { return m_position; };
+    virtual Vec2 getSize() const { return m_size; };
     virtual EntityType getType() const = 0;
 
   protected:
