@@ -12,44 +12,30 @@ Game *Game::m_instance = nullptr;
 
 Game::Game()
   : m_isRunning(false)
-  , m_window(nullptr)
 {
 }
 
 void
-Game::init(Window *const window, Map *const map)
+Game::init(Window &window)
 {
-    m_window = window;
-    if (m_window->getWindow() == nullptr) {
+    if (window.getWindow() == nullptr) {
         m_isRunning = false;
         return;
     }
 
-    m_renderer = SDL_CreateRenderer(m_window->getWindow(), NULL);
+    m_renderer = SDL_CreateRenderer(window.getWindow(), NULL);
     if (m_renderer == nullptr) {
         std::cout << "ERROR::GAME::COULD_NOT_CREATE_RENDERER: " << SDL_GetError() << std::endl;
         m_isRunning = false;
         return;
     }
 
-    SDL_SetRenderLogicalPresentation(m_renderer, 
+    SDL_SetRenderLogicalPresentation(m_renderer,
                                      Config::logicalWidth,
                                      Config::logicalHeight,
                                      SDL_LOGICAL_PRESENTATION_INTEGER_SCALE);
 
     m_isRunning = true;
-}
-
-Window *
-Game::getWindow() const
-{
-    return m_window;
-}
-
-Map *
-Game::getMap() const
-{
-    return m_map;
 }
 
 bool

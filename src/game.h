@@ -23,13 +23,11 @@ class Game
 
     ~Game(){};
 
-    Window *getWindow() const;
-    Map *getMap() const;
     bool isRunning() const;
 
     void handleInput(InputManager *inputManager);
 
-    void init(Window *const window, Map *const map);
+    void init(Window &window);
     void render(std::vector<std::unique_ptr<Entity>> &entities);
     void update(std::vector<std::unique_ptr<Entity>> &entities);
     void clean();
@@ -44,9 +42,7 @@ class Game
     std::size_t m_windowWidth;
     std::size_t m_windowHeight;
 
-    Window *m_window;
     SDL_Renderer *m_renderer;
-    Map *m_map;
 
     bool m_isRunning;
 };

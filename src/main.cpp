@@ -1,4 +1,5 @@
 #include "config.h"
+#include "entities.h"
 #include "entity.h"
 #include "game.h"
 #include "ghost.h"
@@ -8,9 +9,9 @@
 #include <vector>
 
 void
-initializeGame(Game *game, Window &window, Map &map);
-std::vector<std::unique_ptr<Entity>>
-createEntities(InputManager &inputManager);
+initializeGame(Game *game, Window &window);
+void
+createEntities(InputManager &inputManager, Entities &entities);
 void
 gameLoop(Game *game, InputManager &inputManager, std::vector<std::unique_ptr<Entity>> &entities);
 
@@ -18,23 +19,22 @@ int
 main(int argc, char **argv)
 {
     InputManager inputManager = InputManager();
+    Entities entities = Entities();
+    Map map = Map(Config::mapFilePath, entities);
     Game *const game = Game::getInstance();
-    Map map = Map(Config::mapFilePath);
     Window window = Window(Config::windowName.c_str(), Config::windowWidth, Config::windowHeight);
-    std::vector<std::unique_ptr<Entity>> entities;
 
-    initializeGame(game, window, map);
-    entities = createEntities(inputManager);
-    gameLoop(game, inputManager, entities);
+    initializeGame(game, window);
+    createEntities(inputManager, entities);
+    gameLoop(game, inputManager, entities.getEntities());
 
     return 0;
 }
 
 void
-initializeGame(Game *game, Window &window, Map &map)
+initializeGame(Game *game, Window &window)
 {
-    map.printMapToFile();
-    game->init(&window, &map);
+    game->init(window);
 }
 
 void
@@ -59,13 +59,8 @@ gameLoop(Game *game, InputManager &inputManager, std::vector<std::unique_ptr<Ent
     game->clean();
 }
 
-std::vector<std::unique_ptr<Entity>>
-createEntities(InputManager &inputManager)
+void
+createEntities(InputManager &inputManager, Entities &entities)
 {
-    std::vector<std::unique_ptr<Entity>> entities;
-
-    entities.push_back(std::make_unique<Pacman>(&inputManager));
-    entities.push_back(std::make_unique<Ghost>(&inputManager));
-
-    return entities;
+    entities.addEntity(std::make_unique<Pacman>(&inputManager));
 }
