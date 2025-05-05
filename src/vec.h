@@ -11,10 +11,10 @@ struct Vec2
       : x(_x)
       , y(_y){};
 
-    void update(float x, float y)
+    void update(Vec2 const &v)
     {
-        this->x = x;
-        this->y = y;
+        this->x = v.x;
+        this->y = v.y;
     }
 };
 
