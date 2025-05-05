@@ -5,9 +5,9 @@
 
 struct Vec2
 {
-    float x, y;
+    int x, y;
 
-    Vec2(float _x, float _y)
+    Vec2(int _x, int _y)
       : x(_x)
       , y(_y){};
 
@@ -16,7 +16,7 @@ struct Vec2
      * @param _x The new x value.
      * @param _y The new y value.
      */
-    inline void update(float _x, float _y)
+    inline void update(int _x, int _y)
     {
         this->x = _x;
         this->y = _y;
@@ -25,7 +25,7 @@ struct Vec2
      * @brief Update the vector with a single value.
      * @param _x The value to set both x and y to.
      */
-    inline void update(float _x)
+    inline void update(int _x)
     {
         this->x = _x;
         this->y = _x;
