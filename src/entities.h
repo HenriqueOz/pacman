@@ -8,7 +8,7 @@
 class Entities
 {
   public:
-    Entities(){};
+    Entities();
     ~Entities(){};
 
     inline Entity *addEntity(std::unique_ptr<Entity> entity)
@@ -24,5 +24,4 @@ class Entities
     std::vector<std::unique_ptr<Entity>> m_entities;
     std::vector<std::vector<Entity *>> m_entitiesMap;
 };
-
 #endif
