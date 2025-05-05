@@ -69,7 +69,7 @@ Pacman::idle()
 void
 Pacman::moving()
 {
-    m_velocity.update(m_speed, m_speed);
+    m_velocity.update(static_cast<float>(m_speed));
 
     handleInput();
 
