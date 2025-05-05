@@ -6,7 +6,6 @@
 Pacman::Pacman(InputManager *const inputManager, Entities *entitiesRegistry = nullptr)
   : m_inputManager(inputManager)
   , m_entitiesRegistry(entitiesRegistry)
-  , m_position(0.f, 0.f)
   , m_velocity(0.f, 0.f)
   , m_PacmanState(IDLE)
   , m_speed(2)

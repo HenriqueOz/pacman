@@ -43,7 +43,6 @@ class Pacman : public Entity
   private:
     InputManager *m_inputManager = nullptr;
     Entities *m_entitiesRegistry = nullptr;
-    Vec2 m_position;
     Vec2 m_velocity;
 
     PacmanState m_PacmanState = IDLE;

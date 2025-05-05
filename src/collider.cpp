@@ -1,5 +1,10 @@
 #include "collider.h"
 
+Collider::Collider(const Vec2 &position)
+{
+    m_position.update(position);
+}
+
 void
 Collider::update()
 {

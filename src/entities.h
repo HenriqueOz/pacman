@@ -20,6 +20,8 @@ class Entities
 
     inline std::vector<std::unique_ptr<Entity>> &getEntities() { return m_entities; }
 
+    
+
   private:
     std::vector<std::unique_ptr<Entity>> m_entities;
     std::vector<std::vector<Entity *>> m_entitiesMap;

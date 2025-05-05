@@ -8,17 +8,12 @@
 class Collider : public Entity
 {
   public:
-    Collider(const Vec2 &position)
-      : Entity()
-      , m_position(position){};
+    Collider(const Vec2 &position);
     ~Collider(){};
 
     void update() override;
     void render(SDL_Renderer *renderer) const override;
     EntityType getType() const override { return COLLIDER; };
-
-  private:
-    Vec2 m_position;
 };
 
 #endif
