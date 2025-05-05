@@ -8,7 +8,8 @@
 #include <string>
 #include <vector>
 
-Map::Map(std::string filePath)
+Map::Map(std::string filePath, Entities &entities)
+  : m_entities(entities)
 {
     this->loadMap(filePath);
 }
