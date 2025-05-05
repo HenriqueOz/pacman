@@ -1,5 +1,6 @@
 #include "pacman.h"
 #include "collider.h"
+#include "config.h"
 #include "game.h"
 #include <iostream>
 
@@ -12,6 +13,7 @@ Pacman::Pacman(InputManager *const inputManager, Entities *entitiesRegistry = nu
   , m_dirx(0)
   , m_diry(0)
 {
+    m_size.update(Config::tileWidth, Config::tileHeight);
 }
 
 void
@@ -84,8 +86,8 @@ Pacman::wrapOutOfBounds()
 {
     const std::size_t width = Config::logicalWidth;
     const std::size_t height = Config::logicalHeight;
-    const std::size_t pacmanWidth = 20;
-    const std::size_t pacmanHeight = 20;
+    const std::size_t pacmanWidth = m_size.x;
+    const std::size_t pacmanHeight = m_size.y;
 
     if (m_position.x + pacmanWidth < 0) {
         m_position.x = width - pacmanWidth;
