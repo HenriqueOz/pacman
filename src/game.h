@@ -1,6 +1,7 @@
 #ifndef _GAME_H
 #define _GAME_H
 
+#include "entities.h"
 #include "entity.h"
 #include "input_manager.h"
 #include "map.h"
@@ -10,6 +11,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+
 
 class Game
 {
@@ -28,8 +30,8 @@ class Game
     void handleInput(InputManager *inputManager);
 
     void init(Window &window);
-    void render(std::vector<std::unique_ptr<Entity>> &entities);
-    void update(std::vector<std::unique_ptr<Entity>> &entities);
+    void render(Entities &entities);
+    void update(Entities &entities);
     void clean();
     void closeGame();
 

@@ -13,7 +13,7 @@ initializeGame(Game *game, Window &window);
 void
 createEntities(InputManager &inputManager, Entities &entities);
 void
-gameLoop(Game *game, InputManager &inputManager, std::vector<std::unique_ptr<Entity>> &entities);
+gameLoop(Game *game, InputManager &inputManager, Entities &entities);
 
 int
 main(int argc, char **argv)
@@ -26,7 +26,7 @@ main(int argc, char **argv)
 
     initializeGame(game, window);
     createEntities(inputManager, entities);
-    gameLoop(game, inputManager, entities.getEntities());
+    gameLoop(game, inputManager, entities);
 
     return 0;
 }
@@ -38,7 +38,7 @@ initializeGame(Game *game, Window &window)
 }
 
 void
-gameLoop(Game *game, InputManager &inputManager, std::vector<std::unique_ptr<Entity>> &entities)
+gameLoop(Game *game, InputManager &inputManager, Entities &entities)
 {
     Uint64 frameStart;
     Uint64 frameDuration;

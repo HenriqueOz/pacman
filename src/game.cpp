@@ -54,19 +54,22 @@ Game::handleInput(InputManager *inputManager)
 }
 
 void
-Game::render(std::vector<std::unique_ptr<Entity>> &entities)
+Game::render(Entities &entities)
 {
+    auto &entitiesVec = entities.getEntities();
+
     SDL_RenderClear(m_renderer);
-    for (const auto &entity : entities) {
+    for (const auto &entity : entitiesVec) {
         entity.get()->render(m_renderer);
     }
     SDL_RenderPresent(m_renderer);
 }
 
 void
-Game::update(std::vector<std::unique_ptr<Entity>> &entities)
+Game::update(Entities &entities)
 {
-    for (const auto &entity : entities) {
+    auto &entitiesVec = entities.getEntities();
+    for (const auto &entity : entitiesVec) {
         entity.get()->update();
     }
 }
