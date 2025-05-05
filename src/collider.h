@@ -8,7 +8,7 @@
 class Collider : public Entity
 {
   public:
-    Collider(const Vec2 &position);
+    Collider(const Vec2 &position, const Vec2 &size);
     ~Collider(){};
 
     void update() override;
