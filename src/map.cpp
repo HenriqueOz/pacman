@@ -42,7 +42,7 @@ Map::loadMap(std::string filePath)
             const unsigned y = row * Config::tileHeight;
             const Vec2 pos = { static_cast<float>(x), static_cast<float>(y) };
 
-            // m_entities[pos].push_back(std::make_unique<Collider>(pos));
+            m_entities.addEntity(std::make_unique<Collider>(pos));
         }
         row++;
     }
