@@ -39,6 +39,8 @@ struct Vec2
         this->x = v.x;
         this->y = v.y;
     }
+
+    inline bool equals(Vec2 const &v) const { return this->x == v.x && this->y == v.y; }
 };
 
 #endif
