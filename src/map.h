@@ -4,10 +4,12 @@
 #include "config.h"
 #include "entities.h"
 #include "entity.h"
+#include "input_manager.h"
 #include "vec.h"
 #include <memory>
 #include <string>
 #include <unordered_map>
+
 
 class Map
 {
@@ -15,9 +17,10 @@ class Map
     void loadMap(std::string filePath);
 
     Entities &m_entities;
+    InputManager &m_inputManager;
 
   public:
-    Map(std::string, Entities &entities);
+    Map(std::string, Entities &entities, InputManager &inputManager);
     ~Map(){};
 
     void printMapToFile() const {};
