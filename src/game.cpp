@@ -70,7 +70,11 @@ Game::update(Entities &entities)
 {
     auto &entitiesVec = entities.getEntities();
     for (const auto &entity : entitiesVec) {
+        const Vec2 &past = entity.get()->getPosition();
         entity.get()->update();
+        const Vec2 &current = entity.get()->getPosition();
+
+        entities.updateEntityPositionInMap(entity.get(), current, past);
     }
 }
 
