@@ -20,7 +20,7 @@ main(int argc, char **argv)
 {
     InputManager inputManager = InputManager();
     Entities entities = Entities();
-    Map map = Map(Config::mapFilePath, entities);
+    Map map = Map(Config::mapFilePath, entities, inputManager);
     Game *const game = Game::getInstance();
     Window window = Window(Config::windowName.c_str(), Config::windowWidth, Config::windowHeight);
 
@@ -62,5 +62,4 @@ gameLoop(Game *game, InputManager &inputManager, Entities &entities)
 void
 createEntities(InputManager &inputManager, Entities &entities)
 {
-    entities.addEntity(std::make_unique<Pacman>(&inputManager, &entities));
 }
