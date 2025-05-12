@@ -27,8 +27,8 @@ class Entity
   protected:
     Entity(){};
 
-    Vec2 m_position = { 0.f, 0.f };
-    Vec2 m_size = { 0.f, 0.f };
+    Vec2 m_position = { 0, 0 };
+    Vec2 m_size = { 0, 0 };
 };
 
 #endif
