@@ -27,7 +27,7 @@ class Pacman : public Entity
 {
 
   public:
-    Pacman(InputManager *const inputManager, Entities *entitiesRegistry);
+    Pacman(Vec2 const &pos, InputManager *const inputManager, Entities *entitiesRegistry);
     ~Pacman() override{};
 
     void update() override;
@@ -37,19 +37,21 @@ class Pacman : public Entity
     void handleInput();
     void idle();
     void moving();
+    void horizontalMovement(int pastDirX, int pastDirY);
+    void verticalMovement(int pastDirX, int pastDirY);
 
     void wrapOutOfBounds();
 
   private:
-    InputManager *m_inputManager = nullptr;
-    Entities *m_entitiesRegistry = nullptr;
+    InputManager *m_inputManager;
+    Entities *m_entitiesRegistry;
     Vec2 m_velocity;
 
-    PacmanState m_PacmanState = IDLE;
+    PacmanState m_PacmanState;
 
-    int m_speed = 2;
-    int m_dirx = 0;
-    int m_diry = 0;
+    int m_speed;
+    int m_dirx;
+    int m_diry;
 
     const SDL_Keycode m_left = SDLK_LEFT;
     const SDL_Keycode m_right = SDLK_RIGHT;
