@@ -3,11 +3,24 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "map.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "map.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 222.66666666666663,
+                "y": 236
+            }
+        },
+        "solid.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
     },
     "last.exportedFilePath": "C:/Users/maboz/Documents/minhas_coisas/Programacao/paman/tiled",
     "last.imagePath": "C:/Users/maboz/Documents/minhas_coisas/Programacao/paman/assets",
@@ -18,9 +31,13 @@
     "map.tileWidth": 16,
     "map.width": 36,
     "openFiles": [
+        "map.tmx",
+        "solid.tsx"
     ],
     "project": "pacman.tiled-project",
     "recentFiles": [
+        "solid.tsx",
+        "map.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
