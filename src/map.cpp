@@ -63,33 +63,3 @@ Map::loadMap(std::string filePath)
 
     file.close();
 }
-
-// void
-// Map::printMapToFile() const
-// {
-//     std::ofstream output("map.txt");
-//     if (!output.is_open()) {
-//         std::cerr << "Failed to open map.txt" << std::endl;
-//         return;
-//     }
-
-//     for (int j = 0; j < Config::verticalTiles; j++) {
-//         for (int i = 0; i < Config::horizontalTiles; i++) {
-//             const unsigned x = i * Config::tileWidth;
-//             const unsigned y = j * Config::tileHeight;
-
-//             const Vec2 pos = Vec2(static_cast<float>(x), static_cast<float>(y));
-//             const auto it = map.find(pos);
-//             const int value = (it != map.end()) ? it->second : 0;
-
-//             if (value < 0) {
-//                 output << "  ";
-//             } else {
-//                 output << value << " ";
-//             }
-//         }
-//         output << "\n";
-//     }
-
-//     output.close();
-// }

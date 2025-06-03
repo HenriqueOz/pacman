@@ -15,9 +15,10 @@ const unsigned tileWidth = 16;
 const unsigned tileHeight = 16;
 const unsigned horizontalScale = 1;
 const unsigned verticalScale = 1;
+const unsigned bottomGuiHeight = 100;
 
 const unsigned windowWidth = tileWidth * horizontalTiles * horizontalScale;
-const unsigned windowHeight = tileHeight * verticalTiles * horizontalScale;
+const unsigned windowHeight = tileHeight * verticalTiles * horizontalScale + bottomGuiHeight;
 const unsigned logicalWidth = tileWidth * horizontalTiles;
 const unsigned logicalHeight = tileHeight * verticalTiles;
 const float aspectRatio = windowWidth / windowHeight;

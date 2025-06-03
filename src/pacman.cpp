@@ -79,9 +79,9 @@ Pacman::idle()
 void
 Pacman::moving()
 {
-    m_velocity.update(static_cast<float>(m_speed));
     int pastDirX = m_dirx;
     int pastDirY = m_diry;
+    m_velocity.update(static_cast<float>(m_speed));
 
     handleInput();
     horizontalMovement(pastDirX, pastDirY);
@@ -95,38 +95,44 @@ Pacman::moving()
 void
 Pacman::horizontalMovement(int pastDirX, int pastDirY)
 {
+    if (m_dirx == 0)
+        return;
+
     int x;
     if (m_dirx > 0) {
-        x = m_position.x + m_size.x;
+        x = m_position.x + m_size.x - 1;
     } else {
         x = m_position.x;
     }
 
-    const bool collisionTop =
-      m_entitiesRegistry->hasEntityAt<EntityType::COLLIDER>(x, m_position.y);
-    const bool collisionBottom =
-      m_entitiesRegistry->hasEntityAt<EntityType::COLLIDER>(x, m_position.y + m_size.y - 1);
+    const bool collisionTopX =
+      m_entitiesRegistry->hasEntityAt<EntityType::COLLIDER>(x + m_dirx, m_position.y);
+    const bool collisionBottomX = m_entitiesRegistry->hasEntityAt<EntityType::COLLIDER>(
+      x + m_dirx, m_position.y + m_size.y - 1);
 
-    if (collisionTop || collisionBottom) {
-        m_diry = pastDirY;
+    if (collisionTopX || collisionBottomX) {
         m_dirx = 0;
+        m_diry = pastDirY;
     }
 }
 
 void
 Pacman::verticalMovement(int pastDirX, int pastDirY)
 {
+    if (!m_diry)
+        return;
+
     int y;
     if (m_diry > 0) {
-        y = m_position.y + m_size.y;
+        y = m_position.y + m_size.y - 1;
     } else {
         y = m_position.y;
     }
 
     const bool collisionLeft =
-      m_entitiesRegistry->hasEntityAt<EntityType::COLLIDER>(m_position.x, y);
-    const bool collisionRight =
-      m_entitiesRegistry->hasEntityAt<EntityType::COLLIDER>(m_position.x + m_size.x - 1, y);
+      m_entitiesRegistry->hasEntityAt<EntityType::COLLIDER>(m_position.x, y + m_diry);
+    const bool collisionRight = m_entitiesRegistry->hasEntityAt<EntityType::COLLIDER>(
+      m_position.x + m_size.x - 1, y + m_diry);
 
     if (collisionLeft || collisionRight) {
         m_dirx = pastDirX;
