@@ -10,6 +10,13 @@
 #include <string>
 #include <unordered_map>
 
+enum MapId
+{
+    EMPTY = 0,
+    WALL = 1,
+    GHOST_DOOR = 2,
+    PACMAN_SPAWN = 3,
+};
 
 class Map
 {

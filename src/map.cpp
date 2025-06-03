@@ -4,17 +4,11 @@
 #include "pacman.h"
 #include <filesystem>
 #include <fstream>
+#include <functional>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-
-enum MapId
-{
-    EMPTY = 0,
-    WALL = 1,
-    PACMAN_SPAWN = 3,
-};
 
 Map::Map(std::string filePath, Entities &entities, InputManager &inputManager)
   : m_entities(entities)
@@ -53,9 +47,11 @@ Map::loadMap(std::string filePath)
             const Vec2 size = { Config::tileWidth, Config::tileHeight };
 
             if (ids[i] == MapId::WALL) {
-                m_entities.addEntity(std::make_unique<Collider>(pos, size));
+                m_entities.addEntity(std::make_unique<Collider>(pos, size, false));
             } else if (ids[i] == MapId::PACMAN_SPAWN) {
                 m_entities.addEntity(std::make_unique<Pacman>(pos, &m_inputManager, &m_entities));
+            } else if (ids[i] == MapId::GHOST_DOOR) {
+                m_entities.addEntity(std::make_unique<Collider>(pos, size, true));
             }
         }
         row++;

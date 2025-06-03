@@ -149,7 +149,7 @@ Pacman::wrapOutOfBounds()
     const std::size_t pacmanHeight = m_size.y;
 
     if (m_position.x < 0) {
-        m_position.x = width - pacmanWidth;
+        m_position.x = width;
     } else if (m_position.x > width) {
         m_position.x = 0;
     } else if (m_position.y < 0) {
