@@ -1,12 +1,11 @@
 #include "map.h"
-#include "collider.h"
-#include "config.h"
-#include "pacman.h"
+#include <entities/collider/collider.h>
+#include <entities/pacman/pacman.h>
 #include <filesystem>
 #include <fstream>
 #include <functional>
 #include <iostream>
-#include <sstream>
+#include <sstream> 
 #include <string>
 #include <vector>
 

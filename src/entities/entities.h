@@ -1,9 +1,10 @@
 #ifndef ENTITIES_H_
 #define ENTITIES_H_
 
-#include "config.h"
 #include "entity.h"
 #include <algorithm>
+#include <config/config.h>
+#include <entities/entities.h>
 #include <memory>
 #include <vector>
 

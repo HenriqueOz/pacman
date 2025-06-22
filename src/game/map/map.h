@@ -1,14 +1,14 @@
 #ifndef MAP_H_
 #define MAP_H_
 
-#include "config.h"
-#include "entities.h"
-#include "entity.h"
-#include "input_manager.h"
-#include "vec.h"
+#include <components/input/input_manager.h>
+#include <config/config.h>
+#include <entities/entities.h>
+#include <entities/entity.h>
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <vec/vec.h>
 
 enum MapId
 {

@@ -1,9 +1,7 @@
 #ifndef COLLIDER_H_
 #define COLLIDER_H_
 
-#include "entity.h"
-#include "input_manager.h"
-#include "vec.h"
+#include <entities/entity.h>
 
 class Collider : public Entity
 {

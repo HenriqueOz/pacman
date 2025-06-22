@@ -1,12 +1,9 @@
 #ifndef _PACMAN_H
 #define _PACMAN_H
 
-#include "entities.h"
-#include "entity.h"
-#include "input_manager.h"
-#include "map.h"
-#include "vec.h"
-#include "window.h"
+#include <components/input/input_manager.h>
+#include <entities/entities.h>
+#include <entities/entity.h>
 
 enum Direction
 {

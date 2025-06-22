@@ -2,10 +2,12 @@ cmake_minimum_required(VERSION 3.26)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-file(GLOB SRC_FILES *.cpp)
-file(GLOB HEADER_FILES *.h)
+file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS "*.cpp")
+file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS "*.h")
 
-add_executable(${PROJECT_NAME} ${SRC_FILES})
+add_executable(${PROJECT_NAME} ${SRC_FILES} ${HEADER_FILES})
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(${PROJECT_NAME} SDL3::SDL3 SDL3_ttf::SDL3_ttf)
 

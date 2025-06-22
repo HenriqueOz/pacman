@@ -1,8 +1,8 @@
 #ifndef _ENTITY_H
 #define _ENTITY_H
 
-#include "vec.h"
 #include <SDL3/SDL.h>
+#include <vec/vec.h>
 
 enum EntityType
 {

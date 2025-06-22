@@ -1,17 +1,17 @@
-#include "config.h"
-#include "entities.h"
-#include "entity.h"
-#include "game.h"
-#include "ghost.h"
-#include "input_manager.h"
-#include "map.h"
-#include "pacman.h"
+#include <components/input/input_manager.h>
+#include <config/config.h>
+#include <entities/entities.h>
+#include <game/game.h>
+#include <game/map/map.h>
+#include <game/window/window.h>
 #include <vector>
 
 void
 initializeGame(Game *game, Window &window);
+
 void
 createEntities(InputManager &inputManager, Entities &entities);
+
 void
 gameLoop(Game *game, InputManager &inputManager, Entities &entities);
 

@@ -1,9 +1,9 @@
 #ifndef _GHOST_H
 #define _GHOST_H
 
-#include "entities.h"
-#include "entity.h"
-#include "input_manager.h"
+#include <components/input/input_manager.h>
+#include <entities/entities.h>
+#include <entities/entity.h>
 
 class Ghost : public Entity
 {

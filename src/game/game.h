@@ -1,17 +1,14 @@
 #ifndef _GAME_H
 #define _GAME_H
 
-#include "entities.h"
-#include "entity.h"
-#include "input_manager.h"
-#include "map.h"
-#include "window.h"
+#include "window/window.h"
 #include <SDL3/SDL.h>
+#include <components/input/input_manager.h>
 #include <cstddef>
+#include <entities/entities.h>
 #include <memory>
 #include <string>
 #include <vector>
-
 
 class Game
 {

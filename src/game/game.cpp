@@ -1,8 +1,8 @@
 #include "game.h"
 #include "SDL3/SDL.h"
-#include "config.h"
-#include "input_manager.h"
-#include "map.h"
+#include "map/map.h"
+#include <components/input/input_manager.h>
+#include <config/config.h>
 #include <cstddef>
 #include <iostream>
 #include <memory>

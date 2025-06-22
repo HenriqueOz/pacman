@@ -1,8 +1,7 @@
-#include "pacman.h"
-#include "collider.h"
-#include "config.h"
-#include "game.h"
 #include <iostream>
+
+#include "pacman.h"
+#include <config/config.h>
 
 Pacman::Pacman(Vec2 const &pos,
                InputManager *const inputManager,
