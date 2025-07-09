@@ -1,65 +1,23 @@
-#include <components/input/input_manager.h>
+#include "registry/entities/entities.h"
+#include "registry/registry.h"
 #include <config/config.h>
-#include <entities/entities.h>
 #include <game/game.h>
 #include <game/map/map.h>
 #include <game/window/window.h>
-#include <vector>
-
-void
-initializeGame(Game *game, Window &window);
-
-void
-createEntities(InputManager &inputManager, Entities &entities);
-
-void
-gameLoop(Game *game, InputManager &inputManager, Entities &entities);
+#include <memory>
 
 int
 main(int argc, char **argv)
 {
-    InputManager inputManager = InputManager();
-    Entities entities = Entities();
-    Map map = Map(Config::mapFilePath, entities, inputManager);
-    Game *const game = Game::getInstance();
+    auto inputManager = Registry::registryInputManager(std::make_unique<InputManager>());
+    auto entities = Registry::registryEntitiesRegistry(std::make_unique<Entities>());
+
+    Map::loadMap(Config::mapFilePath, entities);
+
     Window window = Window(Config::windowName.c_str(), Config::windowWidth, Config::windowHeight);
 
-    initializeGame(game, window);
-    createEntities(inputManager, entities);
-    gameLoop(game, inputManager, entities);
+    Game game = Game();
+    game.run(window, inputManager, entities);
 
     return 0;
-}
-
-void
-initializeGame(Game *game, Window &window)
-{
-    game->init(window);
-}
-
-void
-gameLoop(Game *game, InputManager &inputManager, Entities &entities)
-{
-    Uint64 frameStart;
-    Uint64 frameDuration;
-
-    while (game->isRunning()) {
-        frameStart = SDL_GetTicks();
-
-        game->handleInput(&inputManager);
-        game->update(entities);
-        game->render(entities);
-
-        frameDuration = SDL_GetTicks() - frameStart;
-        if (Config::frameDelay > frameDuration) {
-            SDL_Delay(Config::frameDelay - frameDuration);
-        }
-    }
-
-    game->clean();
-}
-
-void
-createEntities(InputManager &inputManager, Entities &entities)
-{
 }

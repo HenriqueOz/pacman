@@ -1,13 +1,11 @@
 #ifndef MAP_H_
 #define MAP_H_
 
-#include <components/input/input_manager.h>
+#include "registry/entities/entities.h"
 #include <config/config.h>
-#include <entities/entities.h>
 #include <entities/entity.h>
-#include <memory>
+#include <registry/input/input_manager.h>
 #include <string>
-#include <unordered_map>
 #include <vec/vec.h>
 
 enum MapId
@@ -21,16 +19,13 @@ enum MapId
 class Map
 {
   private:
-    void loadMap(std::string filePath);
-
-    Entities &m_entities;
-    InputManager &m_inputManager;
+    Map();
 
   public:
-    Map(std::string, Entities &entities, InputManager &inputManager);
-    ~Map(){};
+    ~Map() {};
 
-    void printMapToFile() const {};
+    static void loadMap(std::string filePath, Entities *entitiesRegistry);
+    static void printMapToFile() {};
 };
 
 #endif

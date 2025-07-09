@@ -1,18 +1,16 @@
 #ifndef ENTITIES_H_
 #define ENTITIES_H_
 
-#include "entity.h"
+#include "entities/entity.h"
 #include <algorithm>
 #include <config/config.h>
-#include <entities/entities.h>
 #include <memory>
-#include <vector>
 
 class Entities
 {
   public:
     Entities();
-    ~Entities(){};
+    ~Entities() {};
 
     inline Entity *addEntity(std::unique_ptr<Entity> entity)
     {

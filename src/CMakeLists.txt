@@ -9,7 +9,7 @@ add_executable(${PROJECT_NAME} ${SRC_FILES} ${HEADER_FILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_link_libraries(${PROJECT_NAME} SDL3::SDL3 SDL3_ttf::SDL3_ttf)
+target_link_libraries(${PROJECT_NAME} SDL3::SDL3 SDL2_ttf::SDL2_ttf)
 
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD

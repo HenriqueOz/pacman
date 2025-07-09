@@ -1,23 +1,15 @@
 #include "map.h"
+#include "registry/entities/entities.h"
 #include <entities/collider/collider.h>
 #include <entities/pacman/pacman.h>
-#include <filesystem>
 #include <fstream>
-#include <functional>
 #include <iostream>
-#include <sstream> 
+#include <sstream>
 #include <string>
 #include <vector>
 
-Map::Map(std::string filePath, Entities &entities, InputManager &inputManager)
-  : m_entities(entities)
-  , m_inputManager(inputManager)
-{
-    this->loadMap(filePath);
-}
-
 void
-Map::loadMap(std::string filePath)
+Map::loadMap(std::string filePath, Entities *entitiesRegistry)
 {
     std::ifstream file;
     std::string line;
@@ -46,11 +38,11 @@ Map::loadMap(std::string filePath)
             const Vec2 size = { Config::tileWidth, Config::tileHeight };
 
             if (ids[i] == MapId::WALL) {
-                m_entities.addEntity(std::make_unique<Collider>(pos, size, false));
+                entitiesRegistry->addEntity(std::make_unique<Collider>(pos, size, false));
             } else if (ids[i] == MapId::PACMAN_SPAWN) {
-                m_entities.addEntity(std::make_unique<Pacman>(pos, &m_inputManager, &m_entities));
+                entitiesRegistry->addEntity(std::make_unique<Pacman>(pos));
             } else if (ids[i] == MapId::GHOST_DOOR) {
-                m_entities.addEntity(std::make_unique<Collider>(pos, size, true));
+                entitiesRegistry->addEntity(std::make_unique<Collider>(pos, size, true));
             }
         }
         row++;

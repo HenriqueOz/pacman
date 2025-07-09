@@ -1,18 +1,35 @@
-#include "game.h"
-#include "SDL3/SDL.h"
-#include "map/map.h"
-#include <components/input/input_manager.h>
-#include <config/config.h>
+#include "game/game.h"
+#include "game/window/window.h"
+#include "registry/entities/entities.h"
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_oldnames.h>
 #include <cstddef>
 #include <iostream>
-#include <memory>
-#include <utility>
-
-Game *Game::m_instance = nullptr;
+#include <registry/input/input_manager.h>
 
 Game::Game()
   : m_isRunning(false)
 {
+}
+
+void
+Game::run(Window &window, InputManager *inputManager, Entities *entitiesRegistry)
+{
+    this->init(window);
+
+    Uint64 frameStart;
+    Uint64 frameDuration;
+    while (this->isRunning()) {
+        frameStart = SDL_GetTicks();
+        this->handleInput(inputManager);
+        this->update(entitiesRegistry);
+        this->render(entitiesRegistry);
+        frameDuration = SDL_GetTicks() - frameStart;
+        if (Config::frameDelay > frameDuration) {
+            SDL_Delay(Config::frameDelay - frameDuration);
+        }
+    }
+    this->clean();
 }
 
 void
@@ -47,16 +64,19 @@ Game::isRunning() const
 void
 Game::handleInput(InputManager *inputManager)
 {
-    inputManager->processInput();
-    if (inputManager->quitRequested()) {
-        m_isRunning = false;
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        inputManager->processInput(event);
+        if (event.type == SDL_EVENT_QUIT) {
+            m_isRunning = false;
+        }
     }
 }
 
 void
-Game::render(Entities &entities)
+Game::render(Entities *entities)
 {
-    auto &entitiesVec = entities.getEntities();
+    auto &entitiesVec = entities->getEntities();
 
     SDL_RenderClear(m_renderer);
     for (const auto &entity : entitiesVec) {
@@ -66,15 +86,15 @@ Game::render(Entities &entities)
 }
 
 void
-Game::update(Entities &entities)
+Game::update(Entities *entities)
 {
-    auto &entitiesVec = entities.getEntities();
+    auto &entitiesVec = entities->getEntities();
     for (const auto &entity : entitiesVec) {
         const Vec2 &past = entity.get()->getPosition();
         entity.get()->update();
         const Vec2 &current = entity.get()->getPosition();
 
-        entities.updateEntityPositionInMap(entity.get(), current, past);
+        entities->updateEntityPositionInMap(entity.get(), current, past);
     }
 }
 
@@ -83,8 +103,6 @@ Game::clean()
 {
     SDL_DestroyRenderer(m_renderer);
     SDL_Quit();
-
-    delete m_instance;
 }
 
 void

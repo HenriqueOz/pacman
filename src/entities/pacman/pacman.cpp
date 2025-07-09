@@ -1,14 +1,10 @@
-#include <iostream>
 
 #include "pacman.h"
+#include "registry/registry.h"
 #include <config/config.h>
 
-Pacman::Pacman(Vec2 const &pos,
-               InputManager *const inputManager,
-               Entities *entitiesRegistry = nullptr)
-  : m_inputManager(inputManager)
-  , m_entitiesRegistry(entitiesRegistry)
-  , m_velocity(0.f, 0.f)
+Pacman::Pacman(Vec2 const &pos)
+  : m_velocity(0.f, 0.f)
   , m_PacmanState(IDLE)
   , m_speed(1)
   , m_dirx(0)
@@ -17,6 +13,9 @@ Pacman::Pacman(Vec2 const &pos,
     m_size.update(Config::tileWidth, Config::tileHeight);
     m_position.update(pos);
     m_position.x += m_size.x / 2;
+
+    m_inputManager = Registry::getInputManager();
+    m_entitiesRegistry = Registry::getEntitiesRegistry();
 }
 
 void

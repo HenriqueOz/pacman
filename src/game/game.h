@@ -3,40 +3,29 @@
 
 #include "window/window.h"
 #include <SDL3/SDL.h>
-#include <components/input/input_manager.h>
 #include <cstddef>
-#include <entities/entities.h>
-#include <memory>
+#include <registry/entities/entities.h>
+#include <registry/input/input_manager.h>
 #include <string>
-#include <vector>
 
 class Game
 {
   public:
-    inline static Game *getInstance()
-    {
-        if (m_instance == nullptr)
-            m_instance = new Game();
-        return m_instance;
-    }
-
-    ~Game(){};
+    Game();
+    ~Game() {};
 
     bool isRunning() const;
 
     void handleInput(InputManager *inputManager);
 
     void init(Window &window);
-    void render(Entities &entities);
-    void update(Entities &entities);
+    void render(Entities *entities);
+    void update(Entities *entities);
     void clean();
     void closeGame();
+    void run(Window &windows, InputManager *inputManager, Entities *entitiesRegistry);
 
   private:
-    Game();
-
-    static Game *m_instance;
-
     std::string m_windowName;
     std::size_t m_windowWidth;
     std::size_t m_windowHeight;

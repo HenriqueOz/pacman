@@ -1,8 +1,8 @@
 #ifndef _PACMAN_H
 #define _PACMAN_H
 
-#include <components/input/input_manager.h>
-#include <entities/entities.h>
+#include "registry/entities/entities.h"
+#include "registry/input/input_manager.h"
 #include <entities/entity.h>
 
 enum Direction
@@ -24,8 +24,8 @@ class Pacman : public Entity
 {
 
   public:
-    Pacman(Vec2 const &pos, InputManager *const inputManager, Entities *entitiesRegistry);
-    ~Pacman() override{};
+    Pacman(Vec2 const &pos);
+    ~Pacman() override {};
 
     void update() override;
     void render(SDL_Renderer *renderer) const override;

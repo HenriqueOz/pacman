@@ -16,7 +16,7 @@ enum EntityType
 class Entity
 {
   public:
-    virtual ~Entity(){};
+    virtual ~Entity() {};
     virtual void update() = 0;
     virtual void render(SDL_Renderer *renderer) const {};
 
@@ -25,7 +25,7 @@ class Entity
     virtual EntityType getType() const = 0;
 
   protected:
-    Entity(){};
+    Entity() {};
 
     Vec2 m_position = { 0, 0 };
     Vec2 m_size = { 0, 0 };
