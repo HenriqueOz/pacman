@@ -1,12 +1,10 @@
 #ifndef _GAME_H
 #define _GAME_H
 
-#include "window/window.h"
 #include <SDL3/SDL.h>
-#include <cstddef>
+#include <SDL3/SDL_video.h>
 #include <registry/entities/entities.h>
 #include <registry/input/input_manager.h>
-#include <string>
 
 class Game
 {
@@ -18,18 +16,15 @@ class Game
 
     void handleInput(InputManager *inputManager);
 
-    void init(Window &window);
+    void init();
     void render(Entities *entities);
     void update(Entities *entities);
     void clean();
     void closeGame();
-    void run(Window &windows, InputManager *inputManager, Entities *entitiesRegistry);
+    void run(InputManager *inputManager, Entities *entitiesRegistry);
 
   private:
-    std::string m_windowName;
-    std::size_t m_windowWidth;
-    std::size_t m_windowHeight;
-
+    SDL_Window *m_window;
     SDL_Renderer *m_renderer;
 
     bool m_isRunning;

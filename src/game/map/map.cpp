@@ -33,7 +33,7 @@ Map::loadMap(std::string filePath, Entities *entitiesRegistry)
             value = line[i];
             if (std::isdigit(value)) {
                 ids.push_back(value - '0');
-            } else if (value != ',') {
+            } else if (value == '#') {
                 ids.push_back(static_cast<int>(MapId::EMPTY));
             }
         }

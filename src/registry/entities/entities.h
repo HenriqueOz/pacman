@@ -87,10 +87,11 @@ class Entities
         std::vector<Entity *> &entities = m_grid[pos.y][pos.x];
 
         for (auto it = entities.begin(); it != entities.end(); it++) {
-            if ((*it)->getType() == T) {
-                const auto entity = (*it);
-                m_entities.at(entity->getId()).reset();
-                m_entities.erase(entity->getId());
+            const auto entity = (*it);
+            if (entity->getType() == T) {
+                const Uint32 id = entity->getId();
+                m_entities.at(id).reset();
+                m_entities.erase(id);
                 entities.erase(it);
 
                 return true;

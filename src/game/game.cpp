@@ -1,9 +1,9 @@
 #include "game/game.h"
-#include "game/window/window.h"
+#include "config/config.h"
 #include "registry/entities/entities.h"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_oldnames.h>
-#include <cstddef>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <iostream>
 #include <registry/input/input_manager.h>
 
@@ -13,9 +13,9 @@ Game::Game()
 }
 
 void
-Game::run(Window &window, InputManager *inputManager, Entities *entitiesRegistry)
+Game::run(InputManager *inputManager, Entities *entitiesRegistry)
 {
-    this->init(window);
+    this->init();
 
     Uint64 frameStart;
     Uint64 frameDuration;
@@ -33,16 +33,22 @@ Game::run(Window &window, InputManager *inputManager, Entities *entitiesRegistry
 }
 
 void
-Game::init(Window &window)
+Game::init()
 {
-    if (window.getWindow() == nullptr) {
-        m_isRunning = false;
+    TTF_Init();
+
+    if (!SDL_Init(SDL_INIT_VIDEO)) {
+        std::cout << "ERROR::SDL::FAILED_TO_INIT_VIDEO_SUBMODULE: " << SDL_GetError() << std::endl;
         return;
     }
 
-    m_renderer = SDL_CreateRenderer(window.getWindow(), NULL);
-    if (m_renderer == nullptr) {
-        std::cout << "ERROR::GAME::COULD_NOT_CREATE_RENDERER: " << SDL_GetError() << std::endl;
+    if (!SDL_CreateWindowAndRenderer(Config::windowName,
+                                     Config::windowWidth,
+                                     Config::windowHeight,
+                                     SDL_WINDOW_HIGH_PIXEL_DENSITY,
+                                     &m_window,
+                                     &m_renderer)) {
+        std::cout << "ERROR::GAME::COULD_NOT_CREATE_WINDOW: " << SDL_GetError() << std::endl;
         m_isRunning = false;
         return;
     }
@@ -85,6 +91,7 @@ Game::render(Entities *entities)
             entity->render(m_renderer);
         }
     }
+
     SDL_RenderPresent(m_renderer);
 }
 

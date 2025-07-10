@@ -3,7 +3,6 @@
 #include <config/config.h>
 #include <game/game.h>
 #include <game/map/map.h>
-#include <game/window/window.h>
 #include <memory>
 
 int
@@ -14,10 +13,8 @@ main(int argc, char **argv)
 
     Map::loadMap(Config::mapFilePath, entities);
 
-    Window window = Window(Config::windowName.c_str(), Config::windowWidth, Config::windowHeight);
-
     Game game = Game();
-    game.run(window, inputManager, entities);
+    game.run(inputManager, entities);
 
     return 0;
 }
