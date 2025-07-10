@@ -2,6 +2,7 @@
 #define _ENTITY_H
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_stdinc.h>
 #include <vec/vec.h>
 
 enum EntityType
@@ -24,8 +25,14 @@ class Entity
     virtual Vec2 getSize() const { return m_size; };
     virtual EntityType getType() const = 0;
 
+    void setId(Uint32 id);
+    Uint32 getId();
+
   protected:
     Entity() {};
+
+    Uint32 m_id = 0;
+    bool m_idSet = false;
 
     Vec2 m_position = { 0, 0 };
     Vec2 m_size = { 0, 0 };

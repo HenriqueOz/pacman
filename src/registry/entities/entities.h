@@ -2,9 +2,13 @@
 #define ENTITIES_H_
 
 #include "entities/entity.h"
+#include "vec/vec.h"
+#include <SDL3/SDL_stdinc.h>
 #include <algorithm>
 #include <config/config.h>
 #include <memory>
+#include <unordered_map>
+#include <vector>
 
 class Entities
 {
@@ -15,18 +19,15 @@ class Entities
     inline Entity *addEntity(std::unique_ptr<Entity> entity)
     {
         Entity *entityPtr = entity.get();
-        m_entities.push_back(std::move(entity));
+        const Uint32 id = m_currentId++;
 
-        std::sort(m_entities.begin(),
-                  m_entities.end(),
-                  [](const std::unique_ptr<Entity> &a, const std::unique_ptr<Entity> &b) {
-                      return a->getType() == EntityType::PACMAN;
-                  });
+        entity->setId(id);
+        m_entities.insert({ id, std::move(entity) });
 
         return entityPtr;
     }
 
-    inline std::vector<std::unique_ptr<Entity>> &getEntities() { return m_entities; }
+    inline std::unordered_map<Uint32, std::unique_ptr<Entity>> &getEntities() { return m_entities; }
 
     inline void updateEntityPositionInMap(Entity *entity, Vec2 const &current, Vec2 const &past)
     {
@@ -70,9 +71,33 @@ class Entities
     }
 
     template<EntityType T>
-    bool hasEntityAt(int x, int y) const
+    inline bool hasEntityAt(int x, int y) const
     {
         return getEntityAt<T>(x, y) != nullptr;
+    }
+
+    template<EntityType T>
+    inline bool deleteEntityAt(int x, int y)
+    {
+        const auto pos = fixPositionToGrid({ x, y });
+        if (!isInBounds(pos)) {
+            return false;
+        }
+
+        std::vector<Entity *> &entities = m_grid[pos.y][pos.x];
+
+        for (auto it = entities.begin(); it != entities.end(); it++) {
+            if ((*it)->getType() == T) {
+                const auto entity = (*it);
+                m_entities.at(entity->getId()).reset();
+                m_entities.erase(entity->getId());
+                entities.erase(it);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
   private:
@@ -90,7 +115,9 @@ class Entities
                pos.y < Config::verticalTiles;
     }
 
-    std::vector<std::unique_ptr<Entity>> m_entities;
+    Uint32 m_currentId = 1000;
+
+    std::unordered_map<Uint32, std::unique_ptr<Entity>> m_entities;
     std::vector<std::vector<std::vector<Entity *>>> m_grid;
 };
 #endif

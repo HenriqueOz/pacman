@@ -9,8 +9,8 @@
 int
 main(int argc, char **argv)
 {
-    auto inputManager = Registry::registryInputManager(std::make_unique<InputManager>());
-    auto entities = Registry::registryEntitiesRegistry(std::make_unique<Entities>());
+    const auto inputManager = Registry::registryInputManager(std::make_unique<InputManager>());
+    const auto entities = Registry::registryEntitiesRegistry(std::make_unique<Entities>());
 
     Map::loadMap(Config::mapFilePath, entities);
 

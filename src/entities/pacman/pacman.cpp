@@ -1,5 +1,5 @@
-
 #include "pacman.h"
+#include "entities/entity.h"
 #include "registry/registry.h"
 #include <config/config.h>
 
@@ -85,6 +85,10 @@ Pacman::moving()
     horizontalMovement(pastDirX, pastDirY);
     verticalMovement(pastDirX, pastDirY);
     wrapOutOfBounds();
+
+    if (m_entitiesRegistry->hasEntityAt<EntityType::FOOD>(m_position.x, m_position.y)) {
+        m_entitiesRegistry->deleteEntityAt<EntityType::FOOD>(m_position.x, m_position.y);
+    }
 
     m_position.x += m_dirx * m_velocity.x;
     m_position.y += m_diry * m_velocity.y;

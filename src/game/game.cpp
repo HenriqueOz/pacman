@@ -76,11 +76,14 @@ Game::handleInput(InputManager *inputManager)
 void
 Game::render(Entities *entities)
 {
-    auto &entitiesVec = entities->getEntities();
+    auto &entitiesMap = entities->getEntities();
 
     SDL_RenderClear(m_renderer);
-    for (const auto &entity : entitiesVec) {
-        entity.get()->render(m_renderer);
+    for (const auto &entry : entitiesMap) {
+        const auto entity = entry.second.get();
+        if (entity != nullptr) {
+            entity->render(m_renderer);
+        }
     }
     SDL_RenderPresent(m_renderer);
 }
@@ -88,13 +91,20 @@ Game::render(Entities *entities)
 void
 Game::update(Entities *entities)
 {
-    auto &entitiesVec = entities->getEntities();
-    for (const auto &entity : entitiesVec) {
-        const Vec2 &past = entity.get()->getPosition();
-        entity.get()->update();
-        const Vec2 &current = entity.get()->getPosition();
+    auto &entitiesMap = entities->getEntities();
 
-        entities->updateEntityPositionInMap(entity.get(), current, past);
+    for (const auto &entry : entitiesMap) {
+        const auto entity = entry.second.get();
+
+        if (entity == nullptr) {
+            continue;
+        }
+
+        const Vec2 &past = entity->getPosition();
+        entity->update();
+        const Vec2 &current = entity->getPosition();
+
+        entities->updateEntityPositionInMap(entity, current, past);
     }
 }
 
