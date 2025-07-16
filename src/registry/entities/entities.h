@@ -51,8 +51,7 @@ class Entities
         }
     }
 
-    template<EntityType T>
-    inline Entity *getEntityAt(int x, int y) const
+    inline Entity *getEntityAt(int x, int y, EntityType type) const
     {
         const auto pos = fixPositionToGrid({ x, y });
         if (!isInBounds(pos)) {
@@ -62,7 +61,7 @@ class Entities
         const auto &entities = m_grid[pos.y][pos.x];
 
         for (const auto &entity : entities) {
-            if (entity->getType() == T) {
+            if (entity->getType() == type) {
                 return entity;
             }
         }
@@ -70,14 +69,12 @@ class Entities
         return nullptr;
     }
 
-    template<EntityType T>
-    inline bool hasEntityAt(int x, int y) const
+    inline bool hasEntityAt(int x, int y, EntityType type) const
     {
-        return getEntityAt<T>(x, y) != nullptr;
+        return getEntityAt(x, y, type) != nullptr;
     }
 
-    template<EntityType T>
-    inline bool deleteEntityAt(int x, int y)
+    inline bool deleteEntityAt(int x, int y, EntityType type)
     {
         const auto pos = fixPositionToGrid({ x, y });
         if (!isInBounds(pos)) {
@@ -88,7 +85,7 @@ class Entities
 
         for (auto it = entities.begin(); it != entities.end(); it++) {
             const auto entity = (*it);
-            if (entity->getType() == T) {
+            if (entity->getType() == type) {
                 const Uint32 id = entity->getId();
                 m_entities.at(id).reset();
                 m_entities.erase(id);

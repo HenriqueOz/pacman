@@ -3,6 +3,7 @@
 
 #include "registry/entities/entities.h"
 #include "registry/input/input_manager.h"
+#include <SDL3/SDL_keycode.h>
 #include <entities/entity.h>
 
 enum Direction
@@ -34,8 +35,12 @@ class Pacman : public Entity
     void handleInput();
     void idle();
     void moving();
-    void horizontalMovement(int pastDirX, int pastDirY);
-    void verticalMovement(int pastDirX, int pastDirY);
+    void handleCollision(int pastDirX, int pastDirY);
+    void handleFoodEating();
+    void changeDirectionsByKeyPressed(SDL_Keycode keycode, Direction direction);
+    bool canMoveTo(Direction direction) const;
+    bool hasColliderAt(int x, int y) const;
+    int getDirectionValue(Direction direction) const;
 
     void wrapOutOfBounds();
 

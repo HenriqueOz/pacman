@@ -3,6 +3,14 @@
 
 #include <entities/entity.h>
 
+enum class GhostStates
+{
+    Idle,
+    Escaping,
+    Chasing,
+    Dead,
+};
+
 class Ghost : public Entity
 {
   public:
@@ -14,6 +22,7 @@ class Ghost : public Entity
     void render(SDL_Renderer *renderer) const override;
 
   private:
+    GhostStates m_state;
 };
 
 #endif
