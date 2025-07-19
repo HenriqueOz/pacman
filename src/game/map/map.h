@@ -15,6 +15,7 @@ enum class MapId : int
     WALL = 1,
     GHOST_DOOR = 2,
     PACMAN_SPAWN = 3,
+    GHOST_RED = 4,
 };
 
 class Map

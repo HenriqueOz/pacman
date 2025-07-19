@@ -1,4 +1,5 @@
 #include "registry/entities/entities.h"
+#include "registry/input/input_manager.h"
 #include "registry/registry.h"
 #include <config/config.h>
 #include <game/game.h>

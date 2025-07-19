@@ -14,7 +14,7 @@ enum class GhostStates
 class Ghost : public Entity
 {
   public:
-    Ghost();
+    Ghost(Vec2 const &pos);
     ~Ghost() override {};
     EntityType getType() const override { return GHOST; };
 

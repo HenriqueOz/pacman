@@ -1,13 +1,17 @@
 #include "map.h"
 #include "config/config.h"
 #include "entities/food/food.h"
+#include "entities/ghost/ghost.h"
+#include "registry/controller/game_controller.h"
 #include "registry/entities/entities.h"
+#include "registry/registry.h"
 #include "vec/vec.h"
 #include <cctype>
 #include <entities/collider/collider.h>
 #include <entities/pacman/pacman.h>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -69,8 +73,13 @@ Map::addEntity(int id, Vec2 const &pos, Entities *entitiesRegistry)
         case static_cast<int>(MapId::GHOST_DOOR):
             entitiesRegistry->addEntity(std::make_unique<Collider>(pos, wallSize, true));
             break;
-        case static_cast<int>(MapId::PACMAN_SPAWN):
-            entitiesRegistry->addEntity(std::make_unique<Pacman>(pos));
+        case static_cast<int>(MapId::PACMAN_SPAWN): {
+            Entity *pacman = entitiesRegistry->addEntity(std::make_unique<Pacman>(pos));
+            Registry::registryGameController(
+              std::make_unique<GameController>(static_cast<Pacman *>(pacman)));
+        } break;
+        case static_cast<int>(MapId::GHOST_RED):
+            entitiesRegistry->addEntity(std::make_unique<Ghost>(pos));
             break;
     }
 }

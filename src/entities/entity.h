@@ -18,7 +18,7 @@ class Entity
 {
   public:
     virtual ~Entity() {};
-    virtual void update() = 0;
+    virtual void update() {};
     virtual void render(SDL_Renderer *renderer) const {};
 
     virtual Vec2 getPosition() const { return m_position; };

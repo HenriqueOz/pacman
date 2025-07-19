@@ -1,18 +1,11 @@
 #ifndef _PACMAN_H
 #define _PACMAN_H
 
+#include "entities/utils/utils.h"
 #include "registry/entities/entities.h"
 #include "registry/input/input_manager.h"
 #include <SDL3/SDL_keycode.h>
 #include <entities/entity.h>
-
-enum Direction
-{
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};
 
 enum PacmanState
 {
@@ -37,10 +30,10 @@ class Pacman : public Entity
     void moving();
     void handleCollision(int pastDirX, int pastDirY);
     void handleFoodEating();
-    void changeDirectionsByKeyPressed(SDL_Keycode keycode, Direction direction);
-    bool canMoveTo(Direction direction) const;
+    void changeDirectionsByKeyPressed(SDL_Keycode keycode, Utils::Direction direction);
+    bool canMoveTo(Utils::Direction direction) const;
     bool hasColliderAt(int x, int y) const;
-    int getDirectionValue(Direction direction) const;
+    int getDirectionValue(Utils::Direction direction) const;
 
     void wrapOutOfBounds();
 
