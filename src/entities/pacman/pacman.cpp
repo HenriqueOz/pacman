@@ -126,9 +126,6 @@ Pacman::canMoveTo(Utils::Direction direction) const
 void
 Pacman::handleCollision(int pastDirX, int pastDirY)
 {
-    const bool isMovingHorizontally = m_dirx != 0;
-    const bool isMovingVertically = m_diry != 0;
-
     const int xLeft = m_position.x;
     const int xRight = m_position.x + m_size.x - 1;
     const int yTop = m_position.y;
@@ -145,12 +142,12 @@ Pacman::handleCollision(int pastDirX, int pastDirY)
         return;
     }
 
-    if (isMovingHorizontally) {
+    if (m_dirx != 0) {
         m_dirx = 0;
         m_diry = pastDirY;
     }
 
-    if (isMovingVertically) {
+    if (m_diry != 0) {
         m_dirx = pastDirX;
         m_diry = 0;
     }

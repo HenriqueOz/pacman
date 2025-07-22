@@ -1,6 +1,7 @@
 #ifndef MAP_H_
 #define MAP_H_
 
+#include "registry/controller/game_controller.h"
 #include "registry/entities/entities.h"
 #include <config/config.h>
 #include <entities/entity.h>
@@ -22,12 +23,12 @@ class Map
 {
   private:
     Map();
-    static void addEntity(int id, Vec2 const &pos, Entities *entitiesRegistry);
+    static void addEntity(int id, Vec2 const &pos, Entities *entitiesRegistry, GameController *gameController);
 
   public:
     ~Map() {};
 
-    static void loadMap(std::string filePath, Entities *entitiesRegistry);
+    static void loadMap(std::string filePath, Entities *entitiesRegistry, GameController *gameController);
     static void printMapToFile() {};
 };
 

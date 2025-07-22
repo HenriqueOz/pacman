@@ -4,7 +4,6 @@
 #include "entities/ghost/ghost.h"
 #include "registry/controller/game_controller.h"
 #include "registry/entities/entities.h"
-#include "registry/registry.h"
 #include "vec/vec.h"
 #include <cctype>
 #include <entities/collider/collider.h>
@@ -16,7 +15,7 @@
 #include <vector>
 
 void
-Map::loadMap(std::string filePath, Entities *entitiesRegistry)
+Map::loadMap(std::string filePath, Entities *entitiesRegistry, GameController *gameController)
 {
     std::ifstream file;
     std::string line;
@@ -47,7 +46,7 @@ Map::loadMap(std::string filePath, Entities *entitiesRegistry)
             const int y = row * Config::tileHeight;
             const Vec2 pos = { x, y };
 
-            addEntity(ids[i], pos, entitiesRegistry);
+            addEntity(ids[i], pos, entitiesRegistry, gameController);
         }
         row++;
     }
@@ -56,7 +55,7 @@ Map::loadMap(std::string filePath, Entities *entitiesRegistry)
 }
 
 void
-Map::addEntity(int id, Vec2 const &pos, Entities *entitiesRegistry)
+Map::addEntity(int id, Vec2 const &pos, Entities *entitiesRegistry, GameController *gameController)
 {
     const Vec2 wallSize = {
         Config::tileWidth,
@@ -70,13 +69,14 @@ Map::addEntity(int id, Vec2 const &pos, Entities *entitiesRegistry)
         case static_cast<int>(MapId::WALL):
             entitiesRegistry->addEntity(std::make_unique<Collider>(pos, wallSize, false));
             break;
-        case static_cast<int>(MapId::GHOST_DOOR):
-            entitiesRegistry->addEntity(std::make_unique<Collider>(pos, wallSize, true));
-            break;
+        case static_cast<int>(MapId::GHOST_DOOR): {
+            Entity *ghostDoor =
+              entitiesRegistry->addEntity(std::make_unique<Collider>(pos, wallSize, true));
+            gameController->registerGhostDoorId(ghostDoor->getId());
+        } break;
         case static_cast<int>(MapId::PACMAN_SPAWN): {
             Entity *pacman = entitiesRegistry->addEntity(std::make_unique<Pacman>(pos));
-            Registry::registryGameController(
-              std::make_unique<GameController>(static_cast<Pacman *>(pacman)));
+            gameController->registerPacmanId(pacman->getId());
         } break;
         case static_cast<int>(MapId::GHOST_RED):
             entitiesRegistry->addEntity(std::make_unique<Ghost>(pos));

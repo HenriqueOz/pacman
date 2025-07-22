@@ -98,6 +98,16 @@ class Entities
         return false;
     }
 
+    inline Entity *getEntityById(Uint32 id)
+    {
+        const auto it = m_entities.find(id);
+        if (it == m_entities.end()) {
+            return nullptr;
+        }
+
+        return it->second.get();
+    }
+
   private:
     inline Vec2 fixPositionToGrid(Vec2 const &pos) const
     {

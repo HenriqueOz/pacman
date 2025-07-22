@@ -24,7 +24,7 @@ Collider::render(SDL_Renderer *renderer) const
                        static_cast<float>(m_size.x),
                        static_cast<float>(m_size.y) };
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 125);
     SDL_RenderFillRect(renderer, &rect);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
