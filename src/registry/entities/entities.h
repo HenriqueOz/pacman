@@ -2,6 +2,7 @@
 #define ENTITIES_H_
 
 #include "entities/entity.h"
+#include "entities/utils/utils.h"
 #include "vec/vec.h"
 #include <SDL3/SDL_stdinc.h>
 #include <algorithm>
@@ -27,12 +28,30 @@ class Entities
         return entityPtr;
     }
 
+    inline std::vector<Entity *> getEntitiesSortedByDepth() const
+    {
+        std::vector<Entity *> sortedEntities;
+        sortedEntities.reserve(m_entities.size());
+
+        for (const auto &pair : m_entities) {
+            if (pair.second != nullptr) {
+                sortedEntities.push_back(pair.second.get());
+            }
+        }
+
+        std::sort(sortedEntities.begin(), sortedEntities.end(), [](Entity *a, Entity *b) {
+            return static_cast<int>(a->getType()) > static_cast<int>(b->getType());
+        });
+
+        return sortedEntities;
+    }
+
     inline std::unordered_map<Uint32, std::unique_ptr<Entity>> &getEntities() { return m_entities; }
 
     inline void updateEntityPositionInMap(Entity *entity, Vec2 const &current, Vec2 const &past)
     {
-        Vec2 newPos = fixPositionToGrid(current);
-        Vec2 oldPos = fixPositionToGrid(past);
+        Vec2 newPos = Utils::fixPositionToGrid(current);
+        Vec2 oldPos = Utils::fixPositionToGrid(past);
 
         if (isInBounds(oldPos)) {
             auto &entities = m_grid[oldPos.y][oldPos.x];
@@ -53,7 +72,7 @@ class Entities
 
     inline Entity *getEntityAt(int x, int y, EntityType type) const
     {
-        const auto pos = fixPositionToGrid({ x, y });
+        const auto pos = Utils::fixPositionToGrid({ x, y });
         if (!isInBounds(pos)) {
             return nullptr;
         }
@@ -76,7 +95,7 @@ class Entities
 
     inline bool deleteEntityAt(int x, int y, EntityType type)
     {
-        const auto pos = fixPositionToGrid({ x, y });
+        const auto pos = Utils::fixPositionToGrid({ x, y });
         if (!isInBounds(pos)) {
             return false;
         }
@@ -109,14 +128,6 @@ class Entities
     }
 
   private:
-    inline Vec2 fixPositionToGrid(Vec2 const &pos) const
-    {
-        Vec2 fixedPos = { 0, 0 };
-        fixedPos.x = (pos.x / Config::tileWidth);
-        fixedPos.y = (pos.y / Config::tileHeight);
-        return fixedPos;
-    }
-
     inline bool isInBounds(Vec2 const &pos) const
     {
         return pos.x >= 0 && pos.x < Config::horizontalTiles && pos.y >= 0 &&

@@ -82,11 +82,10 @@ Game::handleInput(InputManager *inputManager)
 void
 Game::render(Entities *entities)
 {
-    auto &entitiesMap = entities->getEntities();
+    auto entitiesVector = entities->getEntitiesSortedByDepth();
 
     SDL_RenderClear(m_renderer);
-    for (const auto &entry : entitiesMap) {
-        const auto entity = entry.second.get();
+    for (const auto &entity : entitiesVector) {
         if (entity != nullptr) {
             entity->render(m_renderer);
         }

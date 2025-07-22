@@ -57,12 +57,17 @@ Pacman::changeDirectionsByKeyPressed(SDL_Keycode keycode, Utils::Direction direc
         return;
     }
 
-    if (direction == Utils::Direction::LEFT || direction == Utils::Direction::RIGHT) {
-        m_dirx = getDirectionValue(direction);
-        m_diry = 0;
-    } else if (direction == Utils::Direction::UP || direction == Utils::Direction::DOWN) {
-        m_dirx = 0;
-        m_diry = getDirectionValue(direction);
+    switch (direction) {
+        case Utils::Direction::UP:
+        case Utils::Direction::DOWN:
+            m_dirx = 0;
+            m_diry = Utils::getDirectionValue(direction);
+            break;
+        case Utils::Direction::LEFT:
+        case Utils::Direction::RIGHT:
+            m_dirx = Utils::getDirectionValue(direction);
+            m_diry = 0;
+            break;
     }
 }
 
@@ -175,28 +180,16 @@ Pacman::wrapOutOfBounds()
     const int pacmanWidth = m_size.x;
     const int pacmanHeight = m_size.y;
 
-    if (m_position.x < 0 - pacmanWidth && m_dirx == getDirectionValue(Utils::Direction::LEFT)) {
+    if (m_position.x < 0 - pacmanWidth &&
+        m_dirx == Utils::getDirectionValue(Utils::Direction::LEFT)) {
         m_position.x = width;
-    } else if (m_position.x > width && m_dirx == getDirectionValue(Utils::Direction::RIGHT)) {
+    } else if (m_position.x > width &&
+               m_dirx == Utils::getDirectionValue(Utils::Direction::RIGHT)) {
         m_position.x = 0 - pacmanWidth;
-    } else if (m_position.y < 0 && m_diry == getDirectionValue(Utils::Direction::UP)) {
+    } else if (m_position.y < 0 && m_diry == Utils::getDirectionValue(Utils::Direction::UP)) {
         m_position.y = height - pacmanHeight;
-    } else if (m_position.y > height && m_diry == getDirectionValue(Utils::Direction::DOWN)) {
+    } else if (m_position.y > height &&
+               m_diry == Utils::getDirectionValue(Utils::Direction::DOWN)) {
         m_position.y = 0;
     }
-}
-
-int
-Pacman::getDirectionValue(Utils::Direction direction) const
-{
-    switch (direction) {
-        case Utils::Direction::LEFT:
-        case Utils::Direction::UP:
-            return -1;
-        case Utils::Direction::RIGHT:
-        case Utils::Direction::DOWN:
-            return 1;
-    }
-
-    return 0;
 }

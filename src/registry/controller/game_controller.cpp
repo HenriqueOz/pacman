@@ -30,7 +30,7 @@ GameController::getPacman() const
 void
 GameController::registerPacmanId(Uint32 pacmanId)
 {
-    if (pacmanId == 0) {
+    if (m_pacmanId == 0) {
         m_pacmanId = pacmanId;
     }
 }
@@ -53,5 +53,5 @@ GameController::getGhostDoorExitPosition() const
 
     const Vec2 ghostDoorPosition = ghostDoor->getPosition();
 
-    return Vec2(ghostDoorPosition.x + Config::tileWidth, ghostDoorPosition.y - Config::tileHeight);
+    return Vec2(ghostDoorPosition.x, ghostDoorPosition.y - Config::tileHeight);
 }

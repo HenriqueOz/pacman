@@ -33,7 +33,6 @@ class Pacman : public Entity
     void changeDirectionsByKeyPressed(SDL_Keycode keycode, Utils::Direction direction);
     bool canMoveTo(Utils::Direction direction) const;
     bool hasColliderAt(int x, int y) const;
-    int getDirectionValue(Utils::Direction direction) const;
 
     void wrapOutOfBounds();
 
