@@ -27,12 +27,13 @@ class Ghost : public Entity
     void update() override;
     void render(SDL_Renderer *renderer) const override;
     void setBestDirectionTo(Vec2 position);
-    void drawTriangleToTarget(SDL_Renderer *renderer, Vec2 target) const;
+    void drawLineToTarget(SDL_Renderer *renderer, Vec2 target) const;
     void exitSpawn();
     float getDotsDistance(Vec2 a, Vec2 b) const;
     float getManhattanDistance(Vec2 a, Vec2 b) const;
     Vec2 getTilePositionAt(Utils::Direction) const;
     void wrapOutOfBounds();
+    int getDirectionPriority(Utils::Direction direction) const;
 
     std::vector<Utils::Direction> getAvailableDirections() const;
 
@@ -44,6 +45,7 @@ class Ghost : public Entity
     Entities *m_entitiesRegistry;
     Vec2 m_currentTile;
     Vec2 m_spawnOrigin;
+    Vec2 m_currentTarget;
 
     int m_speed;
 

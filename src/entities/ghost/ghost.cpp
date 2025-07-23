@@ -22,6 +22,7 @@ Ghost::Ghost(Vec2 const &pos)
   , m_entitiesRegistry(Registry::getEntitiesRegistry())
   , m_direction(Utils::Direction::DOWN)
   , m_spawnOrigin(pos)
+  , m_currentTarget(m_spawnOrigin)
 {
     m_speed = 1;
     m_position.update(pos);
@@ -45,12 +46,25 @@ Ghost::update()
             exitSpawn();
             break;
         case GhostStates::CHASING:
-            setBestDirectionTo(m_gameController->getPacmanPosition());
+            m_currentTarget = m_gameController->getPacmanPosition();
+            setBestDirectionTo(m_currentTarget);
             break;
         case GhostStates::SCATTER:
         case GhostStates::FRIGHTENED:
         case GhostStates::EATEN:
-            setBestDirectionTo(m_spawnOrigin);
+            // TODO remove this test here and implement eaten state properly
+            if (m_speed == 1) {
+                m_position = Utils::gridPositionToReal(m_currentTile);
+            }
+
+            m_speed = 2;
+            m_currentTarget = m_spawnOrigin;
+            setBestDirectionTo(m_currentTarget);
+
+            if (getManhattanDistance(m_position, m_currentTarget) < 12) {
+                m_position.update(m_currentTarget);
+            }
+
             break;
     }
 
@@ -84,20 +98,16 @@ Ghost::render(SDL_Renderer *renderer) const
     SDL_RenderFillRect(renderer, &rect);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-    if (m_state == GhostStates::IDLE) {
-        drawTriangleToTarget(renderer, m_gameController->getGhostDoorExitPosition());
-    } else if (m_state == GhostStates::CHASING) {
-        drawTriangleToTarget(renderer, m_gameController->getPacmanPosition());
-    }
+    drawLineToTarget(renderer, m_currentTarget);
 }
 
 void
 Ghost::exitSpawn()
 {
-    const Vec2 target = m_gameController->getGhostDoorExitPosition();
-    setBestDirectionTo(target);
+    m_currentTarget = m_gameController->getGhostDoorExitPosition();
+    setBestDirectionTo(m_currentTarget);
 
-    if (m_position.equals(target)) {
+    if (m_position.equals(m_currentTarget)) {
         m_state = GhostStates::CHASING;
     }
 }
@@ -122,9 +132,16 @@ Ghost::setBestDirectionTo(Vec2 position)
         const Vec2 nextTilePos = getTilePositionAt(direction);
         const float distance = getManhattanDistance(nextTilePos, position);
 
-        if (distance <= shortestDistance) {
+        if (distance < shortestDistance) {
             finalDirection = direction;
             shortestDistance = distance;
+        } else if (distance == shortestDistance) {
+            if (m_state != GhostStates::EATEN &&
+                getDirectionPriority(direction) > getDirectionPriority(finalDirection)) {
+                finalDirection = direction;
+            } else {
+                finalDirection = direction;
+            }
         }
     }
 
@@ -140,18 +157,19 @@ Ghost::getAvailableDirections() const
     const int xRight = m_position.x + m_size.x - 1;
     const int yTop = m_position.y;
     const int yBottom = m_position.y + m_size.y - 1;
-    const bool ignoreGhostWall = m_state == GhostStates::IDLE || m_state == GhostStates::EATEN;
+    const bool canPassThroughGhostDoors =
+      (m_state == GhostStates::IDLE || m_state == GhostStates::EATEN);
 
     if (m_direction != Utils::Direction::RIGHT) {
         Collider *leftTopCollider =
-          (Collider *)m_entitiesRegistry->getEntityAt(xLeft - 1, yTop, EntityType::COLLIDER);
-        Collider *leftBottomCollider =
-          (Collider *)m_entitiesRegistry->getEntityAt(xLeft - 1, yBottom, EntityType::COLLIDER);
+          (Collider *)m_entitiesRegistry->getEntityAt(xLeft - m_speed, yTop, EntityType::COLLIDER);
+        Collider *leftBottomCollider = (Collider *)m_entitiesRegistry->getEntityAt(
+          xLeft - m_speed, yBottom, EntityType::COLLIDER);
 
         bool leftTopBlocked =
-          leftTopCollider && (!ignoreGhostWall || !leftTopCollider->isGhostDoor());
+          leftTopCollider && !(canPassThroughGhostDoors && leftTopCollider->isGhostDoor());
         bool leftBottomBlocked =
-          leftBottomCollider && (!ignoreGhostWall || !leftBottomCollider->isGhostDoor());
+          leftBottomCollider && !(canPassThroughGhostDoors && leftBottomCollider->isGhostDoor());
 
         if (!leftTopBlocked && !leftBottomBlocked) {
             directions.push_back(Utils::Direction::LEFT);
@@ -160,14 +178,14 @@ Ghost::getAvailableDirections() const
 
     if (m_direction != Utils::Direction::LEFT) {
         Collider *rightTopCollider =
-          (Collider *)m_entitiesRegistry->getEntityAt(xRight + 1, yTop, EntityType::COLLIDER);
-        Collider *rightBottomCollider =
-          (Collider *)m_entitiesRegistry->getEntityAt(xRight + 1, yBottom, EntityType::COLLIDER);
+          (Collider *)m_entitiesRegistry->getEntityAt(xRight + m_speed, yTop, EntityType::COLLIDER);
+        Collider *rightBottomCollider = (Collider *)m_entitiesRegistry->getEntityAt(
+          xRight + m_speed, yBottom, EntityType::COLLIDER);
 
         bool rightTopBlocked =
-          rightTopCollider && (!ignoreGhostWall || !rightTopCollider->isGhostDoor());
+          rightTopCollider && !(canPassThroughGhostDoors && rightTopCollider->isGhostDoor());
         bool rightBottomBlocked =
-          rightBottomCollider && (!ignoreGhostWall || !rightBottomCollider->isGhostDoor());
+          rightBottomCollider && !(canPassThroughGhostDoors && rightBottomCollider->isGhostDoor());
 
         if (!rightTopBlocked && !rightBottomBlocked) {
             directions.push_back(Utils::Direction::RIGHT);
@@ -176,13 +194,14 @@ Ghost::getAvailableDirections() const
 
     if (m_direction != Utils::Direction::DOWN) {
         Collider *upLeftCollider =
-          (Collider *)m_entitiesRegistry->getEntityAt(xLeft, yTop - 1, EntityType::COLLIDER);
+          (Collider *)m_entitiesRegistry->getEntityAt(xLeft, yTop - m_speed, EntityType::COLLIDER);
         Collider *upRightCollider =
-          (Collider *)m_entitiesRegistry->getEntityAt(xRight, yTop - 1, EntityType::COLLIDER);
+          (Collider *)m_entitiesRegistry->getEntityAt(xRight, yTop - m_speed, EntityType::COLLIDER);
 
-        bool upLeftBlocked = upLeftCollider && (!ignoreGhostWall || !upLeftCollider->isGhostDoor());
+        bool upLeftBlocked =
+          upLeftCollider && !(canPassThroughGhostDoors && upLeftCollider->isGhostDoor());
         bool upRightBlocked =
-          upRightCollider && (!ignoreGhostWall || !upRightCollider->isGhostDoor());
+          upRightCollider && !(canPassThroughGhostDoors && upRightCollider->isGhostDoor());
 
         if (!upLeftBlocked && !upRightBlocked) {
             directions.push_back(Utils::Direction::UP);
@@ -190,15 +209,15 @@ Ghost::getAvailableDirections() const
     }
 
     if (m_direction != Utils::Direction::UP) {
-        Collider *downLeftCollider =
-          (Collider *)m_entitiesRegistry->getEntityAt(xLeft, yBottom + 1, EntityType::COLLIDER);
-        Collider *downRightCollider =
-          (Collider *)m_entitiesRegistry->getEntityAt(xRight, yBottom + 1, EntityType::COLLIDER);
+        Collider *downLeftCollider = (Collider *)m_entitiesRegistry->getEntityAt(
+          xLeft, yBottom + m_speed, EntityType::COLLIDER);
+        Collider *downRightCollider = (Collider *)m_entitiesRegistry->getEntityAt(
+          xRight, yBottom + m_speed, EntityType::COLLIDER);
 
         bool downLeftBlocked =
-          downLeftCollider && (!ignoreGhostWall || !downLeftCollider->isGhostDoor());
+          downLeftCollider && !(canPassThroughGhostDoors && downLeftCollider->isGhostDoor());
         bool downRightBlocked =
-          downRightCollider && (!ignoreGhostWall || !downRightCollider->isGhostDoor());
+          downRightCollider && !(canPassThroughGhostDoors && downRightCollider->isGhostDoor());
 
         if (!downLeftBlocked && !downRightBlocked) {
             directions.push_back(Utils::Direction::DOWN);
@@ -238,18 +257,10 @@ Ghost::getManhattanDistance(Vec2 a, Vec2 b) const
 }
 
 void
-Ghost::drawTriangleToTarget(SDL_Renderer *renderer, Vec2 target) const
+Ghost::drawLineToTarget(SDL_Renderer *renderer, Vec2 target) const
 {
-    const Vec2 diff = {
-        target.x - m_position.x,
-        target.y - m_position.y,
-    };
-
     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     SDL_RenderLine(renderer, m_position.x, m_position.y, target.x, target.y);
-    SDL_RenderLine(renderer, m_position.x, m_position.y, m_position.x + diff.x, m_position.y);
-    SDL_RenderLine(
-      renderer, m_position.x + diff.x, m_position.y, m_position.x + diff.x, m_position.y + diff.y);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
 
@@ -261,13 +272,26 @@ Ghost::wrapOutOfBounds()
     const int ghostWidth = m_size.x;
     const int ghostHeight = m_size.y;
 
-    if (m_position.x < 0 - ghostWidth && m_direction == Utils::Direction::LEFT) {
-        m_position.x = width;
-    } else if (m_position.x > width && m_direction == Utils::Direction::RIGHT) {
-        m_position.x = 0 - ghostWidth;
-    } else if (m_position.y < 0 && m_direction == Utils::Direction::UP) {
-        m_position.y = height - ghostHeight;
-    } else if (m_position.y > height && m_direction == Utils::Direction::DOWN) {
-        m_position.y = 0;
+    if (m_position.x <= 0 - ghostWidth && m_direction == Utils::Direction::LEFT) {
+        m_position.x = width - 1;
+    } else if (m_position.x >= width && m_direction == Utils::Direction::RIGHT) {
+        m_position.x = 0 - ghostWidth + 1;
+    }
+}
+
+int
+Ghost::getDirectionPriority(Utils::Direction direction) const
+{
+    switch (direction) {
+        case Utils::Direction::UP:
+            return 4;
+        case Utils::Direction::LEFT:
+            return 3;
+        case Utils::Direction::DOWN:
+            return 2;
+        case Utils::Direction::RIGHT:
+            return 1;
+        default:
+            return 0;
     }
 }

@@ -10,7 +10,8 @@ enum class Direction
     UP,
     DOWN,
     LEFT,
-    RIGHT
+    RIGHT,
+    UNDEFINED,
 };
 
 inline Vec2
@@ -39,9 +40,9 @@ getDirectionValue(Utils::Direction direction)
         case Utils::Direction::RIGHT:
         case Utils::Direction::DOWN:
             return 1;
+        default:
+            return 0;
     }
-
-    return 0;
 }
 
 };

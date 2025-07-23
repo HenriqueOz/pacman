@@ -180,16 +180,11 @@ Pacman::wrapOutOfBounds()
     const int pacmanWidth = m_size.x;
     const int pacmanHeight = m_size.y;
 
-    if (m_position.x < 0 - pacmanWidth &&
-        m_dirx == Utils::getDirectionValue(Utils::Direction::LEFT)) {
-        m_position.x = width;
-    } else if (m_position.x > width &&
-               m_dirx == Utils::getDirectionValue(Utils::Direction::RIGHT)) {
-        m_position.x = 0 - pacmanWidth;
-    } else if (m_position.y < 0 && m_diry == Utils::getDirectionValue(Utils::Direction::UP)) {
-        m_position.y = height - pacmanHeight;
-    } else if (m_position.y > height &&
-               m_diry == Utils::getDirectionValue(Utils::Direction::DOWN)) {
-        m_position.y = 0;
+    const int margin = 4;
+
+    if (m_position.x <= 0 - pacmanWidth + margin) {
+        m_position.x = width - margin;
+    } else if (m_position.x >= width - margin) {
+        m_position.x = 0 - pacmanWidth + margin;
     }
 }
