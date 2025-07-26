@@ -2,8 +2,9 @@
 #define _GHOST_H
 
 #include "entities/utils/utils.h"
-#include "registry/controller/game_controller.h"
-#include "registry/entities/entities.h"
+#include "game/controller/game_controller.h"
+#include "game/entities/entities.h"
+#include "game/input/input_manager.h"
 #include "vec/vec.h"
 #include <SDL3/SDL_pixels.h>
 #include <entities/entity.h>
@@ -30,7 +31,13 @@ enum class GhostType
 class Ghost : public Entity
 {
   public:
-    Ghost(Vec2 const &pos, Vec2 const &scatter, GhostType type, int startDelay);
+    Ghost(Vec2 const &pos,
+          Vec2 const &scatter,
+          GhostType type,
+          int startDelay,
+          GameController *gameController,
+          Entities *entitiesRegistry,
+          InputManager *inputManager);
     ~Ghost() override {};
     EntityType getType() const override { return GHOST; };
 
@@ -63,6 +70,7 @@ class Ghost : public Entity
     GhostStates m_state;
     GameController *m_gameController;
     Entities *m_entitiesRegistry;
+    InputManager *m_inputManager;
     Vec2 m_currentTile;
     Vec2 m_spawnOrigin;
     Vec2 m_scatterTarget;

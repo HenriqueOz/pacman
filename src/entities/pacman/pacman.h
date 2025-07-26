@@ -2,8 +2,8 @@
 #define _PACMAN_H
 
 #include "entities/utils/utils.h"
-#include "registry/entities/entities.h"
-#include "registry/input/input_manager.h"
+#include "game/entities/entities.h"
+#include "game/input/input_manager.h"
 #include <SDL3/SDL_keycode.h>
 #include <entities/entity.h>
 
@@ -18,7 +18,7 @@ class Pacman : public Entity
 {
 
   public:
-    Pacman(Vec2 const &pos);
+    Pacman(Vec2 const &pos, InputManager *inputManager, Entities *entitiesRegistry);
     ~Pacman() override {};
 
     void update() override;

@@ -1,11 +1,11 @@
 #ifndef MAP_H_
 #define MAP_H_
 
-#include "registry/controller/game_controller.h"
-#include "registry/entities/entities.h"
+#include "game/controller/game_controller.h"
+#include "game/entities/entities.h"
 #include <config/config.h>
 #include <entities/entity.h>
-#include <registry/input/input_manager.h>
+#include <game/input/input_manager.h>
 #include <string>
 #include <vec/vec.h>
 
@@ -27,15 +27,16 @@ class Map
     static void addEntity(int id,
                           Vec2 const &pos,
                           Entities *entitiesRegistry,
-                          GameController *gameController);
+                          GameController *gameController,
+                          InputManager *inputManager);
 
   public:
     ~Map() {};
 
     static void loadMap(std::string filePath,
                         Entities *entitiesRegistry,
-                        GameController *gameController);
-    static void printMapToFile() {};
+                        GameController *gameController,
+                        InputManager *inputManager);
 };
 
 #endif

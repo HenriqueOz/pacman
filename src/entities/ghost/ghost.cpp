@@ -3,8 +3,7 @@
 #include "entities/collider/collider.h"
 #include "entities/entity.h"
 #include "entities/utils/utils.h"
-#include "registry/controller/game_controller.h"
-#include "registry/registry.h"
+#include "game/controller/game_controller.h"
 #include "vec/vec.h"
 #include <SDL3/SDL_keycode.h>
 #include <SDL3/SDL_oldnames.h>
@@ -16,13 +15,20 @@
 #include <limits>
 #include <vector>
 
-Ghost::Ghost(Vec2 const &pos, Vec2 const &scatter, GhostType type, int startDelay)
+Ghost::Ghost(Vec2 const &pos,
+             Vec2 const &scatter,
+             GhostType type,
+             int startDelay,
+             GameController *gameController,
+             Entities *entitiesRegistry,
+             InputManager *inputManager)
   : m_state(GhostStates::SPAWN)
   , m_currentTile(0, 0)
   , m_ghostType(type)
   , m_scatterTarget(scatter)
-  , m_gameController(Registry::getGameController())
-  , m_entitiesRegistry(Registry::getEntitiesRegistry())
+  , m_gameController(gameController)
+  , m_entitiesRegistry(entitiesRegistry)
+  , m_inputManager(inputManager)
   , m_direction(Utils::Direction::UP)
   , m_spawnOrigin(pos)
   , m_startDelay(startDelay)
@@ -46,7 +52,7 @@ Ghost::update()
         return;
     }
 
-    if (Registry::getInputManager()->isKeyPressed(SDLK_1)) {
+    if (m_inputManager->isKeyPressed(SDLK_1)) {
         m_state = GhostStates::EATEN;
     }
 
@@ -84,6 +90,8 @@ Ghost::update()
         case Utils::Direction::UP:
         case Utils::Direction::DOWN:
             m_position.y += finalSpeed;
+            break;
+        case Utils::Direction::UNDEFINED:
             break;
     }
 
@@ -164,6 +172,7 @@ std::vector<Utils::Direction>
 Ghost::getAvailableDirections() const
 {
     std::vector<Utils::Direction> directions;
+    directions.reserve(4);
 
     const int xLeft = m_position.x;
     const int xRight = m_position.x + m_size.x - 1;

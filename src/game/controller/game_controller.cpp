@@ -2,13 +2,12 @@
 #include "config/config.h"
 #include "entities/pacman/pacman.h"
 #include "entities/utils/utils.h"
-#include "registry/registry.h"
 #include "vec/vec.h"
 #include <SDL3/SDL_stdinc.h>
 
-GameController::GameController()
+GameController::GameController(Entities *entitiesRegistry)
+  : m_entitiesRegistry(entitiesRegistry)
 {
-    m_entitiesRegistry = Registry::getEntitiesRegistry();
 }
 
 bool

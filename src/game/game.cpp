@@ -1,19 +1,22 @@
 #include "game/game.h"
 #include "config/config.h"
-#include "registry/entities/entities.h"
+#include "game/entities/entities.h"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_oldnames.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <game/input/input_manager.h>
 #include <iostream>
-#include <registry/input/input_manager.h>
 
-Game::Game()
+Game::Game(InputManager *inputManager, Entities *entities, GameController *gameController)
   : m_isRunning(false)
+  , m_inputManager(inputManager)
+  , m_entities(entities)
+  , m_gameController(gameController)
 {
 }
 
 void
-Game::run(InputManager *inputManager, Entities *entitiesRegistry)
+Game::run()
 {
     this->init();
 
@@ -21,9 +24,9 @@ Game::run(InputManager *inputManager, Entities *entitiesRegistry)
     Uint64 frameDuration;
     while (this->isRunning()) {
         frameStart = SDL_GetTicks();
-        this->handleInput(inputManager);
-        this->update(entitiesRegistry);
-        this->render(entitiesRegistry);
+        this->handleInput();
+        this->update();
+        this->render();
         frameDuration = SDL_GetTicks() - frameStart;
         if (Config::frameDelay > frameDuration) {
             SDL_Delay(Config::frameDelay - frameDuration);
@@ -68,11 +71,11 @@ Game::isRunning() const
 }
 
 void
-Game::handleInput(InputManager *inputManager)
+Game::handleInput()
 {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        inputManager->processInput(event);
+        m_inputManager->processInput(event);
         if (event.type == SDL_EVENT_QUIT) {
             m_isRunning = false;
         }
@@ -80,9 +83,9 @@ Game::handleInput(InputManager *inputManager)
 }
 
 void
-Game::render(Entities *entities)
+Game::render()
 {
-    auto entitiesVector = entities->getEntitiesSortedByDepth();
+    auto entitiesVector = m_entities->getEntitiesSortedByDepth();
 
     SDL_RenderClear(m_renderer);
     for (const auto &entity : entitiesVector) {
@@ -95,9 +98,9 @@ Game::render(Entities *entities)
 }
 
 void
-Game::update(Entities *entities)
+Game::update()
 {
-    auto &entitiesMap = entities->getEntities();
+    auto &entitiesMap = m_entities->getEntities();
 
     for (const auto &entry : entitiesMap) {
         const auto entity = entry.second.get();

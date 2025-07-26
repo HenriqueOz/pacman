@@ -1,16 +1,16 @@
-#ifndef PACMAN_REGISTRY_H_
-#define PACMAN_REGISTRY_H_
+#ifndef PACMAN_GAME_CONTROLLER_H_
+#define PACMAN_GAME_CONTROLLER_H_
 
 #include "entities/pacman/pacman.h"
 #include "entities/utils/utils.h"
-#include "registry/entities/entities.h"
+#include "game/entities/entities.h"
 #include "vec/vec.h"
 #include <SDL3/SDL_stdinc.h>
 
 class GameController
 {
   public:
-    GameController();
+    GameController(Entities *entitiesRegistry);
     ~GameController() {}
 
     void registerPacmanId(Uint32 pacmanId);

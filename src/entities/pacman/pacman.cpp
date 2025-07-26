@@ -1,23 +1,21 @@
 #include "pacman.h"
 #include "entities/entity.h"
 #include "entities/utils/utils.h"
-#include "registry/registry.h"
 #include <config/config.h>
 
-Pacman::Pacman(Vec2 const &pos)
+Pacman::Pacman(Vec2 const &pos, InputManager *inputManager, Entities *entitiesRegistry)
   : m_velocity(0.f, 0.f)
   , m_PacmanState(IDLE)
   , m_speed(1)
   , m_dirx(0)
   , m_diry(0)
   , m_facingDirection(Utils::Direction::RIGHT)
+  , m_inputManager(inputManager)
+  , m_entitiesRegistry(entitiesRegistry)
 {
     m_size.update(Config::tileWidth, Config::tileHeight);
     m_position.update(pos);
     m_position.x += m_size.x / 2;
-
-    m_inputManager = Registry::getInputManager();
-    m_entitiesRegistry = Registry::getEntitiesRegistry();
 }
 
 void
@@ -69,6 +67,8 @@ Pacman::changeDirectionsByKeyPressed(SDL_Keycode keycode, Utils::Direction direc
         case Utils::Direction::RIGHT:
             m_dirx = Utils::getDirectionValue(direction);
             m_diry = 0;
+            break;
+        case Utils::Direction::UNDEFINED:
             break;
     }
 }
@@ -174,8 +174,11 @@ Pacman::hasColliderAt(int x, int y) const
 void
 Pacman::handleFoodEating()
 {
-    if (m_entitiesRegistry->hasEntityAt(m_position.x, m_position.y, EntityType::FOOD)) {
-        m_entitiesRegistry->deleteEntityAt(m_position.x, m_position.y, EntityType::FOOD);
+    int x = m_position.x + m_size.x / 2;
+    int y = m_position.y + m_size.y / 2;
+
+    if (m_entitiesRegistry->hasEntityAt(x, y, EntityType::FOOD)) {
+        m_entitiesRegistry->deleteEntityAt(x, y, EntityType::FOOD);
     }
 }
 

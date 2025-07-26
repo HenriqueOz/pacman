@@ -3,31 +3,34 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_video.h>
-#include <registry/entities/entities.h>
-#include <registry/input/input_manager.h>
+#include <game/controller/game_controller.h>
+#include <game/entities/entities.h>
+#include <game/input/input_manager.h>
 
 class Game
 {
   public:
-    Game();
+    Game(InputManager *inputManager, Entities *entities, GameController *gameController);
     ~Game() {};
 
     bool isRunning() const;
-
-    void handleInput(InputManager *inputManager);
-
     void init();
-    void render(Entities *entities);
-    void update(Entities *entities);
+    void render();
+    void update();
     void clean();
     void closeGame();
-    void run(InputManager *inputManager, Entities *entitiesRegistry);
+    void run();
 
   private:
+    void handleInput();
+
     SDL_Window *m_window;
     SDL_Renderer *m_renderer;
-
     bool m_isRunning;
+
+    InputManager *m_inputManager;
+    Entities *m_entities;
+    GameController *m_gameController;
 };
 
 #endif
