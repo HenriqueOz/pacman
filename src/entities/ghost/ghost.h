@@ -11,6 +11,7 @@
 
 enum class GhostStates
 {
+    SPAWN,
     IDLE,
     SCATTER,
     CHASING,
@@ -29,7 +30,7 @@ enum class GhostType
 class Ghost : public Entity
 {
   public:
-    Ghost(Vec2 const &pos, Vec2 const &scatter, GhostType type);
+    Ghost(Vec2 const &pos, Vec2 const &scatter, GhostType type, int startDelay);
     ~Ghost() override {};
     EntityType getType() const override { return GHOST; };
 
@@ -46,6 +47,10 @@ class Ghost : public Entity
     void handleChasingState();
     void handleIdleState();
     void handleScatterState();
+    Vec2 getPinkyChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirection) const;
+    Vec2 getInkyChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirection) const;
+    Vec2 getClydeChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirection) const;
+    Utils::Direction getReverseDirection(Utils::Direction direction) const;
 
     SDL_Color getGhostColor() const;
     Vec2 getGhostChaseTarget() const;
@@ -69,6 +74,7 @@ class Ghost : public Entity
     int m_timer;
     int m_scatterTime;
     int m_chaseTime;
+    int m_startDelay;
 
     GhostType m_ghostType;
 

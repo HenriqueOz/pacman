@@ -55,11 +55,12 @@ GameController::getGhostDoorExitPosition() const
 
     const Vec2 ghostDoorPosition = ghostDoor->getPosition();
 
-    return Vec2(ghostDoorPosition.x, ghostDoorPosition.y - Config::tileHeight);
+    return Vec2(ghostDoorPosition.x + Config::tileWidth - 1,
+                ghostDoorPosition.y - Config::tileHeight);
 }
 
 Utils::Direction
-GameController::getPacmanDirection() const
+GameController::getPacmanFacingDirection() const
 {
-    return getPacman()->getDirection();
+    return getPacman()->getFacingDirection();
 }

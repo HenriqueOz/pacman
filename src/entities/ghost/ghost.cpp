@@ -16,26 +16,27 @@
 #include <limits>
 #include <vector>
 
-Ghost::Ghost(Vec2 const &pos, Vec2 const &scatter, GhostType type)
-  : m_state(GhostStates::IDLE)
+Ghost::Ghost(Vec2 const &pos, Vec2 const &scatter, GhostType type, int startDelay)
+  : m_state(GhostStates::SPAWN)
   , m_currentTile(0, 0)
   , m_ghostType(type)
   , m_scatterTarget(scatter)
   , m_gameController(Registry::getGameController())
   , m_entitiesRegistry(Registry::getEntitiesRegistry())
-  , m_direction(Utils::Direction::DOWN)
+  , m_direction(Utils::Direction::UP)
   , m_spawnOrigin(pos)
+  , m_startDelay(startDelay)
   , m_currentTarget(m_spawnOrigin)
 {
     m_speed = 1;
     m_position.update(pos);
     m_size.update(Config::tileWidth, Config::tileHeight);
     m_currentTile = Utils::fixPositionToGrid(m_position);
-    m_timer = 0;
-    m_chaseTime = 300;
-    m_scatterTime = 60;
+    m_chaseTime = 1200;
+    m_scatterTime = 300;
     m_baseSpeed = 1;
     m_eatenSpeed = 2;
+    m_timer = m_startDelay;
 }
 
 void
@@ -50,6 +51,13 @@ Ghost::update()
     }
 
     switch (m_state) {
+        case GhostStates::SPAWN:
+            if (m_timer > 0) {
+                m_timer--;
+                return;
+            }
+            m_state = GhostStates::IDLE;
+            break;
         case GhostStates::IDLE:
             handleIdleState();
             break;
@@ -102,12 +110,16 @@ Ghost::render(SDL_Renderer *renderer) const
 void
 Ghost::handleIdleState()
 {
+    if (m_timer-- > 0) {
+        return;
+    }
+
     m_speed = m_baseSpeed;
     m_currentTarget = m_gameController->getGhostDoorExitPosition();
     setBestDirectionTo(m_currentTarget);
 
-    if (getDotsDistance(m_position, m_currentTarget) <= 8) {
-        m_state = GhostStates::CHASING;
+    if (m_position.equals(m_currentTarget)) {
+        m_state = GhostStates::SCATTER;
         m_position = m_currentTarget;
     }
 }
@@ -157,7 +169,7 @@ Ghost::getAvailableDirections() const
     const int xRight = m_position.x + m_size.x - 1;
     const int yTop = m_position.y;
     const int yBottom = m_position.y + m_size.y - 1;
-    const bool canPassThroughGhostDoors =
+    const bool canPassThroughGhostDoor =
       (m_state == GhostStates::IDLE || m_state == GhostStates::EATEN);
 
     if (m_direction != Utils::Direction::RIGHT) {
@@ -167,9 +179,9 @@ Ghost::getAvailableDirections() const
           xLeft - m_speed, yBottom, EntityType::COLLIDER);
 
         bool leftTopBlocked =
-          leftTopCollider && !(canPassThroughGhostDoors && leftTopCollider->isGhostDoor());
+          leftTopCollider && !(canPassThroughGhostDoor && leftTopCollider->isGhostDoor());
         bool leftBottomBlocked =
-          leftBottomCollider && !(canPassThroughGhostDoors && leftBottomCollider->isGhostDoor());
+          leftBottomCollider && !(canPassThroughGhostDoor && leftBottomCollider->isGhostDoor());
 
         if (!leftTopBlocked && !leftBottomBlocked) {
             directions.push_back(Utils::Direction::LEFT);
@@ -183,9 +195,9 @@ Ghost::getAvailableDirections() const
           xRight + m_speed, yBottom, EntityType::COLLIDER);
 
         bool rightTopBlocked =
-          rightTopCollider && !(canPassThroughGhostDoors && rightTopCollider->isGhostDoor());
+          rightTopCollider && !(canPassThroughGhostDoor && rightTopCollider->isGhostDoor());
         bool rightBottomBlocked =
-          rightBottomCollider && !(canPassThroughGhostDoors && rightBottomCollider->isGhostDoor());
+          rightBottomCollider && !(canPassThroughGhostDoor && rightBottomCollider->isGhostDoor());
 
         if (!rightTopBlocked && !rightBottomBlocked) {
             directions.push_back(Utils::Direction::RIGHT);
@@ -199,9 +211,9 @@ Ghost::getAvailableDirections() const
           (Collider *)m_entitiesRegistry->getEntityAt(xRight, yTop - m_speed, EntityType::COLLIDER);
 
         bool upLeftBlocked =
-          upLeftCollider && !(canPassThroughGhostDoors && upLeftCollider->isGhostDoor());
+          upLeftCollider && !(canPassThroughGhostDoor && upLeftCollider->isGhostDoor());
         bool upRightBlocked =
-          upRightCollider && !(canPassThroughGhostDoors && upRightCollider->isGhostDoor());
+          upRightCollider && !(canPassThroughGhostDoor && upRightCollider->isGhostDoor());
 
         if (!upLeftBlocked && !upRightBlocked) {
             directions.push_back(Utils::Direction::UP);
@@ -215,9 +227,9 @@ Ghost::getAvailableDirections() const
           xRight, yBottom + m_speed, EntityType::COLLIDER);
 
         bool downLeftBlocked =
-          downLeftCollider && !(canPassThroughGhostDoors && downLeftCollider->isGhostDoor());
+          downLeftCollider && !(canPassThroughGhostDoor && downLeftCollider->isGhostDoor());
         bool downRightBlocked =
-          downRightCollider && !(canPassThroughGhostDoors && downRightCollider->isGhostDoor());
+          downRightCollider && !(canPassThroughGhostDoor && downRightCollider->isGhostDoor());
 
         if (!downLeftBlocked && !downRightBlocked) {
             directions.push_back(Utils::Direction::DOWN);
@@ -225,6 +237,12 @@ Ghost::getAvailableDirections() const
     }
 
     return directions;
+}
+
+Utils::Direction
+Ghost::getReverseDirection(Utils::Direction direction) const
+{
+    return static_cast<Utils::Direction>((static_cast<int>(direction) + 2) % 3);
 }
 
 Vec2
@@ -324,8 +342,7 @@ Ghost::handleScatterState()
 
     m_timer = 0;
 
-    Utils::Direction newDirection =
-      static_cast<Utils::Direction>((static_cast<int>(m_direction) + 2) % 3);
+    Utils::Direction newDirection = getReverseDirection(m_direction);
     Vec2 nextDirectionTile = getTilePositionAt(newDirection);
 
     if (!m_entitiesRegistry->hasEntityAt(
@@ -375,25 +392,49 @@ Ghost::getGhostChaseTarget() const
 {
     Vec2 pacmanPosition = m_gameController->getPacmanPosition();
     Vec2 pacmanTile = Utils::fixPositionToGrid(pacmanPosition);
-    Utils::Direction pacmanDirection = m_gameController->getPacmanDirection();
+    Utils::Direction pacmanDirection = m_gameController->getPacmanFacingDirection();
     int pacmanDirectionValue = Utils::getDirectionValue(pacmanDirection);
 
     switch (m_ghostType) {
         case GhostType::Blinky:
             return pacmanPosition;
         case GhostType::Pinky:
-            if (pacmanDirection == Utils::Direction::LEFT ||
-                pacmanDirection == Utils::Direction::RIGHT) {
-                pacmanTile.x += 4 * pacmanDirectionValue;
-            } else if (pacmanDirection == Utils::Direction::UP ||
-                       pacmanDirection == Utils::Direction::DOWN) {
-                pacmanTile.y += 4 * pacmanDirectionValue;
-            }
-            return Utils::gridPositionToReal(pacmanTile);
+            return getPinkyChasingTarget(pacmanPosition, pacmanDirection);
         case GhostType::Inky:
+            return getInkyChasingTarget(pacmanPosition, pacmanDirection);
         case GhostType::Clyde:
             return pacmanPosition;
             break;
     }
     return { 0, 0 };
+}
+
+Vec2
+Ghost::getPinkyChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirection) const
+{
+    Vec2 targetTile = Utils::fixPositionToGrid(pacmanPosition);
+    int pacmanDirectionValue = Utils::getDirectionValue(pacmanDirection);
+
+    if (pacmanDirection == Utils::Direction::LEFT || pacmanDirection == Utils::Direction::RIGHT) {
+        targetTile.x += 4 * pacmanDirectionValue;
+    } else if (pacmanDirection == Utils::Direction::UP ||
+               pacmanDirection == Utils::Direction::DOWN) {
+        targetTile.y += 4 * pacmanDirectionValue;
+    }
+    return Utils::gridPositionToReal(targetTile);
+}
+
+Vec2
+Ghost::getInkyChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirection) const
+{
+    Vec2 targetTile = Utils::fixPositionToGrid(pacmanPosition);
+    int pacmanDirectionValue = Utils::getDirectionValue(pacmanDirection);
+
+    if (pacmanDirection == Utils::Direction::LEFT || pacmanDirection == Utils::Direction::RIGHT) {
+        targetTile.x += pacmanDirectionValue;
+    } else if (pacmanDirection == Utils::Direction::UP ||
+               pacmanDirection == Utils::Direction::DOWN) {
+        targetTile.y += pacmanDirectionValue;
+    }
+    return Utils::gridPositionToReal(targetTile);
 }

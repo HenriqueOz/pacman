@@ -81,11 +81,13 @@ Map::addEntity(int id, Vec2 const &pos, Entities *entitiesRegistry, GameControll
         } break;
         case static_cast<int>(MapId::BLINKY): {
             Vec2 scatter = Utils::gridPositionToReal({ Config::horizontalTiles - 1, 1 });
-            entitiesRegistry->addEntity(std::make_unique<Ghost>(pos, scatter, GhostType::Blinky));
+            entitiesRegistry->addEntity(
+              std::make_unique<Ghost>(pos, scatter, GhostType::Blinky, 0));
         } break;
         case static_cast<int>(MapId::PINKY):
             Vec2 scatter = Utils::gridPositionToReal({ 1, 1 });
-            entitiesRegistry->addEntity(std::make_unique<Ghost>(pos, scatter, GhostType::Pinky));
+            entitiesRegistry->addEntity(
+              std::make_unique<Ghost>(pos, scatter, GhostType::Pinky, 120));
             break;
     }
 }

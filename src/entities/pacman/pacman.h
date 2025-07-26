@@ -36,6 +36,7 @@ class Pacman : public Entity
 
     void wrapOutOfBounds();
     Utils::Direction getDirection() const;
+    Utils::Direction getFacingDirection() const;
 
   private:
     InputManager *m_inputManager;
@@ -43,6 +44,7 @@ class Pacman : public Entity
     Vec2 m_velocity;
 
     PacmanState m_PacmanState;
+    Utils::Direction m_facingDirection;
 
     int m_speed;
     int m_dirx;

@@ -19,7 +19,7 @@ class GameController
     bool pacmanExists() const;
     Vec2 getPacmanPosition() const;
     Vec2 getGhostDoorExitPosition() const;
-    Utils::Direction getPacmanDirection() const;
+    Utils::Direction getPacmanFacingDirection() const;
 
   private:
     Pacman *getPacman() const;

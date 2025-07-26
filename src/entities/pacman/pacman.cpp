@@ -10,6 +10,7 @@ Pacman::Pacman(Vec2 const &pos)
   , m_speed(1)
   , m_dirx(0)
   , m_diry(0)
+  , m_facingDirection(Utils::Direction::RIGHT)
 {
     m_size.update(Config::tileWidth, Config::tileHeight);
     m_position.update(pos);
@@ -102,6 +103,11 @@ Pacman::moving()
     handleCollision(pastDirX, pastDirY);
     handleFoodEating();
     wrapOutOfBounds();
+
+    const Utils::Direction facingDirection = getDirection();
+    if (facingDirection != Utils::Direction::UNDEFINED) {
+        m_facingDirection = facingDirection;
+    }
 
     m_position.x += m_dirx * m_velocity.x;
     m_position.y += m_diry * m_velocity.y;
@@ -204,4 +210,10 @@ Pacman::getDirection() const
     }
 
     return Utils::Direction::UNDEFINED;
+}
+
+Utils::Direction
+Pacman::getFacingDirection() const
+{
+    return m_facingDirection;
 }
