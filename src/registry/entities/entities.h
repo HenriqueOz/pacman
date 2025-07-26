@@ -2,7 +2,6 @@
 #define ENTITIES_H_
 
 #include "entities/entity.h"
-#include "entities/utils/utils.h"
 #include "vec/vec.h"
 #include <SDL3/SDL_stdinc.h>
 #include <algorithm>
@@ -14,7 +13,7 @@
 class Entities
 {
   public:
-    Entities();
+    Entities() {};
     ~Entities() {};
 
     inline Entity *addEntity(std::unique_ptr<Entity> entity)
@@ -48,43 +47,14 @@ class Entities
 
     inline std::unordered_map<Uint32, std::unique_ptr<Entity>> &getEntities() { return m_entities; }
 
-    inline void updateEntityPositionInMap(Entity *entity, Vec2 const &current, Vec2 const &past)
-    {
-        Vec2 newPos = Utils::fixPositionToGrid(current);
-        Vec2 oldPos = Utils::fixPositionToGrid(past);
-
-        if (isInBounds(oldPos)) {
-            auto &entities = m_grid[oldPos.y][oldPos.x];
-            auto it = std::remove(entities.begin(), entities.end(), entity);
-            if (it != entities.end()) {
-                entities.erase(it, entities.end());
-            }
-        }
-
-        if (isInBounds(newPos)) {
-            auto &entities = m_grid[newPos.y][newPos.x];
-            auto it = std::find(entities.begin(), entities.end(), entity);
-            if (it == entities.end()) {
-                entities.push_back(entity);
-            }
-        }
-    }
-
     inline Entity *getEntityAt(int x, int y, EntityType type) const
     {
-        const auto pos = Utils::fixPositionToGrid({ x, y });
-        if (!isInBounds(pos)) {
-            return nullptr;
-        }
-
-        const auto &entities = m_grid[pos.y][pos.x];
-
-        for (const auto &entity : entities) {
-            if (entity->getType() == type) {
+        for (const auto &pair : m_entities) {
+            Entity *entity = pair.second.get();
+            if (entity && entity->getType() == type && isPositionInEntityBounds(x, y, entity)) {
                 return entity;
             }
         }
-
         return nullptr;
     }
 
@@ -95,25 +65,13 @@ class Entities
 
     inline bool deleteEntityAt(int x, int y, EntityType type)
     {
-        const auto pos = Utils::fixPositionToGrid({ x, y });
-        if (!isInBounds(pos)) {
-            return false;
-        }
-
-        std::vector<Entity *> &entities = m_grid[pos.y][pos.x];
-
-        for (auto it = entities.begin(); it != entities.end(); it++) {
-            const auto entity = (*it);
-            if (entity->getType() == type) {
-                const Uint32 id = entity->getId();
-                m_entities.at(id).reset();
-                m_entities.erase(id);
-                entities.erase(it);
-
+        for (auto it = m_entities.begin(); it != m_entities.end(); ++it) {
+            Entity *entity = it->second.get();
+            if (entity && entity->getType() == type && isPositionInEntityBounds(x, y, entity)) {
+                m_entities.erase(it);
                 return true;
             }
         }
-
         return false;
     }
 
@@ -128,15 +86,15 @@ class Entities
     }
 
   private:
-    inline bool isInBounds(Vec2 const &pos) const
+    inline bool isPositionInEntityBounds(int x, int y, Entity *entity) const
     {
-        return pos.x >= 0 && pos.x < Config::horizontalTiles && pos.y >= 0 &&
-               pos.y < Config::verticalTiles;
+        Vec2 pos = entity->getPosition();
+        Vec2 size = entity->getSize();
+
+        return x >= pos.x && x < pos.x + size.x && y >= pos.y && y < pos.y + size.y;
     }
 
     Uint32 m_currentId = 1000;
-
     std::unordered_map<Uint32, std::unique_ptr<Entity>> m_entities;
-    std::vector<std::vector<std::vector<Entity *>>> m_grid;
 };
 #endif

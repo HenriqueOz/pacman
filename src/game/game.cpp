@@ -102,15 +102,9 @@ Game::update(Entities *entities)
     for (const auto &entry : entitiesMap) {
         const auto entity = entry.second.get();
 
-        if (entity == nullptr) {
-            continue;
+        if (entity) {
+            entity->update();
         }
-
-        const Vec2 &past = entity->getPosition();
-        entity->update();
-        const Vec2 &current = entity->getPosition();
-
-        entities->updateEntityPositionInMap(entity, current, past);
     }
 }
 
