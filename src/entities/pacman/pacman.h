@@ -35,6 +35,7 @@ class Pacman : public Entity
     bool hasColliderAt(int x, int y) const;
 
     void wrapOutOfBounds();
+    Utils::Direction getDirection() const;
 
   private:
     InputManager *m_inputManager;

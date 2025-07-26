@@ -16,19 +16,25 @@ enum class MapId : int
     WALL = 1,
     GHOST_DOOR = 2,
     PACMAN_SPAWN = 3,
-    GHOST_RED = 4,
+    BLINKY = 4,
+    PINKY = 5,
 };
 
 class Map
 {
   private:
     Map();
-    static void addEntity(int id, Vec2 const &pos, Entities *entitiesRegistry, GameController *gameController);
+    static void addEntity(int id,
+                          Vec2 const &pos,
+                          Entities *entitiesRegistry,
+                          GameController *gameController);
 
   public:
     ~Map() {};
 
-    static void loadMap(std::string filePath, Entities *entitiesRegistry, GameController *gameController);
+    static void loadMap(std::string filePath,
+                        Entities *entitiesRegistry,
+                        GameController *gameController);
     static void printMapToFile() {};
 };
 

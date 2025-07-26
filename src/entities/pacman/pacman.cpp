@@ -1,5 +1,6 @@
 #include "pacman.h"
 #include "entities/entity.h"
+#include "entities/utils/utils.h"
 #include "registry/registry.h"
 #include <config/config.h>
 
@@ -187,4 +188,20 @@ Pacman::wrapOutOfBounds()
     } else if (m_position.x >= width - margin) {
         m_position.x = 0 - pacmanWidth + margin;
     }
+}
+
+Utils::Direction
+Pacman::getDirection() const
+{
+    if (m_dirx < 0) {
+        return Utils::Direction::LEFT;
+    } else if (m_dirx > 0) {
+        return Utils::Direction::RIGHT;
+    } else if (m_diry < 0) {
+        return Utils::Direction::UP;
+    } else if (m_diry > 0) {
+        return Utils::Direction::DOWN;
+    }
+
+    return Utils::Direction::UNDEFINED;
 }

@@ -79,12 +79,13 @@ Map::addEntity(int id, Vec2 const &pos, Entities *entitiesRegistry, GameControll
             Entity *pacman = entitiesRegistry->addEntity(std::make_unique<Pacman>(pos));
             gameController->registerPacmanId(pacman->getId());
         } break;
-        case static_cast<int>(MapId::GHOST_RED):
-            Vec2 scatter = Utils::gridPositionToReal({
-              Config::horizontalTiles - 1,
-              1,
-            });
-            entitiesRegistry->addEntity(std::make_unique<Ghost>(pos, scatter));
+        case static_cast<int>(MapId::BLINKY): {
+            Vec2 scatter = Utils::gridPositionToReal({ Config::horizontalTiles - 1, 1 });
+            entitiesRegistry->addEntity(std::make_unique<Ghost>(pos, scatter, GhostType::Blinky));
+        } break;
+        case static_cast<int>(MapId::PINKY):
+            Vec2 scatter = Utils::gridPositionToReal({ 1, 1 });
+            entitiesRegistry->addEntity(std::make_unique<Ghost>(pos, scatter, GhostType::Pinky));
             break;
     }
 }

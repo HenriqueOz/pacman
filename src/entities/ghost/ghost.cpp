@@ -8,6 +8,7 @@
 #include "vec/vec.h"
 #include <SDL3/SDL_keycode.h>
 #include <SDL3/SDL_oldnames.h>
+#include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_thread.h>
 #include <SDL3/SDL_video.h>
@@ -15,9 +16,10 @@
 #include <limits>
 #include <vector>
 
-Ghost::Ghost(Vec2 const &pos, Vec2 const &scatter)
+Ghost::Ghost(Vec2 const &pos, Vec2 const &scatter, GhostType type)
   : m_state(GhostStates::IDLE)
   , m_currentTile(0, 0)
+  , m_ghostType(type)
   , m_scatterTarget(scatter)
   , m_gameController(Registry::getGameController())
   , m_entitiesRegistry(Registry::getEntitiesRegistry())
@@ -89,7 +91,8 @@ Ghost::render(SDL_Renderer *renderer) const
                        static_cast<float>(m_size.x),
                        static_cast<float>(m_size.y) };
 
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_Color ghostColor = getGhostColor();
+    SDL_SetRenderDrawColor(renderer, ghostColor.r, ghostColor.g, ghostColor.b, ghostColor.a);
     SDL_RenderFillRect(renderer, &rect);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
@@ -103,8 +106,9 @@ Ghost::handleIdleState()
     m_currentTarget = m_gameController->getGhostDoorExitPosition();
     setBestDirectionTo(m_currentTarget);
 
-    if (m_position.equals(m_currentTarget)) {
+    if (getDotsDistance(m_position, m_currentTarget) <= 8) {
         m_state = GhostStates::CHASING;
+        m_position = m_currentTarget;
     }
 }
 
@@ -296,7 +300,7 @@ void
 Ghost::handleChasingState()
 {
     m_speed = m_baseSpeed;
-    m_currentTarget = m_gameController->getPacmanPosition();
+    m_currentTarget = getGhostChaseTarget();
     setBestDirectionTo(m_currentTarget);
 
     m_timer++;
@@ -347,4 +351,49 @@ Ghost::handleEatenState()
         m_position = m_currentTarget;
         m_state = GhostStates::IDLE;
     }
+}
+
+SDL_Color
+Ghost::getGhostColor() const
+{
+    switch (m_ghostType) {
+        case GhostType::Blinky:
+            return { .r = 255, .a = 255 };
+        case GhostType::Pinky:
+            return { .r = 255, .g = 192, .b = 203, .a = 255 };
+        case GhostType::Inky:
+            return { .r = 0, .g = 255, .b = 255, .a = 255 };
+        case GhostType::Clyde:
+            return { .r = 255, .g = 165, .b = 0, .a = 255 };
+        default:
+            return { .r = 255, .g = 255, .b = 255, .a = 255 };
+    }
+}
+
+Vec2
+Ghost::getGhostChaseTarget() const
+{
+    Vec2 pacmanPosition = m_gameController->getPacmanPosition();
+    Vec2 pacmanTile = Utils::fixPositionToGrid(pacmanPosition);
+    Utils::Direction pacmanDirection = m_gameController->getPacmanDirection();
+    int pacmanDirectionValue = Utils::getDirectionValue(pacmanDirection);
+
+    switch (m_ghostType) {
+        case GhostType::Blinky:
+            return pacmanPosition;
+        case GhostType::Pinky:
+            if (pacmanDirection == Utils::Direction::LEFT ||
+                pacmanDirection == Utils::Direction::RIGHT) {
+                pacmanTile.x += 4 * pacmanDirectionValue;
+            } else if (pacmanDirection == Utils::Direction::UP ||
+                       pacmanDirection == Utils::Direction::DOWN) {
+                pacmanTile.y += 4 * pacmanDirectionValue;
+            }
+            return Utils::gridPositionToReal(pacmanTile);
+        case GhostType::Inky:
+        case GhostType::Clyde:
+            return pacmanPosition;
+            break;
+    }
+    return { 0, 0 };
 }
