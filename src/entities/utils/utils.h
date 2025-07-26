@@ -5,7 +5,7 @@
 #include "vec/vec.h"
 namespace Utils {
 
-enum class Direction
+enum class Direction : int
 {
     UP,
     DOWN,

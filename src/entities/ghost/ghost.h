@@ -20,7 +20,7 @@ enum class GhostStates
 class Ghost : public Entity
 {
   public:
-    Ghost(Vec2 const &pos);
+    Ghost(Vec2 const &pos, Vec2 const &scatter);
     ~Ghost() override {};
     EntityType getType() const override { return GHOST; };
 
@@ -28,12 +28,15 @@ class Ghost : public Entity
     void render(SDL_Renderer *renderer) const override;
     void setBestDirectionTo(Vec2 position);
     void drawLineToTarget(SDL_Renderer *renderer, Vec2 target) const;
-    void exitSpawn();
     float getDotsDistance(Vec2 a, Vec2 b) const;
     float getManhattanDistance(Vec2 a, Vec2 b) const;
     Vec2 getTilePositionAt(Utils::Direction) const;
     void wrapOutOfBounds();
     int getDirectionPriority(Utils::Direction direction) const;
+    void handleEatenState();
+    void handleChasingState();
+    void handleIdleState();
+    void handleScatterState();
 
     std::vector<Utils::Direction> getAvailableDirections() const;
 
@@ -45,9 +48,15 @@ class Ghost : public Entity
     Entities *m_entitiesRegistry;
     Vec2 m_currentTile;
     Vec2 m_spawnOrigin;
+    Vec2 m_scatterTarget;
     Vec2 m_currentTarget;
 
     int m_speed;
+    int m_eatenSpeed;
+    int m_baseSpeed;
+    int m_timer;
+    int m_scatterTime;
+    int m_chaseTime;
 
     Utils::Direction m_direction;
 };

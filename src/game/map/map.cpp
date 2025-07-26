@@ -2,6 +2,7 @@
 #include "config/config.h"
 #include "entities/food/food.h"
 #include "entities/ghost/ghost.h"
+#include "entities/utils/utils.h"
 #include "registry/controller/game_controller.h"
 #include "registry/entities/entities.h"
 #include "vec/vec.h"
@@ -79,7 +80,11 @@ Map::addEntity(int id, Vec2 const &pos, Entities *entitiesRegistry, GameControll
             gameController->registerPacmanId(pacman->getId());
         } break;
         case static_cast<int>(MapId::GHOST_RED):
-            entitiesRegistry->addEntity(std::make_unique<Ghost>(pos));
+            Vec2 scatter = Utils::gridPositionToReal({
+              Config::horizontalTiles - 1,
+              1,
+            });
+            entitiesRegistry->addEntity(std::make_unique<Ghost>(pos, scatter));
             break;
     }
 }

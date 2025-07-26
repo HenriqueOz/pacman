@@ -15,9 +15,10 @@
 #include <limits>
 #include <vector>
 
-Ghost::Ghost(Vec2 const &pos)
+Ghost::Ghost(Vec2 const &pos, Vec2 const &scatter)
   : m_state(GhostStates::IDLE)
   , m_currentTile(0, 0)
+  , m_scatterTarget(scatter)
   , m_gameController(Registry::getGameController())
   , m_entitiesRegistry(Registry::getEntitiesRegistry())
   , m_direction(Utils::Direction::DOWN)
@@ -28,6 +29,11 @@ Ghost::Ghost(Vec2 const &pos)
     m_position.update(pos);
     m_size.update(Config::tileWidth, Config::tileHeight);
     m_currentTile = Utils::fixPositionToGrid(m_position);
+    m_timer = 0;
+    m_chaseTime = 300;
+    m_scatterTime = 60;
+    m_baseSpeed = 1;
+    m_eatenSpeed = 2;
 }
 
 void
@@ -43,28 +49,17 @@ Ghost::update()
 
     switch (m_state) {
         case GhostStates::IDLE:
-            exitSpawn();
+            handleIdleState();
             break;
         case GhostStates::CHASING:
-            m_currentTarget = m_gameController->getPacmanPosition();
-            setBestDirectionTo(m_currentTarget);
+            handleChasingState();
             break;
         case GhostStates::SCATTER:
+            handleScatterState();
+            break;
         case GhostStates::FRIGHTENED:
         case GhostStates::EATEN:
-            // TODO remove this test here and implement eaten state properly
-            if (m_speed == 1) {
-                m_position = Utils::gridPositionToReal(m_currentTile);
-            }
-
-            m_speed = 2;
-            m_currentTarget = m_spawnOrigin;
-            setBestDirectionTo(m_currentTarget);
-
-            if (getManhattanDistance(m_position, m_currentTarget) < 12) {
-                m_position.update(m_currentTarget);
-            }
-
+            handleEatenState();
             break;
     }
 
@@ -102,8 +97,9 @@ Ghost::render(SDL_Renderer *renderer) const
 }
 
 void
-Ghost::exitSpawn()
+Ghost::handleIdleState()
 {
+    m_speed = m_baseSpeed;
     m_currentTarget = m_gameController->getGhostDoorExitPosition();
     setBestDirectionTo(m_currentTarget);
 
@@ -293,5 +289,62 @@ Ghost::getDirectionPriority(Utils::Direction direction) const
             return 1;
         default:
             return 0;
+    }
+}
+
+void
+Ghost::handleChasingState()
+{
+    m_speed = m_baseSpeed;
+    m_currentTarget = m_gameController->getPacmanPosition();
+    setBestDirectionTo(m_currentTarget);
+
+    m_timer++;
+
+    if (m_timer > m_chaseTime) {
+        m_timer = 0;
+        m_state = GhostStates::SCATTER;
+    }
+}
+
+void
+Ghost::handleScatterState()
+{
+    m_speed = m_baseSpeed;
+    m_currentTarget = m_scatterTarget;
+    setBestDirectionTo(m_currentTarget);
+
+    if (m_timer++ <= m_scatterTime) {
+        return;
+    }
+
+    m_timer = 0;
+
+    Utils::Direction newDirection =
+      static_cast<Utils::Direction>((static_cast<int>(m_direction) + 2) % 3);
+    Vec2 nextDirectionTile = getTilePositionAt(newDirection);
+
+    if (!m_entitiesRegistry->hasEntityAt(
+          nextDirectionTile.x, nextDirectionTile.y, EntityType::COLLIDER)) {
+        m_direction = newDirection;
+    }
+
+    m_state = GhostStates::CHASING;
+}
+
+void
+Ghost::handleEatenState()
+{
+    if (m_speed == m_baseSpeed) {
+        m_position = Utils::gridPositionToReal(m_currentTile);
+    }
+
+    m_speed = m_eatenSpeed;
+    m_currentTarget = m_spawnOrigin;
+    setBestDirectionTo(m_currentTarget);
+
+    if (getManhattanDistance(m_position, m_currentTarget) <= 12) {
+        m_position = m_currentTarget;
+        m_state = GhostStates::IDLE;
     }
 }
