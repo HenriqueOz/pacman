@@ -1,15 +1,13 @@
 #ifndef VEC_H_
 #define VEC_H_
 
-#include <functional>
-
 struct Vec2
 {
     int x, y;
 
     Vec2(int _x, int _y)
       : x(_x)
-      , y(_y){};
+      , y(_y) {};
 
     inline void update(int _x, int _y)
     {
