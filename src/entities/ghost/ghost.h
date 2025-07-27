@@ -45,6 +45,7 @@ class Ghost : public Entity
     EntityType getType() const override { return GHOST; };
 
     void drawLineToTarget(SDL_Renderer *renderer, Vec2 target) const;
+    void drawClydeCircle(SDL_Renderer *renderer) const;
     SDL_Color getGhostColor() const;
     Vec2 getGhostChaseTarget() const;
 
@@ -62,7 +63,7 @@ class Ghost : public Entity
 
     Vec2 getPinkyChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirection) const;
     Vec2 getInkyChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirection) const;
-    Vec2 getClydeChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirection) const;
+    Vec2 getClydeChasingTarget(Vec2 pacmanPosition) const;
 
   private:
     GhostStates m_state;

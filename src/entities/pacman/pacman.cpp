@@ -15,6 +15,7 @@ Pacman::Pacman(Vec2 const &pos, InputManager *inputManager, Entities *entitiesRe
 {
     m_size.update(Config::tileWidth, Config::tileHeight);
     m_position.update(pos);
+    m_position.x += m_size.x / 2;
 }
 
 void

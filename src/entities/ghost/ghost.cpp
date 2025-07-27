@@ -131,11 +131,11 @@ Ghost::handleIdleState()
 
     m_speed = m_baseSpeed;
     m_currentTarget = m_gameController->getGhostDoorExitPosition();
+
     setBestDirectionTo(m_currentTarget);
 
-    if (m_position.equals(m_currentTarget)) {
+    if (m_position.y == m_currentTarget.y) {
         m_state = GhostStates::SCATTER;
-        m_position = m_currentTarget;
     }
 }
 
@@ -385,7 +385,7 @@ Ghost::getGhostChaseTarget() const
         case GhostType::Inky:
             return getInkyChasingTarget(pacmanPosition, pacmanDirection);
         case GhostType::Clyde:
-            return pacmanPosition;
+            return getClydeChasingTarget(pacmanPosition);
             break;
     }
     return { 0, 0 };
@@ -412,7 +412,6 @@ Ghost::getInkyChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirectio
 {
     Vec2 targetTile = Utils::positionToTiles(pacmanPosition);
     const int pacmanDirectionValue = Utils::getDirectionValue(pacmanDirection);
-    const int offset = 1;
 
     if (pacmanDirection == Utils::Direction::LEFT || pacmanDirection == Utils::Direction::RIGHT) {
         targetTile.x += pacmanDirectionValue;
@@ -432,4 +431,26 @@ Ghost::getInkyChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirectio
         targetPosition.x - diff.x,
         targetPosition.y - diff.y,
     };
+}
+
+Vec2
+Ghost::getClydeChasingTarget(Vec2 pacmanPosition) const
+{
+    const int radius = 8 * Config::tileWidth;
+    const float distanceToPacman = Utils::getDotsDistance(m_position, pacmanPosition);
+
+    if (distanceToPacman < radius) {
+        return m_scatterTarget;
+    }
+
+    return pacmanPosition;
+}
+
+void
+Ghost::drawClydeCircle(SDL_Renderer *renderer) const
+{
+    SDL_Color ghostColor = getGhostColor();
+    SDL_SetRenderDrawColor(renderer, ghostColor.r, ghostColor.g, ghostColor.b, ghostColor.a);
+    // Implement
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }

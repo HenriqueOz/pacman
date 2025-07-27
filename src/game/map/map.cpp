@@ -98,11 +98,16 @@ Map::addEntity(int id,
             entitiesRegistry->addEntity(std::make_unique<Ghost>(
               pos, scatter, GhostType::Pinky, 120, gameController, entitiesRegistry, inputManager));
         } break;
-        case static_cast<int>(MapId::INKY):
+        case static_cast<int>(MapId::INKY): {
             Vec2 scatter =
               Utils::tilesToPosition({ Config::horizontalTiles - 2, Config::verticalTiles - 2 });
             entitiesRegistry->addEntity(std::make_unique<Ghost>(
               pos, scatter, GhostType::Inky, 180, gameController, entitiesRegistry, inputManager));
-            break;
+        } break;
+        case static_cast<int>(MapId::CLYDE): {
+            Vec2 scatter = Utils::tilesToPosition({ 1, Config::verticalTiles - 2 });
+            entitiesRegistry->addEntity(std::make_unique<Ghost>(
+              pos, scatter, GhostType::Clyde, 240, gameController, entitiesRegistry, inputManager));
+        } break;
     }
 }

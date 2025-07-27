@@ -19,6 +19,7 @@ enum class MapId : int
     BLINKY = 4,
     PINKY = 5,
     INKY = 6,
+    CLYDE = 7,
 };
 
 class Map
