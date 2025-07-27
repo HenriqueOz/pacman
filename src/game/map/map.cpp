@@ -2,7 +2,7 @@
 #include "config/config.h"
 #include "entities/food/food.h"
 #include "entities/ghost/ghost.h"
-#include "entities/utils/utils.h"
+#include "entities/utils/movement.h"
 #include "game/controller/game_controller.h"
 #include "game/entities/entities.h"
 #include "vec/vec.h"
@@ -88,14 +88,21 @@ Map::addEntity(int id,
             gameController->registerPacmanId(pacman->getId());
         } break;
         case static_cast<int>(MapId::BLINKY): {
-            Vec2 scatter = Utils::gridPositionToReal({ Config::horizontalTiles - 1, 1 });
-            entitiesRegistry->addEntity(std::make_unique<Ghost>(
+            Vec2 scatter = Utils::tilesToPosition({ Config::horizontalTiles - 2, 1 });
+            Entity *blinky = entitiesRegistry->addEntity(std::make_unique<Ghost>(
               pos, scatter, GhostType::Blinky, 0, gameController, entitiesRegistry, inputManager));
+            gameController->registerBlinkyId(blinky->getId());
         } break;
-        case static_cast<int>(MapId::PINKY):
-            Vec2 scatter = Utils::gridPositionToReal({ 1, 1 });
+        case static_cast<int>(MapId::PINKY): {
+            Vec2 scatter = Utils::tilesToPosition({ 1, 1 });
             entitiesRegistry->addEntity(std::make_unique<Ghost>(
               pos, scatter, GhostType::Pinky, 120, gameController, entitiesRegistry, inputManager));
+        } break;
+        case static_cast<int>(MapId::INKY):
+            Vec2 scatter =
+              Utils::tilesToPosition({ Config::horizontalTiles - 2, Config::verticalTiles - 2 });
+            entitiesRegistry->addEntity(std::make_unique<Ghost>(
+              pos, scatter, GhostType::Inky, 180, gameController, entitiesRegistry, inputManager));
             break;
     }
 }

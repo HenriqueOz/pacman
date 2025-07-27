@@ -2,7 +2,7 @@
 #include "config/config.h"
 #include "entities/collider/collider.h"
 #include "entities/entity.h"
-#include "entities/utils/utils.h"
+#include "entities/utils/movement.h"
 #include "game/controller/game_controller.h"
 #include "vec/vec.h"
 #include <SDL3/SDL_keycode.h>
@@ -11,7 +11,6 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_thread.h>
 #include <SDL3/SDL_video.h>
-#include <cmath>
 #include <limits>
 #include <vector>
 
@@ -37,7 +36,7 @@ Ghost::Ghost(Vec2 const &pos,
     m_speed = 1;
     m_position.update(pos);
     m_size.update(Config::tileWidth, Config::tileHeight);
-    m_currentTile = Utils::fixPositionToGrid(m_position);
+    m_currentTile = Utils::positionToTiles(m_position);
     m_chaseTime = 1200;
     m_scatterTime = 300;
     m_baseSpeed = 1;
@@ -95,7 +94,7 @@ Ghost::update()
             break;
     }
 
-    m_currentTile = Utils::fixPositionToGrid(m_position);
+    m_currentTile = Utils::positionToTiles(m_position);
     wrapOutOfBounds();
 }
 
@@ -113,6 +112,14 @@ Ghost::render(SDL_Renderer *renderer) const
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
     drawLineToTarget(renderer, m_currentTarget);
+
+    SDL_SetRenderDrawColor(renderer, ghostColor.r, ghostColor.g, ghostColor.b, ghostColor.a);
+    SDL_FRect target = { static_cast<float>(m_currentTarget.x),
+                         static_cast<float>(m_currentTarget.y),
+                         static_cast<float>(m_size.x),
+                         static_cast<float>(m_size.y) };
+    SDL_RenderRect(renderer, &target);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
 
 void
@@ -149,8 +156,8 @@ Ghost::setBestDirectionTo(Vec2 position)
     Utils::Direction finalDirection = directions[0];
 
     for (Utils::Direction direction : directions) {
-        const Vec2 nextTilePos = getTilePositionAt(direction);
-        const float distance = getManhattanDistance(nextTilePos, position);
+        const Vec2 nextTilePos = Utils::getNextTilePositionAt(m_position, direction);
+        const float distance = Utils::getManhattanDistance(nextTilePos, position);
 
         if (distance < shortestDistance) {
             finalDirection = direction;
@@ -248,45 +255,11 @@ Ghost::getAvailableDirections() const
     return directions;
 }
 
-Utils::Direction
-Ghost::getReverseDirection(Utils::Direction direction) const
-{
-    return static_cast<Utils::Direction>((static_cast<int>(direction) + 2) % 3);
-}
-
-Vec2
-Ghost::getTilePositionAt(Utils::Direction direction) const
-{
-    switch (direction) {
-        case Utils::Direction::UP:
-            return Utils::gridPositionToReal(Vec2(m_currentTile.x, m_currentTile.y - 1));
-        case Utils::Direction::DOWN:
-            return Utils::gridPositionToReal(Vec2(m_currentTile.x, m_currentTile.y + 1));
-        case Utils::Direction::LEFT:
-            return Utils::gridPositionToReal(Vec2(m_currentTile.x - 1, m_currentTile.y));
-        case Utils::Direction::RIGHT:
-            return Utils::gridPositionToReal(Vec2(m_currentTile.x + 1, m_currentTile.y));
-        default:
-            return Vec2(0, 0);
-    }
-}
-
-float
-Ghost::getDotsDistance(Vec2 a, Vec2 b) const
-{
-    return std::sqrt(std::pow(b.x - a.x, 2) + std::pow(b.y - a.y, 2));
-}
-
-float
-Ghost::getManhattanDistance(Vec2 a, Vec2 b) const
-{
-    return std::abs(a.x - b.x) + std::abs(a.y - b.y);
-}
-
 void
 Ghost::drawLineToTarget(SDL_Renderer *renderer, Vec2 target) const
 {
-    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+    SDL_Color ghostColor = getGhostColor();
+    SDL_SetRenderDrawColor(renderer, ghostColor.r, ghostColor.g, ghostColor.b, ghostColor.a);
     SDL_RenderLine(renderer, m_position.x, m_position.y, target.x, target.y);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
@@ -352,7 +325,7 @@ Ghost::handleScatterState()
     m_timer = 0;
 
     Utils::Direction newDirection = getReverseDirection(m_direction);
-    Vec2 nextDirectionTile = getTilePositionAt(newDirection);
+    Vec2 nextDirectionTile = Utils::getNextTilePositionAt(m_position, newDirection);
 
     if (!m_entitiesRegistry->hasEntityAt(
           nextDirectionTile.x, nextDirectionTile.y, EntityType::COLLIDER)) {
@@ -366,14 +339,14 @@ void
 Ghost::handleEatenState()
 {
     if (m_speed == m_baseSpeed) {
-        m_position = Utils::gridPositionToReal(m_currentTile);
+        m_position = Utils::tilesToPosition(m_currentTile);
     }
 
     m_speed = m_eatenSpeed;
     m_currentTarget = m_spawnOrigin;
     setBestDirectionTo(m_currentTarget);
 
-    if (getManhattanDistance(m_position, m_currentTarget) <= 12) {
+    if (Utils::getManhattanDistance(m_position, m_currentTarget) <= 12) {
         m_position = m_currentTarget;
         m_state = GhostStates::IDLE;
     }
@@ -400,7 +373,7 @@ Vec2
 Ghost::getGhostChaseTarget() const
 {
     Vec2 pacmanPosition = m_gameController->getPacmanPosition();
-    Vec2 pacmanTile = Utils::fixPositionToGrid(pacmanPosition);
+    Vec2 pacmanTile = Utils::positionToTiles(pacmanPosition);
     Utils::Direction pacmanDirection = m_gameController->getPacmanFacingDirection();
     int pacmanDirectionValue = Utils::getDirectionValue(pacmanDirection);
 
@@ -421,23 +394,25 @@ Ghost::getGhostChaseTarget() const
 Vec2
 Ghost::getPinkyChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirection) const
 {
-    Vec2 targetTile = Utils::fixPositionToGrid(pacmanPosition);
-    int pacmanDirectionValue = Utils::getDirectionValue(pacmanDirection);
+    Vec2 targetTile = Utils::positionToTiles(pacmanPosition);
+    const int pacmanDirectionValue = Utils::getDirectionValue(pacmanDirection);
+    const int offset = 4;
 
     if (pacmanDirection == Utils::Direction::LEFT || pacmanDirection == Utils::Direction::RIGHT) {
-        targetTile.x += 4 * pacmanDirectionValue;
+        targetTile.x += offset * pacmanDirectionValue;
     } else if (pacmanDirection == Utils::Direction::UP ||
                pacmanDirection == Utils::Direction::DOWN) {
-        targetTile.y += 4 * pacmanDirectionValue;
+        targetTile.y += offset * pacmanDirectionValue;
     }
-    return Utils::gridPositionToReal(targetTile);
+    return Utils::tilesToPosition(targetTile);
 }
 
 Vec2
 Ghost::getInkyChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirection) const
 {
-    Vec2 targetTile = Utils::fixPositionToGrid(pacmanPosition);
-    int pacmanDirectionValue = Utils::getDirectionValue(pacmanDirection);
+    Vec2 targetTile = Utils::positionToTiles(pacmanPosition);
+    const int pacmanDirectionValue = Utils::getDirectionValue(pacmanDirection);
+    const int offset = 1;
 
     if (pacmanDirection == Utils::Direction::LEFT || pacmanDirection == Utils::Direction::RIGHT) {
         targetTile.x += pacmanDirectionValue;
@@ -445,5 +420,16 @@ Ghost::getInkyChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirectio
                pacmanDirection == Utils::Direction::DOWN) {
         targetTile.y += pacmanDirectionValue;
     }
-    return Utils::gridPositionToReal(targetTile);
+
+    const Vec2 targetPosition = Utils::tilesToPosition(targetTile);
+    const Vec2 blinkyPosition = m_gameController->getBlinkyPosition();
+    const Vec2 diff = {
+        blinkyPosition.x - targetPosition.x,
+        blinkyPosition.y - targetPosition.y,
+    };
+
+    return {
+        targetPosition.x - diff.x,
+        targetPosition.y - diff.y,
+    };
 }

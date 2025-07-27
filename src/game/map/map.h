@@ -18,6 +18,7 @@ enum class MapId : int
     PACMAN_SPAWN = 3,
     BLINKY = 4,
     PINKY = 5,
+    INKY = 6,
 };
 
 class Map

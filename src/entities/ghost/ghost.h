@@ -1,7 +1,7 @@
 #ifndef _GHOST_H
 #define _GHOST_H
 
-#include "entities/utils/utils.h"
+#include "entities/utils/movement.h"
 #include "game/controller/game_controller.h"
 #include "game/entities/entities.h"
 #include "game/input/input_manager.h"
@@ -39,32 +39,30 @@ class Ghost : public Entity
           Entities *entitiesRegistry,
           InputManager *inputManager);
     ~Ghost() override {};
-    EntityType getType() const override { return GHOST; };
 
     void update() override;
     void render(SDL_Renderer *renderer) const override;
-    void setBestDirectionTo(Vec2 position);
+    EntityType getType() const override { return GHOST; };
+
     void drawLineToTarget(SDL_Renderer *renderer, Vec2 target) const;
-    float getDotsDistance(Vec2 a, Vec2 b) const;
-    float getManhattanDistance(Vec2 a, Vec2 b) const;
-    Vec2 getTilePositionAt(Utils::Direction) const;
-    void wrapOutOfBounds();
+    SDL_Color getGhostColor() const;
+    Vec2 getGhostChaseTarget() const;
+
+    void setBestDirectionTo(Vec2 position);
     int getDirectionPriority(Utils::Direction direction) const;
+    std::vector<Utils::Direction> getAvailableDirections() const;
+    Utils::Direction getBestDiretion() const;
+
+    void wrapOutOfBounds();
+
     void handleEatenState();
     void handleChasingState();
     void handleIdleState();
     void handleScatterState();
+
     Vec2 getPinkyChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirection) const;
     Vec2 getInkyChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirection) const;
     Vec2 getClydeChasingTarget(Vec2 pacmanPosition, Utils::Direction pacmanDirection) const;
-    Utils::Direction getReverseDirection(Utils::Direction direction) const;
-
-    SDL_Color getGhostColor() const;
-    Vec2 getGhostChaseTarget() const;
-
-    std::vector<Utils::Direction> getAvailableDirections() const;
-
-    Utils::Direction getBestDiretion() const;
 
   private:
     GhostStates m_state;

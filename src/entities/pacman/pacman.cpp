@@ -1,6 +1,6 @@
 #include "pacman.h"
 #include "entities/entity.h"
-#include "entities/utils/utils.h"
+#include "entities/utils/movement.h"
 #include <config/config.h>
 
 Pacman::Pacman(Vec2 const &pos, InputManager *inputManager, Entities *entitiesRegistry)
@@ -15,7 +15,6 @@ Pacman::Pacman(Vec2 const &pos, InputManager *inputManager, Entities *entitiesRe
 {
     m_size.update(Config::tileWidth, Config::tileHeight);
     m_position.update(pos);
-    m_position.x += m_size.x / 2;
 }
 
 void

@@ -1,7 +1,7 @@
 #ifndef _PACMAN_H
 #define _PACMAN_H
 
-#include "entities/utils/utils.h"
+#include "entities/utils/movement.h"
 #include "game/entities/entities.h"
 #include "game/input/input_manager.h"
 #include <SDL3/SDL_keycode.h>
@@ -26,15 +26,18 @@ class Pacman : public Entity
     EntityType getType() const override { return PACMAN; };
 
     void handleInput();
+    void changeDirectionsByKeyPressed(SDL_Keycode keycode, Utils::Direction direction);
+
     void idle();
     void moving();
+
     void handleCollision(int pastDirX, int pastDirY);
-    void handleFoodEating();
-    void changeDirectionsByKeyPressed(SDL_Keycode keycode, Utils::Direction direction);
-    bool canMoveTo(Utils::Direction direction) const;
     bool hasColliderAt(int x, int y) const;
+    bool canMoveTo(Utils::Direction direction) const;
+    void handleFoodEating();
 
     void wrapOutOfBounds();
+
     Utils::Direction getDirection() const;
     Utils::Direction getFacingDirection() const;
 
