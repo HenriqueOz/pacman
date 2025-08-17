@@ -10,7 +10,7 @@ class Collider : public Entity
     ~Collider(){};
 
     void update() override;
-    void render(SDL_Renderer *renderer) const override;
+    void render(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const override;
     bool isGhostDoor() const;
     EntityType getType() const override { return COLLIDER; };
 

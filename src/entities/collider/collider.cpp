@@ -14,7 +14,7 @@ Collider::update()
 }
 
 void
-Collider::render(SDL_Renderer *renderer) const
+Collider::render(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
 {
     if (isGhostDoor())
         return;

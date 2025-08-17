@@ -20,6 +20,7 @@ enum class MapId : int
     PINKY = 5,
     INKY = 6,
     CLYDE = 7,
+    SUPER_FOOD = 8,
 };
 
 class Map

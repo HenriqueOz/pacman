@@ -72,42 +72,53 @@ Map::addEntity(int id,
 
     switch (id) {
         case static_cast<int>(MapId::FOOD):
-            entitiesRegistry->addEntity(std::make_unique<Food>(pos));
+            entitiesRegistry->addEntity(std::make_unique<Food>(pos, false));
             break;
+
+        case static_cast<int>(MapId::SUPER_FOOD):
+            entitiesRegistry->addEntity(std::make_unique<Food>(pos, true));
+            break;
+
         case static_cast<int>(MapId::WALL):
             entitiesRegistry->addEntity(std::make_unique<Collider>(pos, wallSize, false));
             break;
+
         case static_cast<int>(MapId::GHOST_DOOR): {
             Entity *ghostDoor =
               entitiesRegistry->addEntity(std::make_unique<Collider>(pos, wallSize, true));
             gameController->registerGhostDoorId(ghostDoor->getId());
         } break;
+
         case static_cast<int>(MapId::PACMAN_SPAWN): {
             Entity *pacman = entitiesRegistry->addEntity(
-              std::make_unique<Pacman>(pos, inputManager, entitiesRegistry));
+              std::make_unique<Pacman>(pos, inputManager, entitiesRegistry, gameController));
             gameController->registerPacmanId(pacman->getId());
         } break;
+
         case static_cast<int>(MapId::BLINKY): {
             Vec2 scatter = Utils::tilesToPosition({ Config::horizontalTiles - 2, 1 });
             Entity *blinky = entitiesRegistry->addEntity(std::make_unique<Ghost>(
-              pos, scatter, GhostType::Blinky, 0, gameController, entitiesRegistry, inputManager));
+              pos, scatter, GhostType::Blinky, Config::blinkyDelay, gameController, entitiesRegistry, inputManager));
             gameController->registerBlinkyId(blinky->getId());
         } break;
+
         case static_cast<int>(MapId::PINKY): {
             Vec2 scatter = Utils::tilesToPosition({ 1, 1 });
             entitiesRegistry->addEntity(std::make_unique<Ghost>(
-              pos, scatter, GhostType::Pinky, 120, gameController, entitiesRegistry, inputManager));
+              pos, scatter, GhostType::Pinky, Config::pinkyDelay, gameController, entitiesRegistry, inputManager));
         } break;
+
         case static_cast<int>(MapId::INKY): {
             Vec2 scatter =
               Utils::tilesToPosition({ Config::horizontalTiles - 2, Config::verticalTiles - 2 });
             entitiesRegistry->addEntity(std::make_unique<Ghost>(
-              pos, scatter, GhostType::Inky, 180, gameController, entitiesRegistry, inputManager));
+              pos, scatter, GhostType::Inky, Config::inkyDelay, gameController, entitiesRegistry, inputManager));
         } break;
+
         case static_cast<int>(MapId::CLYDE): {
             Vec2 scatter = Utils::tilesToPosition({ 1, Config::verticalTiles - 2 });
             entitiesRegistry->addEntity(std::make_unique<Ghost>(
-              pos, scatter, GhostType::Clyde, 240, gameController, entitiesRegistry, inputManager));
+              pos, scatter, GhostType::Clyde, Config::clydeDelay, gameController, entitiesRegistry, inputManager));
         } break;
     }
 }

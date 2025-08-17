@@ -11,17 +11,35 @@ const char *const windowName = "Pacman";
 
 const unsigned horizontalTiles = 28;
 const unsigned verticalTiles = 31;
+
 const unsigned tileWidth = 16;
 const unsigned tileHeight = 16;
+
 const unsigned horizontalScale = 1;
 const unsigned verticalScale = 1;
-const unsigned bottomGuiHeight = 100;
 
-const unsigned windowWidth = tileWidth * horizontalTiles * horizontalScale;
-const unsigned windowHeight = tileHeight * verticalTiles * horizontalScale + bottomGuiHeight;
+const unsigned topGuiHeight = 80;
+const unsigned bottomGuiHeight = 50;
+
+const unsigned windowWidth = (tileWidth * horizontalTiles) * horizontalScale;
+const unsigned windowHeight =
+  ((tileHeight * verticalTiles) * horizontalScale) + (topGuiHeight + bottomGuiHeight);
+
 const unsigned logicalWidth = tileWidth * horizontalTiles;
 const unsigned logicalHeight = tileHeight * verticalTiles;
+
+const unsigned gameRenderXOffset = 0;
+    const unsigned gameRenderYOffset = topGuiHeight;
+
 const float aspectRatio = (float)windowWidth / windowHeight;
+
+const unsigned int blinkyDelay = 0;
+const unsigned int inkyDelay = 120;
+const unsigned int pinkyDelay = 240;
+const unsigned int clydeDelay = 360;
+
+const unsigned int scatterDuration = 300;
+const unsigned int chaseDuration = 600;
 
 const Uint16 fps = 60;
 const Uint16 frameDelay = 1000 / fps;

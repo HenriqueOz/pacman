@@ -37,8 +37,8 @@ Ghost::Ghost(Vec2 const &pos,
     m_position.update(pos);
     m_size.update(Config::tileWidth, Config::tileHeight);
     m_currentTile = Utils::positionToTiles(m_position);
-    m_chaseTime = 1200;
-    m_scatterTime = 300;
+    m_chaseTime = Config::chaseDuration;
+    m_scatterTime = Config::scatterDuration;
     m_baseSpeed = 1;
     m_eatenSpeed = 2;
     m_timer = m_startDelay;
@@ -99,7 +99,7 @@ Ghost::update()
 }
 
 void
-Ghost::render(SDL_Renderer *renderer) const
+Ghost::render(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
 {
     SDL_FRect rect = { static_cast<float>(m_position.x),
                        static_cast<float>(m_position.y),

@@ -1,9 +1,15 @@
 #include "pacman.h"
 #include "entities/entity.h"
+#include "entities/food/food.h"
 #include "entities/utils/movement.h"
+#include "game/controller/game_controller.h"
+#include <SDL3_ttf/SDL_ttf.h>
 #include <config/config.h>
 
-Pacman::Pacman(Vec2 const &pos, InputManager *inputManager, Entities *entitiesRegistry)
+Pacman::Pacman(Vec2 const &pos,
+               InputManager *inputManager,
+               Entities *entitiesRegistry,
+               GameController *gameController)
   : m_velocity(0.f, 0.f)
   , m_PacmanState(IDLE)
   , m_speed(1)
@@ -12,6 +18,7 @@ Pacman::Pacman(Vec2 const &pos, InputManager *inputManager, Entities *entitiesRe
   , m_facingDirection(Utils::Direction::RIGHT)
   , m_inputManager(inputManager)
   , m_entitiesRegistry(entitiesRegistry)
+  , m_gameController(gameController)
 {
     m_size.update(Config::tileWidth, Config::tileHeight);
     m_position.update(pos);
@@ -34,7 +41,7 @@ Pacman::update()
 }
 
 void
-Pacman::render(SDL_Renderer *renderer) const
+Pacman::render(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
 {
     SDL_FRect rect = { static_cast<float>(m_position.x),
                        static_cast<float>(m_position.y),
@@ -44,6 +51,11 @@ Pacman::render(SDL_Renderer *renderer) const
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
     SDL_RenderFillRect(renderer, &rect);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+}
+
+void
+Pacman::renderGUI(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
+{
 }
 
 void
@@ -177,8 +189,16 @@ Pacman::handleFoodEating()
     int x = m_position.x + m_size.x / 2;
     int y = m_position.y + m_size.y / 2;
 
-    if (m_entitiesRegistry->hasEntityAt(x, y, EntityType::FOOD)) {
+    Entity *food = m_entitiesRegistry->getEntityAt(x, y, EntityType::FOOD);
+
+    if (food) {
         m_entitiesRegistry->deleteEntityAt(x, y, EntityType::FOOD);
+
+        if (static_cast<Food *>(food)->isSuper()) {
+            m_gameController->addFoodScore();
+        } else {
+            m_gameController->addSuperFoodScore();
+        }
     }
 }
 

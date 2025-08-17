@@ -2,7 +2,9 @@
 #define _GAME_H
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <game/controller/game_controller.h>
 #include <game/entities/entities.h>
 #include <game/input/input_manager.h>
@@ -24,13 +26,19 @@ class Game
   private:
     void handleInput();
 
-    SDL_Window *m_window;
-    SDL_Renderer *m_renderer;
+    SDL_Window *m_window = nullptr;
+    SDL_Renderer *m_renderer = nullptr;
+
+    SDL_Texture *m_gameTexture = nullptr;
+    SDL_Texture *m_guiTexture = nullptr;
+
+    TTF_TextEngine *m_textEngine = nullptr;
+
     bool m_isRunning;
 
-    InputManager *m_inputManager;
-    Entities *m_entities;
-    GameController *m_gameController;
+    InputManager *m_inputManager = nullptr;
+    Entities *m_entities = nullptr;
+    GameController *m_gameController = nullptr;
 };
 
 #endif

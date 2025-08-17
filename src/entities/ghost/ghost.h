@@ -7,6 +7,7 @@
 #include "game/input/input_manager.h"
 #include "vec/vec.h"
 #include <SDL3/SDL_pixels.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <entities/entity.h>
 #include <vector>
 
@@ -41,7 +42,7 @@ class Ghost : public Entity
     ~Ghost() override {};
 
     void update() override;
-    void render(SDL_Renderer *renderer) const override;
+    void render(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const override;
     EntityType getType() const override { return GHOST; };
 
     void drawLineToTarget(SDL_Renderer *renderer, Vec2 target) const;

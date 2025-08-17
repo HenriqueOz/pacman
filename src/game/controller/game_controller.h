@@ -23,7 +23,22 @@ class GameController
     Vec2 getGhostDoorExitPosition() const;
     Vec2 getBlinkyPosition() const;
 
+    void addFoodScore();
+    void addSuperFoodScore();
+    void resetScore();
+    unsigned int getScore() const;
+
+    void removePacmanLife();
+    void addPacmanLife();
+    void resetPacmanLifes();
+    unsigned int getPacmanLifes() const;
+
   private:
+    const unsigned int m_PACMAN_INITIAL_LIFES = 3;
+    unsigned int m_pacmanLifes = m_PACMAN_INITIAL_LIFES;
+
+    unsigned int m_score = 0;
+
     Vec2 getEntitytPositionById(Uint32 id) const;
 
     Uint32 m_pacmanId = 0;

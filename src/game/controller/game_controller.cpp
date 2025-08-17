@@ -78,3 +78,53 @@ GameController::getBlinkyPosition() const
 {
     return getEntitytPositionById(m_blinkyId);
 }
+
+void
+GameController::addFoodScore()
+{
+    m_score += 10;
+}
+
+void
+GameController::addSuperFoodScore()
+{
+    m_score += 50;
+}
+
+void
+GameController::resetScore()
+{
+    m_score = 0;
+}
+
+void
+GameController::removePacmanLife()
+{
+    if (m_pacmanLifes > 0) {
+        --m_pacmanLifes;
+    }
+}
+
+void
+GameController::addPacmanLife()
+{
+    ++m_pacmanLifes;
+}
+
+void
+GameController::resetPacmanLifes()
+{
+    m_pacmanLifes = m_PACMAN_INITIAL_LIFES;
+}
+
+unsigned int
+GameController::getPacmanLifes() const
+{
+    return m_pacmanLifes;
+}
+
+unsigned int
+GameController::getScore() const
+{
+    return m_score;
+}

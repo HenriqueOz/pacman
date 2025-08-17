@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_stdinc.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <vec/vec.h>
 
 enum EntityType
@@ -11,7 +12,8 @@ enum EntityType
     GHOST,
     COLLIDER,
     CHERRY,
-    FOOD
+    FOOD,
+    GUI
 };
 
 class Entity
@@ -19,7 +21,8 @@ class Entity
   public:
     virtual ~Entity() {};
     virtual void update() {};
-    virtual void render(SDL_Renderer *renderer) const {};
+    virtual void render(SDL_Renderer *renderer, TTF_TextEngine *textEgine) const {};
+    virtual void renderGUI(SDL_Renderer *renderer, TTF_TextEngine *textEgine) const {};
 
     virtual Vec2 getPosition() const { return m_position; };
     virtual Vec2 getSize() const { return m_size; };
