@@ -1,6 +1,6 @@
-#include "gui_manager.h"
-#include "config/config.h"
-#include "game/controller/game_controller.h"
+#include <entities/gui_manager/gui_manager.hpp>
+#include <config/config.hpp>
+#include <game/controller/game_controller.hpp>
 #include <SDL3/SDL_error.h>
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_render.h>
@@ -8,7 +8,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <cmath>
 
-GuiManager::GuiManager(GameController *gameController)
+GuiManager::GuiManager(GameController * gameController)
   : m_gameController(gameController)
 {
     m_titleFont = TTF_OpenFont("assets/arcadeclassic.ttf", 28);
@@ -27,25 +27,25 @@ GuiManager::update()
 }
 
 void
-GuiManager::render(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
+GuiManager::render(SDL_Renderer * renderer, TTF_TextEngine * textEngine) const
 {
 }
 
 void
-GuiManager::renderGUI(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
+GuiManager::renderGUI(SDL_Renderer * renderer, TTF_TextEngine * textEngine) const
 {
     drawScore(renderer, textEngine);
     drawLifesUp(renderer, textEngine);
 }
 
 void
-GuiManager::drawScore(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
+GuiManager::drawScore(SDL_Renderer * renderer, TTF_TextEngine * textEngine) const
 {
     std::string label = "SCORE";
     std::string score = std::to_string(m_gameController->getScore());
 
-    TTF_Text *labelText = TTF_CreateText(textEngine, m_titleFont, label.c_str(), label.size());
-    TTF_Text *scoreText = TTF_CreateText(textEngine, m_titleFont, score.c_str(), score.size());
+    TTF_Text * labelText = TTF_CreateText(textEngine, m_titleFont, label.c_str(), label.size());
+    TTF_Text * scoreText = TTF_CreateText(textEngine, m_titleFont, score.c_str(), score.size());
 
     const unsigned int leftPadding = 30;
     const unsigned int topPadding = 12;
@@ -65,7 +65,7 @@ GuiManager::drawScore(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
 }
 
 void
-GuiManager::drawLifesUp(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
+GuiManager::drawLifesUp(SDL_Renderer * renderer, TTF_TextEngine * textEngine) const
 {
     if (std::sin(SDL_GetTicks() / 300) > 0) {
         return;
@@ -74,8 +74,8 @@ GuiManager::drawLifesUp(SDL_Renderer *renderer, TTF_TextEngine *textEngine) cons
     std::string label = "UP";
     std::string lifes = std::to_string(m_gameController->getPacmanLifes()) + "UP";
 
-    TTF_Text *labelText = TTF_CreateText(textEngine, m_titleFont, label.c_str(), label.size());
-    TTF_Text *lifesText = TTF_CreateText(textEngine, m_titleFont, lifes.c_str(), lifes.size());
+    TTF_Text * labelText = TTF_CreateText(textEngine, m_titleFont, label.c_str(), label.size());
+    TTF_Text * lifesText = TTF_CreateText(textEngine, m_titleFont, lifes.c_str(), lifes.size());
 
     const unsigned int topPadding = 12;
     const unsigned int xoffset = Config::windowWidth;

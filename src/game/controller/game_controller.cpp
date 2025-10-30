@@ -1,11 +1,11 @@
-#include "game_controller.h"
-#include "config/config.h"
-#include "entities/pacman/pacman.h"
-#include "entities/utils/movement.h"
-#include "vec/vec.h"
+#include <game/controller/game_controller.hpp>
+#include <config/config.hpp>
+#include <entities/pacman/pacman.hpp>
+#include <entities/utils/movement.hpp>
+#include <vec/vec.hpp>
 #include <SDL3/SDL_stdinc.h>
 
-GameController::GameController(Entities *entitiesRegistry)
+GameController::GameController(Entities * entitiesRegistry)
   : m_entitiesRegistry(entitiesRegistry)
 {
 }

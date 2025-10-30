@@ -1,5 +1,5 @@
-#ifndef INPUT_MANAGER_H_
-#define INPUT_MANAGER_H_
+#ifndef INPUT_MANAGER_HPP_
+#define INPUT_MANAGER_HPP_
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_events.h>
@@ -8,7 +8,7 @@
 class InputManager
 {
   public:
-    void processInput(SDL_Event &event);
+    void processInput(SDL_Event & event);
     bool isKeyPressed(SDL_Keycode key) const;
     bool isKeyReleased(SDL_Keycode key) const;
 

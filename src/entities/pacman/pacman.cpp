@@ -1,15 +1,15 @@
-#include "pacman.h"
-#include "entities/entity.h"
-#include "entities/food/food.h"
-#include "entities/utils/movement.h"
-#include "game/controller/game_controller.h"
+#include <entities/pacman/pacman.hpp>
+#include <entities/entity.hpp>
+#include <entities/food/food.hpp>
+#include <entities/utils/movement.hpp>
+#include <game/controller/game_controller.hpp>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <config/config.h>
+#include <config/config.hpp>
 
-Pacman::Pacman(Vec2 const &pos,
-               InputManager *inputManager,
-               Entities *entitiesRegistry,
-               GameController *gameController)
+Pacman::Pacman(Vec2 const & pos,
+               InputManager * inputManager,
+               Entities * entitiesRegistry,
+               GameController * gameController)
   : m_velocity(0.f, 0.f)
   , m_PacmanState(IDLE)
   , m_speed(1)
@@ -41,7 +41,7 @@ Pacman::update()
 }
 
 void
-Pacman::render(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
+Pacman::render(SDL_Renderer * renderer, TTF_TextEngine * textEngine) const
 {
     SDL_FRect rect = { static_cast<float>(m_position.x),
                        static_cast<float>(m_position.y),
@@ -54,7 +54,7 @@ Pacman::render(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
 }
 
 void
-Pacman::renderGUI(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
+Pacman::renderGUI(SDL_Renderer * renderer, TTF_TextEngine * textEngine) const
 {
 }
 
@@ -189,7 +189,7 @@ Pacman::handleFoodEating()
     int x = m_position.x + m_size.x / 2;
     int y = m_position.y + m_size.y / 2;
 
-    Entity *food = m_entitiesRegistry->getEntityAt(x, y, EntityType::FOOD);
+    Entity * food = m_entitiesRegistry->getEntityAt(x, y, EntityType::FOOD);
 
     if (food) {
         m_entitiesRegistry->deleteEntityAt(x, y, EntityType::FOOD);

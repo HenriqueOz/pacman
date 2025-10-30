@@ -1,12 +1,12 @@
-#ifndef _PACMAN_H
-#define _PACMAN_H
+#ifndef _PACMAN_HPP
+#define _PACMAN_HPP
 
-#include "entities/utils/movement.h"
-#include "game/controller/game_controller.h"
-#include "game/entities/entities.h"
-#include "game/input/input_manager.h"
+#include "entities/utils/movement.hpp"
+#include "game/controller/game_controller.hpp"
+#include "game/entities/entities.hpp"
+#include "game/input/input_manager.hpp"
 #include <SDL3/SDL_keycode.h>
-#include <entities/entity.h>
+#include <entities/entity.hpp>
 
 enum PacmanState
 {
@@ -19,16 +19,16 @@ class Pacman : public Entity
 {
 
   public:
-    Pacman(Vec2 const &pos,
-           InputManager *inputManager,
-           Entities *entitiesRegistry,
-           GameController *gameController);
+    Pacman(Vec2 const & pos,
+           InputManager * inputManager,
+           Entities * entitiesRegistry,
+           GameController * gameController);
 
     ~Pacman() override {};
 
     void update() override;
-    void render(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const override;
-    void renderGUI(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const override;
+    void render(SDL_Renderer * renderer, TTF_TextEngine * textEngine) const override;
+    void renderGUI(SDL_Renderer * renderer, TTF_TextEngine * textEngine) const override;
     EntityType getType() const override { return PACMAN; };
 
     void handleInput();
@@ -48,9 +48,9 @@ class Pacman : public Entity
     Utils::Direction getFacingDirection() const;
 
   private:
-    InputManager *m_inputManager = nullptr;
-    Entities *m_entitiesRegistry = nullptr;
-    GameController *m_gameController = nullptr;
+    InputManager * m_inputManager = nullptr;
+    Entities * m_entitiesRegistry = nullptr;
+    GameController * m_gameController = nullptr;
     Vec2 m_velocity;
 
     PacmanState m_PacmanState;

@@ -1,6 +1,6 @@
-#include "collider.h"
+#include <entities/collider/collider.hpp>
 
-Collider::Collider(const Vec2 &position, const Vec2 &size, bool isGhostDoor)
+Collider::Collider(const Vec2 & position, const Vec2 & size, bool isGhostDoor)
   : Entity()
   , m_isGhostDoor(isGhostDoor)
 {
@@ -14,7 +14,7 @@ Collider::update()
 }
 
 void
-Collider::render(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
+Collider::render(SDL_Renderer * renderer, TTF_TextEngine * textEngine) const
 {
     if (isGhostDoor())
         return;

@@ -1,6 +1,6 @@
-#include "game/game.h"
-#include "config/config.h"
-#include "game/entities/entities.h"
+#include <game/game.hpp>
+#include <config/config.hpp>
+#include <game/entities/entities.hpp>
 #include <SDL3/SDL_blendmode.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_oldnames.h>
@@ -8,16 +8,15 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <game/input/input_manager.h>
+#include <game/input/input_manager.hpp>
 #include <iostream>
 
-Game::Game(InputManager *inputManager, Entities *entities, GameController *gameController)
+Game::Game(InputManager * inputManager, Entities * entities, GameController * gameController)
   : m_isRunning(false)
   , m_inputManager(inputManager)
   , m_entities(entities)
   , m_gameController(gameController)
 {
-
 }
 
 void
@@ -120,7 +119,7 @@ Game::render()
     SDL_SetTextureBlendMode(m_gameTexture, SDL_BLENDMODE_BLEND);
     SDL_RenderClear(m_renderer);
 
-    for (const auto &entity : entitiesVector) {
+    for (const auto & entity : entitiesVector) {
         if (entity != nullptr) {
             entity->render(m_renderer, m_textEngine);
         }
@@ -131,7 +130,7 @@ Game::render()
     SDL_SetTextureBlendMode(m_guiTexture, SDL_BLENDMODE_BLEND);
     SDL_RenderClear(m_renderer);
 
-    for (const auto &entity : entitiesVector) {
+    for (const auto & entity : entitiesVector) {
         if (entity != nullptr) {
             entity->renderGUI(m_renderer, m_textEngine);
         }
@@ -154,9 +153,9 @@ Game::render()
 void
 Game::update()
 {
-    auto &entitiesMap = m_entities->getEntities();
+    auto & entitiesMap = m_entities->getEntities();
 
-    for (const auto &entry : entitiesMap) {
+    for (const auto & entry : entitiesMap) {
         const auto entity = entry.second.get();
 
         if (entity) {

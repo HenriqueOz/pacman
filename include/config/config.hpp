@@ -7,7 +7,7 @@
 namespace Config {
 const std::string assetsPath = "assets";
 const std::string mapFilePath = assetsPath + "/map.csv";
-const char *const windowName = "Pacman";
+const char * const windowName = "Pacman";
 
 const unsigned horizontalTiles = 28;
 const unsigned verticalTiles = 31;
@@ -29,7 +29,7 @@ const unsigned logicalWidth = tileWidth * horizontalTiles;
 const unsigned logicalHeight = tileHeight * verticalTiles;
 
 const unsigned gameRenderXOffset = 0;
-    const unsigned gameRenderYOffset = topGuiHeight;
+const unsigned gameRenderYOffset = topGuiHeight;
 
 const float aspectRatio = (float)windowWidth / windowHeight;
 

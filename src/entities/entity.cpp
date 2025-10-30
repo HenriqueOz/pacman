@@ -1,4 +1,4 @@
-#include "entity.h"
+#include <entities/entity.hpp>
 
 void
 Entity::setId(Uint32 id)

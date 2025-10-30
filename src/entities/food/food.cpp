@@ -1,8 +1,8 @@
-#include "food.h"
-#include "config/config.h"
-#include "vec/vec.h"
+#include <entities/food/food.hpp>
+#include <config/config.hpp>
+#include <vec/vec.hpp>
 
-Food::Food(Vec2 const &pos, bool isSuper)
+Food::Food(Vec2 const & pos, bool isSuper)
   : m_isSuper(isSuper)
 {
     if (isSuper) {
@@ -23,7 +23,7 @@ Food::update()
 }
 
 void
-Food::render(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
+Food::render(SDL_Renderer * renderer, TTF_TextEngine * textEngine) const
 {
     SDL_FRect rect = { static_cast<float>(m_position.x),
                        static_cast<float>(m_position.y),

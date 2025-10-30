@@ -1,10 +1,10 @@
-#ifndef _ENTITY_H
-#define _ENTITY_H
+#ifndef _ENTITY_HPP
+#define _ENTITY_HPP
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_stdinc.h>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <vec/vec.h>
+#include <vec/vec.hpp>
 
 enum EntityType
 {
@@ -21,8 +21,8 @@ class Entity
   public:
     virtual ~Entity() {};
     virtual void update() {};
-    virtual void render(SDL_Renderer *renderer, TTF_TextEngine *textEgine) const {};
-    virtual void renderGUI(SDL_Renderer *renderer, TTF_TextEngine *textEgine) const {};
+    virtual void render(SDL_Renderer * renderer, TTF_TextEngine * textEgine) const {};
+    virtual void renderGUI(SDL_Renderer * renderer, TTF_TextEngine * textEgine) const {};
 
     virtual Vec2 getPosition() const { return m_position; };
     virtual Vec2 getSize() const { return m_size; };

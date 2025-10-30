@@ -1,5 +1,5 @@
-#ifndef VEC_H_
-#define VEC_H_
+#ifndef VEC_HPP_
+#define VEC_HPP_
 
 struct Vec2
 {
@@ -21,13 +21,13 @@ struct Vec2
         this->y = _x;
     }
 
-    inline void update(Vec2 const &v)
+    inline void update(Vec2 const & v)
     {
         this->x = v.x;
         this->y = v.y;
     }
 
-    inline bool equals(Vec2 const &v) const { return this->x == v.x && this->y == v.y; }
+    inline bool equals(Vec2 const & v) const { return this->x == v.x && this->y == v.y; }
 };
 
 #endif

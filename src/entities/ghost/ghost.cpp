@@ -1,10 +1,10 @@
-#include "ghost.h"
-#include "config/config.h"
-#include "entities/collider/collider.h"
-#include "entities/entity.h"
-#include "entities/utils/movement.h"
-#include "game/controller/game_controller.h"
-#include "vec/vec.h"
+#include <entities/ghost/ghost.hpp>
+#include <config/config.hpp>
+#include <entities/collider/collider.hpp>
+#include <entities/entity.hpp>
+#include <entities/utils/movement.hpp>
+#include <game/controller/game_controller.hpp>
+#include <vec/vec.hpp>
 #include <SDL3/SDL_keycode.h>
 #include <SDL3/SDL_oldnames.h>
 #include <SDL3/SDL_pixels.h>
@@ -14,13 +14,13 @@
 #include <limits>
 #include <vector>
 
-Ghost::Ghost(Vec2 const &pos,
-             Vec2 const &scatter,
+Ghost::Ghost(Vec2 const & pos,
+             Vec2 const & scatter,
              GhostType type,
              int startDelay,
-             GameController *gameController,
-             Entities *entitiesRegistry,
-             InputManager *inputManager)
+             GameController * gameController,
+             Entities * entitiesRegistry,
+             InputManager * inputManager)
   : m_state(GhostStates::SPAWN)
   , m_currentTile(0, 0)
   , m_ghostType(type)
@@ -99,7 +99,7 @@ Ghost::update()
 }
 
 void
-Ghost::render(SDL_Renderer *renderer, TTF_TextEngine *textEngine) const
+Ghost::render(SDL_Renderer * renderer, TTF_TextEngine * textEngine) const
 {
     SDL_FRect rect = { static_cast<float>(m_position.x),
                        static_cast<float>(m_position.y),
@@ -189,9 +189,9 @@ Ghost::getAvailableDirections() const
       (m_state == GhostStates::IDLE || m_state == GhostStates::EATEN);
 
     if (m_direction != Utils::Direction::RIGHT) {
-        Collider *leftTopCollider =
+        Collider * leftTopCollider =
           (Collider *)m_entitiesRegistry->getEntityAt(xLeft - m_speed, yTop, EntityType::COLLIDER);
-        Collider *leftBottomCollider = (Collider *)m_entitiesRegistry->getEntityAt(
+        Collider * leftBottomCollider = (Collider *)m_entitiesRegistry->getEntityAt(
           xLeft - m_speed, yBottom, EntityType::COLLIDER);
 
         bool leftTopBlocked =
@@ -205,9 +205,9 @@ Ghost::getAvailableDirections() const
     }
 
     if (m_direction != Utils::Direction::LEFT) {
-        Collider *rightTopCollider =
+        Collider * rightTopCollider =
           (Collider *)m_entitiesRegistry->getEntityAt(xRight + m_speed, yTop, EntityType::COLLIDER);
-        Collider *rightBottomCollider = (Collider *)m_entitiesRegistry->getEntityAt(
+        Collider * rightBottomCollider = (Collider *)m_entitiesRegistry->getEntityAt(
           xRight + m_speed, yBottom, EntityType::COLLIDER);
 
         bool rightTopBlocked =
@@ -221,9 +221,9 @@ Ghost::getAvailableDirections() const
     }
 
     if (m_direction != Utils::Direction::DOWN) {
-        Collider *upLeftCollider =
+        Collider * upLeftCollider =
           (Collider *)m_entitiesRegistry->getEntityAt(xLeft, yTop - m_speed, EntityType::COLLIDER);
-        Collider *upRightCollider =
+        Collider * upRightCollider =
           (Collider *)m_entitiesRegistry->getEntityAt(xRight, yTop - m_speed, EntityType::COLLIDER);
 
         bool upLeftBlocked =
@@ -237,9 +237,9 @@ Ghost::getAvailableDirections() const
     }
 
     if (m_direction != Utils::Direction::UP) {
-        Collider *downLeftCollider = (Collider *)m_entitiesRegistry->getEntityAt(
+        Collider * downLeftCollider = (Collider *)m_entitiesRegistry->getEntityAt(
           xLeft, yBottom + m_speed, EntityType::COLLIDER);
-        Collider *downRightCollider = (Collider *)m_entitiesRegistry->getEntityAt(
+        Collider * downRightCollider = (Collider *)m_entitiesRegistry->getEntityAt(
           xRight, yBottom + m_speed, EntityType::COLLIDER);
 
         bool downLeftBlocked =
@@ -256,7 +256,7 @@ Ghost::getAvailableDirections() const
 }
 
 void
-Ghost::drawLineToTarget(SDL_Renderer *renderer, Vec2 target) const
+Ghost::drawLineToTarget(SDL_Renderer * renderer, Vec2 target) const
 {
     SDL_Color ghostColor = getGhostColor();
     SDL_SetRenderDrawColor(renderer, ghostColor.r, ghostColor.g, ghostColor.b, ghostColor.a);
@@ -447,7 +447,7 @@ Ghost::getClydeChasingTarget(Vec2 pacmanPosition) const
 }
 
 void
-Ghost::drawClydeCircle(SDL_Renderer *renderer) const
+Ghost::drawClydeCircle(SDL_Renderer * renderer) const
 {
     SDL_Color ghostColor = getGhostColor();
     SDL_SetRenderDrawColor(renderer, ghostColor.r, ghostColor.g, ghostColor.b, ghostColor.a);

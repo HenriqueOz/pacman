@@ -1,11 +1,11 @@
-#ifndef ENTITIES_H_
-#define ENTITIES_H_
+#ifndef ENTITIES_HPP_
+#define ENTITIES_HPP_
 
-#include "entities/entity.h"
-#include "vec/vec.h"
+#include "entities/entity.hpp"
+#include "vec/vec.hpp"
 #include <SDL3/SDL_stdinc.h>
 #include <algorithm>
-#include <config/config.h>
+#include <config/config.hpp>
 #include <memory>
 #include <unordered_map>
 #include <vector>
@@ -16,9 +16,9 @@ class Entities
     Entities() {};
     ~Entities() {};
 
-    inline Entity *addEntity(std::unique_ptr<Entity> entity)
+    inline Entity * addEntity(std::unique_ptr<Entity> entity)
     {
-        Entity *entityPtr = entity.get();
+        Entity * entityPtr = entity.get();
         const Uint32 id = m_currentId++;
 
         entity->setId(id);
@@ -32,25 +32,28 @@ class Entities
         std::vector<Entity *> sortedEntities;
         sortedEntities.reserve(m_entities.size());
 
-        for (const auto &pair : m_entities) {
+        for (const auto & pair : m_entities) {
             if (pair.second != nullptr) {
                 sortedEntities.push_back(pair.second.get());
             }
         }
 
-        std::sort(sortedEntities.begin(), sortedEntities.end(), [](Entity *a, Entity *b) {
+        std::sort(sortedEntities.begin(), sortedEntities.end(), [](Entity * a, Entity * b) {
             return static_cast<int>(a->getType()) > static_cast<int>(b->getType());
         });
 
         return sortedEntities;
     }
 
-    inline std::unordered_map<Uint32, std::unique_ptr<Entity>> &getEntities() { return m_entities; }
-
-    inline Entity *getEntityAt(int x, int y, EntityType type) const
+    inline std::unordered_map<Uint32, std::unique_ptr<Entity>> & getEntities()
     {
-        for (const auto &pair : m_entities) {
-            Entity *entity = pair.second.get();
+        return m_entities;
+    }
+
+    inline Entity * getEntityAt(int x, int y, EntityType type) const
+    {
+        for (const auto & pair : m_entities) {
+            Entity * entity = pair.second.get();
             if (entity && entity->getType() == type && isPositionInEntityBounds(x, y, entity)) {
                 return entity;
             }
@@ -66,7 +69,7 @@ class Entities
     inline bool deleteEntityAt(int x, int y, EntityType type)
     {
         for (auto it = m_entities.begin(); it != m_entities.end(); ++it) {
-            Entity *entity = it->second.get();
+            Entity * entity = it->second.get();
             if (entity && entity->getType() == type && isPositionInEntityBounds(x, y, entity)) {
                 m_entities.erase(it);
                 return true;
@@ -75,7 +78,7 @@ class Entities
         return false;
     }
 
-    inline Entity *getEntityById(Uint32 id)
+    inline Entity * getEntityById(Uint32 id)
     {
         const auto it = m_entities.find(id);
         if (it == m_entities.end()) {
@@ -86,7 +89,7 @@ class Entities
     }
 
   private:
-    inline bool isPositionInEntityBounds(int x, int y, Entity *entity) const
+    inline bool isPositionInEntityBounds(int x, int y, Entity * entity) const
     {
         Vec2 pos = entity->getPosition();
         Vec2 size = entity->getSize();

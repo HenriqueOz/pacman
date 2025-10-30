@@ -1,8 +1,8 @@
-#ifndef UTILS_H_
-#define UTILS_H_
+#ifndef UTILS_HPP_
+#define UTILS_HPP_
 
-#include "config/config.h"
-#include "vec/vec.h"
+#include "config/config.hpp"
+#include "vec/vec.hpp"
 #include <cmath>
 #include <cstdlib>
 
@@ -18,14 +18,14 @@ enum class Direction : int
 };
 
 inline Vec2
-positionToTiles(Vec2 const &pos)
+positionToTiles(Vec2 const & pos)
 {
     return { static_cast<int>(pos.x / Config::tileWidth),
              static_cast<int>(pos.y / Config::tileHeight) };
 }
 
 inline Vec2
-tilesToPosition(Vec2 const &pos)
+tilesToPosition(Vec2 const & pos)
 {
     return {
         static_cast<int>(pos.x * Config::tileWidth),

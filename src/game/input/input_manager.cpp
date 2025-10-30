@@ -1,9 +1,9 @@
-#include "input_manager.h"
+#include <game/input/input_manager.hpp>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_oldnames.h>
 
 void
-InputManager::processInput(SDL_Event &event)
+InputManager::processInput(SDL_Event & event)
 {
     if (m_releaseKeyPressed) {
         releasedKeys[m_releasedKey] = false;
