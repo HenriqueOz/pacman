@@ -26,7 +26,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(SDL3_ttf)
 
-add_executable(${PROJECT_NAME} ${SRC_FILES} ${HEADER_FILES})
+add_executable(${PROJECT_NAME})
+
+target_include_directories(${PROJECT_NAME} PRIVATE)
 
 target_link_libraries(${PROJECT_NAME} SDL3::SDL3 SDL3_ttf::SDL3_ttf)
 
