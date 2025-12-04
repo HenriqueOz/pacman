@@ -14,15 +14,16 @@ struct Key
 
 class InputManager
 {
+
   public:
     void process_input(SDL_Event & event);
     bool key_pressed(SDL_Keycode key) const;
     bool key_released(SDL_Keycode key) const;
 
   private:
+    SDL_Keycode _releasedKeyCode = 0;
     std::unordered_map<SDL_Keycode, Key> _keyStates = {};
     bool _keyReleased = false;
-    SDL_Keycode _releasedKeyCode = 0;
 };
 
 #endif

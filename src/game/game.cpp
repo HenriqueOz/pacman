@@ -1,7 +1,8 @@
-#include "game/game.hpp"
-#include "SDL3/SDL_stdinc.h"
-#include "SDL3/SDL_timer.h"
-#include "config/config.hpp"
+#include <cstdint>
+#include <iostream>
+
+#include <SDL3/SDL_stdinc.h>
+#include <SDL3/SDL_timer.h>
 #include <SDL3/SDL_blendmode.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_oldnames.h>
@@ -9,9 +10,9 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <X11/Xmd.h>
-#include <cstdint>
-#include <iostream>
+
+#include "config/config.hpp"
+#include "game/game.hpp"
 
 using namespace config;
 
@@ -47,8 +48,8 @@ Game::run()
         this->render();
 
         Uint64 frameDuration = SDL_GetTicks() - currentTick;
-        if (window::FRAME_DELAY > frameDuration) {
-            SDL_Delay(window::FRAME_DELAY - frameDuration);
+        if (window::kFrameDelay > frameDuration) {
+            SDL_Delay(window::kFrameDelay - frameDuration);
         }
     }
 
@@ -70,9 +71,9 @@ Game::init()
         return;
     }
 
-    if (!SDL_CreateWindowAndRenderer(window::TITLE,
-                                     gui::TOTAL_WIDTH,
-                                     gui::TOTAL_HEIGHT,
+    if (!SDL_CreateWindowAndRenderer(window::kTitle,
+                                     gui::kTotalWidth,
+                                     gui::kTotalHeight,
                                      SDL_WINDOW_HIGH_PIXEL_DENSITY,
                                      &_window,
                                      &_renderer)) {
@@ -83,8 +84,8 @@ Game::init()
     _gameTexture = SDL_CreateTexture(_renderer,
                                      SDL_GetWindowPixelFormat(_window),
                                      SDL_TEXTUREACCESS_TARGET,
-                                     window::WIDTH,
-                                     window::HEIGHT);
+                                     window::kWidth,
+                                     window::kHeight);
 
     if (!_gameTexture) {
         std::cerr << "ERROR::GAME::COULD_NOT_CREATE_gameTexture: " << SDL_GetError() << std::endl;
@@ -94,8 +95,8 @@ Game::init()
     _guiTexture = SDL_CreateTexture(_renderer,
                                     SDL_PIXELFORMAT_ARGB8888,
                                     SDL_TEXTUREACCESS_TARGET,
-                                    gui::TOTAL_WIDTH,
-                                    gui::TOTAL_HEIGHT);
+                                    gui::kTotalWidth,
+                                    gui::kTotalHeight);
 
     if (!_guiTexture) {
         std::cerr << "ERROR::GAME::COULD_NOT_CREATE_guiTexture: " << SDL_GetError() << std::endl;
@@ -149,9 +150,9 @@ Game::render()
     SDL_RenderClear(_renderer);
 
     SDL_FRect gameDestRect = { 0,
-                               static_cast<float>(gui::TOP_HEIGHT),
-                               static_cast<float>(window::WIDTH),
-                               static_cast<float>(window::HEIGHT) };
+                               static_cast<float>(gui::kTopHeight),
+                               static_cast<float>(window::kWidth),
+                               static_cast<float>(window::kHeight) };
 
     SDL_RenderTexture(_renderer, _gameTexture, nullptr, &gameDestRect);
     SDL_RenderTexture(_renderer, _guiTexture, nullptr, nullptr);
