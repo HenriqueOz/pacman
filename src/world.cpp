@@ -1,7 +1,7 @@
 #include "world.hpp"
-#include "components/registry.hpp"
+#include "ecs/components.hpp"
 
-World::World(Registry & registry)
+World::World(ecs::Registry & registry)
   : _registry(registry)
 {
 }
