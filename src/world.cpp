@@ -1,13 +1,23 @@
 #include "world.hpp"
-#include "components/registry.hpp"
+#include "ecs/components.hpp"
+#include "ecs/registry.hpp"
 
-World::World(Registry & registry)
+World::World(ecs::Registry & registry)
   : _registry(registry)
 {
+    initialize();
 }
 
 void
-World::update(float delta_time, InputManager & input_manager)
+World::initialize()
+{
+    ecs::Entity pacman = _registry.create_entity();
+    _registry.set(pacman, ecs::Sprite{});
+    _registry.set(pacman, ecs::DirectionControl{});
+}
+
+void
+World::update(float deltaTime, InputManager & inputManager)
 {
 }
 

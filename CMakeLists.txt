@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(link_assets ${CMAKE_SOURCE_DIR}/assets)
+set(assets_dir ${CMAKE_SOURCE_DIR}/assets)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
@@ -45,7 +45,7 @@ target_sources(
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND}
-    -E create_symlink ${link_assets} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
+    -E copy_directory ${assets_dir} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
 )
 
 add_custom_command(
