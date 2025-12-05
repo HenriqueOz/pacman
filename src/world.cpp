@@ -1,5 +1,4 @@
 #include "world.hpp"
-#include "ecs/components.hpp"
 
 World::World(ecs::Registry & registry)
   : _registry(registry)

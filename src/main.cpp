@@ -1,3 +1,4 @@
+#include "ecs/components.hpp"
 #include "ecs/registry.hpp"
 #include "game/game.hpp"
 #include "game/input_manager.hpp"
@@ -11,8 +12,12 @@ main(int argc, char ** argv)
 
     World world = World(registry);
 
-    Game game(world, inputManager);
-    game.run();
+    ecs::Entity test = registry.create_entity();
+
+    registry.set(test, ecs::Sprite{});
+
+    // Game game(world, inputManager);
+    // game.run();
 
     return 0;
 }
