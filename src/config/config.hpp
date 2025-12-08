@@ -8,7 +8,7 @@ namespace config {
 
 namespace assets {
 const std::string kRoot = "./assets";
-const std::string kMapCsv = kRoot + "/map/map.csv";
+const std::string kMapCsv = assets::kRoot + "/map/map.csv";
 }
 
 namespace tile {
@@ -22,19 +22,19 @@ namespace window {
 constexpr std::uint32_t kHorizontalScale = 1;
 constexpr std::uint32_t kVerticalScale = 1;
 constexpr std::uint32_t kWidth =
-  (tile::kTileWidth * tile::kHorizontalTiles) * kHorizontalScale;
+  (tile::kTileWidth * tile::kHorizontalTiles) * window::kHorizontalScale;
 constexpr std::uint32_t kHeight =
-  (tile::kTileHeight * tile::kVerticalTiles) * kVerticalScale;
+  (tile::kTileHeight * tile::kVerticalTiles) * window::kVerticalScale;
 constexpr const char * kTitle = "Pacman";
 constexpr std::uint32_t kFps = 60;
-constexpr std::uint32_t kFrameDelay = 1000 / kFps;
+constexpr std::uint32_t kFrameDelay = 1000 / window::kFps;
 }
 
 namespace gui {
 constexpr std::uint32_t kTopHeight = 80;
 constexpr std::uint32_t kBottomHeight = 50;
 constexpr std::uint32_t kTotalHeight =
-  window::kHeight + kTopHeight + kBottomHeight;
+  window::kHeight + gui::kTopHeight + gui::kBottomHeight;
 constexpr std::uint32_t kTotalWidth = window::kWidth;
 }
 

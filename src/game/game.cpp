@@ -16,10 +16,11 @@
 
 using namespace config;
 
-Game::Game(World & world, InputManager & inputManager)
+Game::Game(World & world, InputManager & inputManager, Input & input)
   : _isRunning(false)
   , _inputManager(inputManager)
   , _world(world)
+  , _input(input)
 {
 }
 
@@ -62,12 +63,14 @@ Game::init()
     _isRunning = false;
 
     if (!TTF_Init()) {
-        std::cerr << "ERROR::SDL::FAILED_TO_INIT_TTF: " << SDL_GetError() << std::endl;
+        std::cerr << "ERROR::SDL::FAILED_TO_INIT_TTF: " << SDL_GetError()
+                  << std::endl;
         return;
     }
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
-        std::cerr << "ERROR::SDL::FAILED_TO_INIT_VIDEO_SUBMODULE: " << SDL_GetError() << std::endl;
+        std::cerr << "ERROR::SDL::FAILED_TO_INIT_VIDEO_SUBMODULE: "
+                  << SDL_GetError() << std::endl;
         return;
     }
 
@@ -77,7 +80,8 @@ Game::init()
                                      SDL_WINDOW_HIGH_PIXEL_DENSITY,
                                      &_window,
                                      &_renderer)) {
-        std::cerr << "ERROR::GAME::COULD_NOT_CREATE_WINDOW: " << SDL_GetError() << std::endl;
+        std::cerr << "ERROR::GAME::COULD_NOT_CREATE_WINDOW: " << SDL_GetError()
+                  << std::endl;
         return;
     }
 
@@ -88,7 +92,8 @@ Game::init()
                                      window::kHeight);
 
     if (!_gameTexture) {
-        std::cerr << "ERROR::GAME::COULD_NOT_CREATE_gameTexture: " << SDL_GetError() << std::endl;
+        std::cerr << "ERROR::GAME::COULD_NOT_CREATE_gameTexture: "
+                  << SDL_GetError() << std::endl;
         return;
     }
 
@@ -99,14 +104,15 @@ Game::init()
                                     gui::kTotalHeight);
 
     if (!_guiTexture) {
-        std::cerr << "ERROR::GAME::COULD_NOT_CREATE_guiTexture: " << SDL_GetError() << std::endl;
+        std::cerr << "ERROR::GAME::COULD_NOT_CREATE_guiTexture: "
+                  << SDL_GetError() << std::endl;
         return;
     }
 
     _textEngine = TTF_CreateRendererTextEngine(_renderer);
     if (!_textEngine) {
-        std::cerr << "ERROR::GAME::FAILED_TO_CREATE_RENDERER_textEngine: " << SDL_GetError()
-                  << std::endl;
+        std::cerr << "ERROR::GAME::FAILED_TO_CREATE_RENDERER_textEngine: "
+                  << SDL_GetError() << std::endl;
         return;
     }
 
@@ -161,9 +167,9 @@ Game::render()
 }
 
 void
-Game::update(float delta_time)
+Game::update(float deltaTime)
 {
-    _world.update(delta_time, _inputManager);
+    _world.update(deltaTime, _input);
 }
 
 void

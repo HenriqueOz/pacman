@@ -1,8 +1,14 @@
-#include "input_manager.hpp"
-#include "SDL3/SDL_keycode.h"
+#include <unordered_map>
+
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_oldnames.h>
-#include <unordered_map>
+
+#include "input_manager.hpp"
+
+InputManager::InputManager(std::unordered_map<SDL_Keycode, Key> & keyStates)
+  : _keyStates(keyStates)
+{
+}
 
 void
 InputManager::process_input(SDL_Event & event)
@@ -28,18 +34,4 @@ InputManager::process_input(SDL_Event & event)
             }
             break;
     }
-}
-
-bool
-InputManager::key_pressed(SDL_Keycode key) const
-{
-    const auto it = _keyStates.find(key);
-    return it != _keyStates.end() && it->second.pressed;
-}
-
-bool
-InputManager::key_released(SDL_Keycode key) const
-{
-    const auto it = _keyStates.find(key);
-    return it != _keyStates.end() && it->second.released;
 }

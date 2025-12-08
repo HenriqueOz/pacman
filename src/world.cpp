@@ -1,27 +1,31 @@
 #include "world.hpp"
-#include "ecs/components.hpp"
-#include "ecs/registry.hpp"
+#include "game/input.hpp"
+#include "pure/pacman.hpp"
 
-World::World(ecs::Registry & registry)
-  : _registry(registry)
+World::World()
 {
-    initialize();
+    this->initialize();
 }
 
 void
 World::initialize()
 {
-    ecs::Entity pacman = _registry.create_entity();
-    _registry.set(pacman, ecs::Sprite{});
-    _registry.set(pacman, ecs::DirectionControl{});
+    _pacman = create_pacman(10.f, 10.f);
 }
 
 void
-World::update(float deltaTime, InputManager & inputManager)
+World::update(float deltaTime, Input & input)
 {
+    update_pacman(deltaTime, input, _pacman.get());
 }
 
 void
 World::render(SDL_Renderer * renderer)
+{
+    render_pacman(renderer, _pacman.get());
+}
+
+void
+World::renderGui(SDL_Renderer * renderer)
 {
 }
