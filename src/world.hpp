@@ -1,21 +1,25 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "ecs/registry.hpp"
-#include "game/input_manager.hpp"
+#include <memory>
+
 #include <SDL3/SDL_render.h>
+
+#include "game/input.hpp"
+#include "pure/pacman.hpp"
 
 class World
 {
   public:
-    World(ecs::Registry & registry);
+    World();
+    ~World() = default;
 
-    void update(float deltaTima, InputManager & inputManager);
+    void update(float deltaTima, Input & input);
     void render(SDL_Renderer * renderer);
     void renderGui(SDL_Renderer * renderer);
 
   private:
-    ecs::Registry _registry;
+    std::unique_ptr<Pacman> _pacman;
 
     void initialize();
 };
