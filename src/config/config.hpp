@@ -9,6 +9,7 @@ namespace config {
 namespace assets {
 const std::string kRoot = "./assets";
 const std::string kMapCsv = assets::kRoot + "/map/map.csv";
+const std::string kPacmanIdleSprite = assets::kRoot + "/sprites/test.png";
 }
 
 namespace tile {

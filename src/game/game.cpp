@@ -35,6 +35,8 @@ Game::run()
         return;
     }
 
+    _world.initialize(_renderer);
+
     std::uint64_t lastTick = SDL_GetTicks();
     std::uint64_t currentTick = 0;
     float deltaTime = 0;
