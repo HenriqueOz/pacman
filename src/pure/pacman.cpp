@@ -1,63 +1,53 @@
-#ifndef PURE_H_
-#define PURE_H_
+#include <SDL3/SDL_keycode.h>
+#include <SDL3/SDL_render.h>
 
-#include <iostream>
-#include <memory>
-
-#include "SDL3/SDL_keycode.h"
-#include "SDL3/SDL_render.h"
-
+#include "config/config.hpp"
 #include "game/input.hpp"
+#include "pure/sprite.hpp"
 #include "pacman.hpp"
 
-static Vec2<int>
-update_direction(Input & input, Pacman * pacman)
+void
+Pacman::initialize(float x, float y, SDL_Renderer * renderer)
 {
-    Vec2<int> newDirection = pacman->direction;
+    _position = { x, y };
+    _direction = { 0, 0 };
 
+    _sprite.set_position(_position);
+    _sprite.set_size({ 16, 16 });
+    _sprite.load(renderer, config::assets::kPacmanIdleSprite);
+}
+
+void
+Pacman::update(float deltaTime, Input & input)
+{
+    update_direction(input);
+
+    _position.x += _speed * _direction.x * deltaTime;
+    _position.y += _speed * _direction.y * deltaTime;
+
+    _sprite.set_position(_position);
+}
+
+void
+Pacman::render(SDL_Renderer * renderer)
+{
+    const SDL_FRect rect = { .x = _position.x,
+                             .y = _position.y,
+                             .w = config::tile::kTileWidth,
+                             .h = config::tile::kTileHeight };
+
+    _sprite.render(renderer);
+}
+
+void
+Pacman::update_direction(Input & input)
+{
     if (input.key_pressed(SDLK_LEFT))
-        return newDirection = { -1, 0 };
+        _direction = { -1, 0 };
     else if (input.key_pressed(SDLK_RIGHT))
-        return newDirection = { 1, 0 };
+        _direction = { 1, 0 };
     else if (input.key_pressed(SDLK_UP))
-        return newDirection = { 0, -1 };
-    if (input.key_pressed(SDLK_DOWN))
-        return newDirection = { 0, 1 };
-
-    return newDirection;
+        _direction = { 0, -1 };
+    else if (input.key_pressed(SDLK_DOWN))
+        _direction = { 0, 1 };
 }
-
-std::unique_ptr<Pacman>
-create_pacman(float x, float y)
-{
-    Pacman p{ .position = { x, y } };
-    return std::make_unique<Pacman>(p);
-}
-
-void
-update_pacman(float deltaTime, Input & input, Pacman * pacman)
-{
-    pacman->direction = update_direction(input, pacman);
-
-    const float speed = 60.f;
-
-    pacman->position.x += speed * pacman->direction.x * deltaTime;
-    pacman->position.y += speed * pacman->direction.y * deltaTime;
-
-    std::cout << "x: " << pacman->position.x << " y: " << pacman->position.y
-              << "\n";
-}
-
-void
-render_pacman(SDL_Renderer * renderer, Pacman * pacman)
-{
-    const Vec2<float> & position = pacman->position;
-    const SDL_FRect rect = {
-        .x = position.x, .y = position.y, .w = 16, .h = 16
-    };
-
-    SDL_SetRenderDrawColorFloat(renderer, 1.f, 1.f, 1.f, 1.f);
-    SDL_RenderRect(renderer, &rect);
-    SDL_SetRenderDrawColorFloat(renderer, 0.f, 0.f, 0.f, 1.f);
-}
-#endif
