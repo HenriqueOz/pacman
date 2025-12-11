@@ -17,7 +17,7 @@ class Input
     bool key_released(SDL_Keycode key) const;
 
   private:
-    std::unordered_map<SDL_Keycode, Key> & _keyStates;
+    const std::unordered_map<SDL_Keycode, Key> & _keyStates;
 };
 
 #endif

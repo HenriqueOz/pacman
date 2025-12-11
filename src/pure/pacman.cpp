@@ -2,41 +2,41 @@
 #include <SDL3/SDL_render.h>
 
 #include "config/config.hpp"
-#include "game/input.hpp"
-#include "pure/sprite.hpp"
 #include "pacman.hpp"
 
-void
-Pacman::initialize(float x, float y, SDL_Renderer * renderer)
+Pacman::Pacman(float x,
+               float y,
+               SDL_Renderer * renderer,
+               Input & input,
+               CollisionManager & collision)
+  : _input(input)
+  , _collision(collision)
+  , _position{ x, y }
+  , _direction{ 1, 0 }
+  , _sprite(_position, { 16, 16 }, renderer, config::assets::kPacmanIdleSprite)
+  , _bbox(_position, { 16, 16 }, CollisionTag::pacman)
 {
-    _position = { x, y };
-    _direction = { 0, 0 };
-
-    _sprite.set_position(_position);
-    _sprite.set_size({ 16, 16 });
-    _sprite.load(renderer, config::assets::kPacmanIdleSprite);
 }
 
 void
-Pacman::update(float deltaTime, Input & input)
+Pacman::update(float deltaTime)
 {
-    update_direction(input);
+    update_direction(_input);
 
     _position.x += _speed * _direction.x * deltaTime;
     _position.y += _speed * _direction.y * deltaTime;
 
-    _sprite.set_position(_position);
+    _sprite.position = _position;
+
+    _bbox.position = _position;
+    _collision.register_box(&_bbox);
 }
 
 void
 Pacman::render(SDL_Renderer * renderer)
 {
-    const SDL_FRect rect = { .x = _position.x,
-                             .y = _position.y,
-                             .w = config::tile::kTileWidth,
-                             .h = config::tile::kTileHeight };
-
     _sprite.render(renderer);
+    _bbox.render(renderer, SDL_Color{ 255, 0, 0, 255 });
 }
 
 void

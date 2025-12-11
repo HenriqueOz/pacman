@@ -25,9 +25,7 @@ InputManager::process_input(SDL_Event & event)
             break;
         case SDL_EVENT_KEY_UP:
             if (_keyStates[event.key.key].pressed) {
-                Key & key = _keyStates[_releasedKeyCode];
-
-                _releasedKeyCode = event.key.key;
+                Key & key = _keyStates[event.key.key];
 
                 key.released = true;
                 key.pressed = false;

@@ -8,12 +8,16 @@
 
 #include "game/input.hpp"
 #include "game/input_manager.hpp"
-#include "world.hpp"
+#include "game/world.hpp"
+#include "pure/collision_manager.hpp"
 
 class Game
 {
   public:
-    Game(World & world, InputManager & inputManager, Input & input);
+    Game(World & world,
+         InputManager & inputManager,
+         Input & input,
+         CollisionManager & collision);
     ~Game();
 
     bool is_running() const;
@@ -40,6 +44,7 @@ class Game
     InputManager & _inputManager;
     Input & _input;
     World & _world;
+    CollisionManager & _collision;
 };
 
 #endif
