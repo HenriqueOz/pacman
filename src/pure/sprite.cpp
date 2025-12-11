@@ -22,7 +22,6 @@ Sprite::load(SDL_Renderer * renderer, const std::string & filepath)
     if (texture != nullptr) {
         _texture = texture;
         _textureSize = get_texture_size(_texture);
-        SDL_Log("SPRITE_LOADED: %s", filepath.c_str());
         return;
     }
     SDL_Log("ERROR::SPRITE::FAILED_TO_LOAD_SPRITE: %s", SDL_GetError());
@@ -34,10 +33,10 @@ Sprite::render(SDL_Renderer * renderer) const
     if (!_texture)
         return;
 
-    const SDL_FRect destination = { .x = _position.x,
-                                    .y = _position.y,
-                                    .w = static_cast<float>(_size.x),
-                                    .h = static_cast<float>(_size.y) };
+    const SDL_FRect destination = { .x = position.x,
+                                    .y = position.y,
+                                    .w = static_cast<float>(size.x),
+                                    .h = static_cast<float>(size.y) };
 
     SDL_RenderTexture(renderer, _texture, nullptr, &destination);
 }
