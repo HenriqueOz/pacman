@@ -9,22 +9,23 @@
 class Sprite
 {
   public:
-    Sprite() = default;
+    Vec2<float> position{};
+    Vec2<int> size{};
+
+    Sprite(Vec2<float> _position,
+           Vec2<int> _size,
+           SDL_Renderer * renderer,
+           const std::string & filepath);
     ~Sprite();
 
-    void load(SDL_Renderer * renderer, const std::string & filepath);
     void render(SDL_Renderer * renderer) const;
-
-    void set_position(const Vec2<float> & pos) { _position = pos; }
-    void set_size(const Vec2<int> & size) { _size = size; }
-
-    const Vec2<float> & get_position() const { return _position; }
-    const Vec2<int> & get_size() const { return _size; }
+    const Vec2<int> & get_image_size() const { return _textureSize; }
 
   private:
-    Vec2<float> _position{};
-    Vec2<int> _size{};
+    Vec2<int> _textureSize{};
     SDL_Texture * _texture = nullptr;
+
+    void load_image(SDL_Renderer * renderer, const std::string & filepath);
 };
 
 #endif

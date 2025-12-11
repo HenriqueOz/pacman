@@ -1,4 +1,5 @@
 #include "input.hpp"
+#include "SDL3/SDL_log.h"
 
 Input::Input(std::unordered_map<SDL_Keycode, Key> & keyStates)
   : _keyStates(keyStates)

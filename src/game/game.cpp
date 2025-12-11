@@ -16,11 +16,15 @@
 
 using namespace config;
 
-Game::Game(World & world, InputManager & inputManager, Input & input)
+Game::Game(World & world,
+           InputManager & inputManager,
+           Input & input,
+           CollisionManager & collision)
   : _isRunning(false)
   , _inputManager(inputManager)
   , _world(world)
   , _input(input)
+  , _collision(collision)
 {
 }
 
@@ -77,8 +81,8 @@ Game::init()
     }
 
     if (!SDL_CreateWindowAndRenderer(window::kTitle,
-                                     gui::kTotalWidth,
-                                     gui::kTotalHeight,
+                                     window::kWidth,
+                                     window::kHeight,
                                      SDL_WINDOW_HIGH_PIXEL_DENSITY,
                                      &_window,
                                      &_renderer)) {
@@ -90,8 +94,8 @@ Game::init()
     _gameTexture = SDL_CreateTexture(_renderer,
                                      SDL_GetWindowPixelFormat(_window),
                                      SDL_TEXTUREACCESS_TARGET,
-                                     window::kWidth,
-                                     window::kHeight);
+                                     view::kGameTextureWidth,
+                                     view::kGameTextureHeight);
 
     if (!_gameTexture) {
         std::cerr << "ERROR::GAME::COULD_NOT_CREATE_gameTexture: "
@@ -102,8 +106,8 @@ Game::init()
     _guiTexture = SDL_CreateTexture(_renderer,
                                     SDL_PIXELFORMAT_ARGB8888,
                                     SDL_TEXTUREACCESS_TARGET,
-                                    gui::kTotalWidth,
-                                    gui::kTotalHeight);
+                                    view::kSurfaceWidth,
+                                    view::kSurfaceHeight);
 
     if (!_guiTexture) {
         std::cerr << "ERROR::GAME::COULD_NOT_CREATE_guiTexture: "
@@ -142,6 +146,7 @@ Game::handle_input()
 void
 Game::render()
 {
+    // Rendering to game texture
     SDL_SetRenderTarget(_renderer, _gameTexture);
     SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
     SDL_SetTextureBlendMode(_gameTexture, SDL_BLENDMODE_BLEND);
@@ -149,21 +154,31 @@ Game::render()
 
     _world.render(_renderer);
 
+    // Rendering to gui texture
     SDL_SetRenderTarget(_renderer, _guiTexture);
     SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0);
     SDL_SetTextureBlendMode(_guiTexture, SDL_BLENDMODE_BLEND);
     SDL_RenderClear(_renderer);
 
+    _world.renderGui(_renderer);
+
+    // Clearing renderer
     SDL_SetRenderTarget(_renderer, nullptr);
     SDL_RenderClear(_renderer);
 
     SDL_FRect gameDestRect = { 0,
-                               static_cast<float>(gui::kTopHeight),
-                               static_cast<float>(window::kWidth),
-                               static_cast<float>(window::kHeight) };
+                               static_cast<float>(view::kGuiTopHeight),
+                               static_cast<float>(view::kGameTextureWidth),
+                               static_cast<float>(view::kGameTextureHeight) };
 
+    // Merging textures to the renderer
     SDL_RenderTexture(_renderer, _gameTexture, nullptr, &gameDestRect);
     SDL_RenderTexture(_renderer, _guiTexture, nullptr, nullptr);
+
+    // Presenting the final result
+    SDL_SetRenderScale(_renderer,
+                       static_cast<float>(window::kHorizontalScale),
+                       static_cast<float>(window::kVerticalScale));
 
     SDL_RenderPresent(_renderer);
 }
@@ -171,7 +186,7 @@ Game::render()
 void
 Game::update(float deltaTime)
 {
-    _world.update(deltaTime, _input);
+    _world.update(deltaTime, _input, _collision);
 }
 
 void
