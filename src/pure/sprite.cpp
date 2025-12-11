@@ -21,6 +21,7 @@ Sprite::load(SDL_Renderer * renderer, const std::string & filepath)
     SDL_Texture * texture = IMG_LoadTexture(renderer, filepath.c_str());
     if (texture != nullptr) {
         _texture = texture;
+        _textureSize = get_texture_size(_texture);
         SDL_Log("SPRITE_LOADED: %s", filepath.c_str());
         return;
     }

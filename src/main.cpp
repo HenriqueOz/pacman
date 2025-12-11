@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <unordered_map>
 
 #include "SDL3/SDL_keycode.h"
@@ -6,7 +5,7 @@
 #include "game/game.hpp"
 #include "game/input.hpp"
 #include "game/input_manager.hpp"
-#include "world.hpp"
+#include "game/world.hpp"
 
 int
 main(int argc, char ** argv)

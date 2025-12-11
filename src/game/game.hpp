@@ -8,7 +8,7 @@
 
 #include "game/input.hpp"
 #include "game/input_manager.hpp"
-#include "world.hpp"
+#include "game/world.hpp"
 
 class Game
 {

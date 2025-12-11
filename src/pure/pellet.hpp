@@ -15,7 +15,7 @@ class Pellet
 
     void initialize(float x, float y, SDL_Renderer * renderer);
     void update(float deltaTime, Input & input);
-    void render(SDL_Renderer * renderer);
+    void render(SDL_Renderer * renderer) const;
 
     const Vec2<float> & get_position() const { return _position; }
 
