@@ -2,13 +2,14 @@
 #define COLLISION_MANAGER_H_
 
 #include <vector>
+#include <array>
 
 #include "config/config.hpp"
 #include "pure/collision_box.hpp"
 
-using MapGrid =
-  std::array<std::array<std::vector<Tag>, config::tile::kHorizontalTiles>,
-             config::tile::kVerticalTiles>;
+using MapGrid = std::array<
+  std::array<std::vector<CollisionTag>, config::tile::kHorizontalTiles>,
+  config::tile::kVerticalTiles>;
 
 class CollisionManager
 {
@@ -23,5 +24,6 @@ class CollisionManager
 
     Vec2<int> position_to_grid_cell(const Vec2<float> & position) const;
 };
+;
 
 #endif

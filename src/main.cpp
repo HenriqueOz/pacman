@@ -6,14 +6,17 @@
 #include "game/input.hpp"
 #include "game/input_manager.hpp"
 #include "game/world.hpp"
+#include "pure/collision_manager.hpp"
 
 int
 main(int argc, char ** argv)
 {
     std::unordered_map<SDL_Keycode, Key> keyStates;
+    MapGrid grid{};
 
     InputManager inputManager = InputManager(keyStates);
     Input input = Input(keyStates);
+    CollisionManager collision = CollisionManager(grid);
 
     World world = World();
 

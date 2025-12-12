@@ -4,13 +4,14 @@
 #include <SDL3/SDL_render.h>
 
 #include "game/input.hpp"
+#include "pure/collision_box.hpp"
 #include "pure/sprite.hpp"
 #include "utils.hpp"
 
 class Pacman
 {
   public:
-    Pacman() = default;
+    Pacman(float x, float y, SDL_Renderer * renderer);
     ~Pacman() = default;
 
     void initialize(float x, float y, SDL_Renderer * renderer);
@@ -24,6 +25,7 @@ class Pacman
     Vec2<float> _position{};
     Vec2<int> _direction{};
     Sprite _sprite;
+    CollisionBox _bbox;
     float _speed = 60.0f;
 
     void update_direction(Input & input);

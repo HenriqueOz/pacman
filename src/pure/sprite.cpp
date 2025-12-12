@@ -7,6 +7,16 @@
 #include "sprite.hpp"
 #include "SDL3/SDL_rect.h"
 
+Sprite::Sprite(Vec2<float> _position,
+               Vec2<int> _size,
+               SDL_Renderer * renderer,
+               const std::string & filepath)
+  : size(_size)
+  , position(_position)
+{
+    this->load(renderer, filepath.c_str());
+}
+
 Sprite::~Sprite()
 {
     if (_texture) {

@@ -7,12 +7,13 @@
 #include "SDL3/SDL_render.h"
 #include "pure/utils.hpp"
 
-using Tag = std::uint8_t;
-
-const Tag pacman = 0x1;
-const Tag ghost = 0x2;
-const Tag pellet = 0x4;
-const Tag wall = 0x8;
+enum CollisionTag : std::uint8_t
+{
+    pacman = 1,
+    ghost = 2,
+    pellet = 3,
+    wall = 4
+};
 
 class CollisionBox
 {
@@ -21,16 +22,13 @@ class CollisionBox
 
     CollisionBox(const Vec2<float> position,
                  const Vec2<int> size,
-                 const Tag tag);
+                 const CollisionTag tag);
 
     ~CollisionBox() = default;
 
-    inline const Vec2<float> & get_old_position() const
-    {
-        return _oldPosition;
-    };
-    inline const Vec2<float> & get_position() const { return _position; };
-    inline Tag get_tag() const { return _tag; };
+    inline const Vec2<float> get_old_position() const { return _oldPosition; };
+    inline const Vec2<float> get_position() const { return _position; };
+    inline CollisionTag get_tag() const { return _tag; };
 
     inline void update_position(const Vec2<float> newPosition)
     {
@@ -43,7 +41,7 @@ class CollisionBox
   private:
     Vec2<float> _oldPosition;
     Vec2<float> _position;
-    Tag _tag;
+    CollisionTag _tag;
 };
 
 #endif

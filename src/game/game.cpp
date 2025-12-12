@@ -16,11 +16,15 @@
 
 using namespace config;
 
-Game::Game(World & world, InputManager & inputManager, Input & input)
+Game::Game(World & world,
+           InputManager & inputManager,
+           Input & input,
+           CollisionManager & collision)
   : _isRunning(false)
   , _inputManager(inputManager)
   , _world(world)
   , _input(input)
+  , _collision(collision)
 {
 }
 

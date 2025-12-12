@@ -3,8 +3,17 @@
 
 #include "config/config.hpp"
 #include "game/input.hpp"
+#include "pure/collision_box.hpp"
 #include "pure/sprite.hpp"
 #include "pacman.hpp"
+
+Pacman::Pacman(float x, float y, SDL_Renderer * renderer)
+  : _position{ x, y }
+  , _direction{ 1, 0 }
+  , _sprite(_position, { 16, 16 }, renderer, config::assets::kPacmanIdleSprite)
+  , _bbox(_position, { 16, 16 }, CollisionTag::pacman)
+{
+}
 
 void
 Pacman::initialize(float x, float y, SDL_Renderer * renderer)
@@ -14,7 +23,8 @@ Pacman::initialize(float x, float y, SDL_Renderer * renderer)
 
     _sprite.position = _position;
     _sprite.size = { 16, 16 };
-    _sprite.load(renderer, config::assets::kPacmanIdleSprite);
+
+    _bbox = CollisionBox(_position, _sprite.size, CollisionTag::pacman);
 }
 
 void
