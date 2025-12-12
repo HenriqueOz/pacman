@@ -19,14 +19,13 @@ class Sprite
     ~Sprite();
 
     void render(SDL_Renderer * renderer) const;
-
     const Vec2<int> & get_image_size() const { return _textureSize; }
 
   private:
     Vec2<int> _textureSize{};
     SDL_Texture * _texture = nullptr;
 
-    void load(SDL_Renderer * renderer, const std::string & filepath);
+    void load_image(SDL_Renderer * renderer, const std::string & filepath);
 };
 
 #endif

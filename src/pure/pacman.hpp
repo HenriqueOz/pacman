@@ -5,6 +5,7 @@
 
 #include "game/input.hpp"
 #include "pure/collision_box.hpp"
+#include "pure/collision_manager.hpp"
 #include "pure/sprite.hpp"
 #include "utils.hpp"
 
@@ -14,8 +15,7 @@ class Pacman
     Pacman(float x, float y, SDL_Renderer * renderer);
     ~Pacman() = default;
 
-    void initialize(float x, float y, SDL_Renderer * renderer);
-    void update(float deltaTime, Input & input);
+    void update(float deltaTime, Input & input, CollisionManager & collision);
     void render(SDL_Renderer * renderer);
 
     const Vec2<float> & get_position() const { return _position; }

@@ -2,6 +2,7 @@
 #define WORLD_H
 
 #include <SDL3/SDL_render.h>
+#include <memory>
 #include <vector>
 
 #include "game/input.hpp"
@@ -15,13 +16,13 @@ class World
     ~World() = default;
 
     void initialize(SDL_Renderer * renderer);
-    void update(float deltaTime, Input & input);
+    void update(float deltaTime, Input & input, CollisionManager & collision);
     void render(SDL_Renderer * renderer);
     void renderGui(SDL_Renderer * renderer);
 
   private:
-    Pacman _pacman;
-    std::vector<Pellet> _pellets;
+    std::unique_ptr<Pacman> _pacman;
+    std::vector<std::unique_ptr<Pellet>> _pellets;
 };
 
 #endif

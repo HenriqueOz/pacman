@@ -1,8 +1,6 @@
 #include <cstddef>
 
 #include "game/world.hpp"
-#include "game/input.hpp"
-#include "pure/pacman.hpp"
 #include "config/config.hpp"
 
 void
@@ -24,26 +22,26 @@ World::initialize(SDL_Renderer * renderer)
         pelletX = config::tile::kTileWidth * col;
         pelletY = config::tile::kTileHeight * row;
 
-        _pellets[i].initialize(pelletX, pelletY, renderer);
+        _pellets[i] = std::make_unique<Pellet>(pelletX, pelletY, renderer);
         col++;
     }
 
-    _pacman.initialize(10.f, 10.f, renderer);
+    _pacman = std::make_unique<Pacman>(10, 10, renderer);
 }
 
 void
-World::update(float deltaTime, Input & input)
+World::update(float deltaTime, Input & input, CollisionManager & collision)
 {
-    _pacman.update(deltaTime, input);
+    _pacman->update(deltaTime, input, collision);
 }
 
 void
 World::render(SDL_Renderer * renderer)
 {
-    for (const Pellet & pellet : _pellets) {
-        pellet.render(renderer);
+    for (const std::unique_ptr<Pellet> & pellet : _pellets) {
+        pellet->render(renderer);
     }
-    _pacman.render(renderer);
+    _pacman->render(renderer);
 }
 
 void

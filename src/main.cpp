@@ -20,7 +20,7 @@ main(int argc, char ** argv)
 
     World world = World();
 
-    Game game = Game(world, inputManager, input);
+    Game game = Game(world, inputManager, input, collision);
 
     game.run();
 

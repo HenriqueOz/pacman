@@ -14,7 +14,7 @@ Sprite::Sprite(Vec2<float> _position,
   : size(_size)
   , position(_position)
 {
-    this->load(renderer, filepath.c_str());
+    this->load_image(renderer, filepath.c_str());
 }
 
 Sprite::~Sprite()
@@ -26,12 +26,13 @@ Sprite::~Sprite()
 }
 
 void
-Sprite::load(SDL_Renderer * renderer, const std::string & filepath)
+Sprite::load_image(SDL_Renderer * renderer, const std::string & filepath)
 {
     SDL_Texture * texture = IMG_LoadTexture(renderer, filepath.c_str());
     if (texture != nullptr) {
         _texture = texture;
         _textureSize = get_texture_size(_texture);
+        SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
         return;
     }
     SDL_Log("ERROR::SPRITE::FAILED_TO_LOAD_SPRITE: %s", SDL_GetError());

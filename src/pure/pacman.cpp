@@ -2,9 +2,6 @@
 #include <SDL3/SDL_render.h>
 
 #include "config/config.hpp"
-#include "game/input.hpp"
-#include "pure/collision_box.hpp"
-#include "pure/sprite.hpp"
 #include "pacman.hpp"
 
 Pacman::Pacman(float x, float y, SDL_Renderer * renderer)
@@ -16,19 +13,7 @@ Pacman::Pacman(float x, float y, SDL_Renderer * renderer)
 }
 
 void
-Pacman::initialize(float x, float y, SDL_Renderer * renderer)
-{
-    _position = { x, y };
-    _direction = { 0, 0 };
-
-    _sprite.position = _position;
-    _sprite.size = { 16, 16 };
-
-    _bbox = CollisionBox(_position, _sprite.size, CollisionTag::pacman);
-}
-
-void
-Pacman::update(float deltaTime, Input & input)
+Pacman::update(float deltaTime, Input & input, CollisionManager & collision)
 {
     update_direction(input);
 
@@ -36,12 +21,16 @@ Pacman::update(float deltaTime, Input & input)
     _position.y += _speed * _direction.y * deltaTime;
 
     _sprite.position = _position;
+
+    _bbox.update_position(_position);
+    collision.update_box_on_map(_bbox);
 }
 
 void
 Pacman::render(SDL_Renderer * renderer)
 {
     _sprite.render(renderer);
+    _bbox.render(renderer, SDL_Color{ 255, 0, 0, 255 });
 }
 
 void

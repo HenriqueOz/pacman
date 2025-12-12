@@ -23,8 +23,8 @@ constexpr std::uint32_t kTileHeight = 16;
 }
 
 namespace window {
-constexpr std::uint32_t kHorizontalScale = 1;
-constexpr std::uint32_t kVerticalScale = 1;
+constexpr std::uint32_t kHorizontalScale = 3;
+constexpr std::uint32_t kVerticalScale = 3;
 constexpr std::uint32_t kWidth =
   (tile::kTileWidth * tile::kHorizontalTiles) * window::kHorizontalScale;
 constexpr std::uint32_t kHeight =
@@ -34,12 +34,16 @@ constexpr std::uint32_t kFps = 60;
 constexpr std::uint32_t kFrameDelay = 1000 / window::kFps;
 }
 
-namespace gui {
-constexpr std::uint32_t kTopHeight = 80;
-constexpr std::uint32_t kBottomHeight = 50;
-constexpr std::uint32_t kTotalHeight =
-  window::kHeight + gui::kTopHeight + gui::kBottomHeight;
-constexpr std::uint32_t kTotalWidth = window::kWidth;
+namespace view {
+constexpr std::uint32_t kGuiTopHeight = 128;
+constexpr std::uint32_t kGuiBottomHeight = 1280;
+constexpr std::uint32_t kGameTextureWidth =
+  tile::kTileWidth * tile::kHorizontalTiles;
+constexpr std::uint32_t kGameTextureHeight =
+  tile::kTileHeight * tile::kVerticalTiles;
+constexpr std::uint32_t kSurfaceHeight =
+  kGuiTopHeight + kGameTextureHeight + kGuiBottomHeight;
+constexpr std::uint32_t kSurfaceWidth = view::kGameTextureWidth;
 }
 
 }

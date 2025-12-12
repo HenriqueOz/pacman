@@ -10,10 +10,9 @@
 class Pellet
 {
   public:
-    Pellet() = default;
+    Pellet(float x, float y, SDL_Renderer * renderer);
     ~Pellet() = default;
 
-    void initialize(float x, float y, SDL_Renderer * renderer);
     void update(float deltaTime, Input & input);
     void render(SDL_Renderer * renderer) const;
 
