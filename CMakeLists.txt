@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.26)
 
-include(FetchContent)
-
 project(pacman LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -12,29 +10,9 @@ set(assets_dir ${CMAKE_SOURCE_DIR}/assets)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-FetchContent_Declare(
-    SDL3
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
-    GIT_TAG release-3.2.26
-    GIT_PROGRESS TRUE
-)
-FetchContent_MakeAvailable(SDL3)
-
-FetchContent_Declare(
-    SDL3_ttf
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf.git
-    GIT_TAG release-3.2.2
-    GIT_PROGRESS TRUE
-)
-FetchContent_MakeAvailable(SDL3_ttf)
-
-FetchContent_Declare(
-    SDL3_image
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
-    GIT_TAG release-3.2.4
-    GIT_PROGRESS TRUE
-)
-FetchContent_MakeAvailable(SDL3_image)
+find_package(SDL3 REQUIRED)
+find_package(SDL3_ttf REQUIRED)
+find_package(SDL3_image REQUIRED)
 
 add_executable(${PROJECT_NAME})
 
