@@ -39,7 +39,7 @@ Game::run()
         return;
     }
 
-    _world.initialize(_renderer);
+    _world.initialize(_renderer, _input, _collision);
 
     std::uint64_t lastTick = SDL_GetTicks();
     std::uint64_t currentTick = 0;
@@ -186,7 +186,7 @@ Game::render()
 void
 Game::update(float deltaTime)
 {
-    _world.update(deltaTime, _input, _collision);
+    _world.update(deltaTime);
 }
 
 void
