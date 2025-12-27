@@ -1,5 +1,8 @@
 .cache
 .vscode
 .zed
+
 build/
+build/**
+
 CMakeUserPresets.json

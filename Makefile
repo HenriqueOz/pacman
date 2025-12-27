@@ -5,7 +5,7 @@ PROGRAM_NAME = pacman
 
 setup:
 	@mkdir -p $(BUILD_DIR)
-	@cmake -S . -B $(BUILD_DIR) -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug
+	@cmake -S . -B $(BUILD_DIR) -G "Ninja"
 
 build:
 	@cmake --build $(BUILD_DIR)
