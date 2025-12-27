@@ -3,16 +3,19 @@
 
 #include <cstdint>
 #include <string>
+#include <filesystem>
 
 namespace config {
 
 namespace assets {
-const std::string kRoot = "./assets";
-const std::string kMapCsv = assets::kRoot + "/map/map.csv";
+const std::filesystem::path kRoot{ "assets" };
+const std::filesystem::path kMapCsv = assets::kRoot / "map/map.csv";
 
-const std::string kSpritesRoot = assets::kRoot + "/sprites";
-const std::string kPacmanIdleSprite = assets::kSpritesRoot + "/test.png";
-const std::string kPelletIdleSprite = assets::kSpritesRoot + "/pellet.png";
+const std::filesystem::path kSpritesRoot = assets::kRoot / "sprites";
+const std::filesystem::path kPacmanIdleSprite =
+  assets::kSpritesRoot / "test.png";
+const std::filesystem::path kPelletIdleSprite =
+  assets::kSpritesRoot / "pellet.png";
 }
 
 namespace tile {
