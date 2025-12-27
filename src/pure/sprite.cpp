@@ -1,20 +1,14 @@
 #include <SDL3_image/SDL_image.h>
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_error.h>
 #include <SDL3/SDL_log.h>
-#include <SDL3/SDL_render.h>
-
-#include "sprite.hpp"
 #include "SDL3/SDL_rect.h"
 
-Sprite::Sprite(Vec2<float> _position,
-               Vec2<int> _size,
-               SDL_Renderer * renderer,
-               const std::string & filepath)
+#include "sprite.hpp"
+
+Sprite::Sprite(Vec2<float> _position, Vec2<int> _size, SDL_Renderer * renderer, const std::filesystem::path & filepath)
   : size(_size)
   , position(_position)
 {
-    this->load_image(renderer, filepath.c_str());
+    this->load_image(renderer, filepath);
 }
 
 Sprite::~Sprite()
@@ -26,9 +20,9 @@ Sprite::~Sprite()
 }
 
 void
-Sprite::load_image(SDL_Renderer * renderer, const std::string & filepath)
+Sprite::load_image(SDL_Renderer * renderer, const std::filesystem::path & filepath)
 {
-    SDL_Texture * texture = IMG_LoadTexture(renderer, filepath.c_str());
+    SDL_Texture * texture = IMG_LoadTexture(renderer, filepath.string().c_str());
     if (texture != nullptr) {
         _texture = texture;
         _textureSize = get_texture_size(_texture);
@@ -44,10 +38,9 @@ Sprite::render(SDL_Renderer * renderer) const
     if (!_texture)
         return;
 
-    const SDL_FRect destination = { .x = position.x,
-                                    .y = position.y,
-                                    .w = static_cast<float>(size.x),
-                                    .h = static_cast<float>(size.y) };
+    const SDL_FRect destination = {
+        .x = position.x, .y = position.y, .w = static_cast<float>(size.x), .h = static_cast<float>(size.y)
+    };
 
     SDL_RenderTexture(renderer, _texture, nullptr, &destination);
 }
