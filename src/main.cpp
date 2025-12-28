@@ -6,7 +6,7 @@
 #include "game/input.hpp"
 #include "game/input_manager.hpp"
 #include "game/world.hpp"
-#include "pure/collision_manager.hpp"
+#include "game/collision_manager.hpp"
 
 int
 main(int argc, char ** argv)

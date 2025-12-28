@@ -6,7 +6,7 @@
 
 #include <SDL3/SDL_render.h>
 
-#include "pure/utils.hpp"
+#include "game/utils.hpp"
 
 class Sprite
 {

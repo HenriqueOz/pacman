@@ -9,10 +9,7 @@ struct Vec2
     T x;
     T y;
 
-    bool is_equal(const Vec2<T> & other) const
-    {
-        return (this->x == other.x && this->y == other.y);
-    }
+    bool is_equal(const Vec2<T> & other) const { return (this->x == other.x && this->y == other.y); }
 };
 
 inline Vec2<int>

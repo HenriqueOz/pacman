@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "collision_manager.hpp"
-#include "pure/utils.hpp"
 
 CollisionManager::CollisionManager(MapGrid & grid)
   : _grid(grid)
@@ -13,8 +12,7 @@ CollisionManager::CollisionManager(MapGrid & grid)
 void
 CollisionManager::register_box(const CollisionBox * box)
 {
-    const std::vector<Vec2<int>> cells =
-      get_cells_within(box->position, box->size);
+    const std::vector<Vec2<int>> cells = get_cells_within(box->position, box->size);
 
     for (const Vec2<int> & cell : cells) {
         if (is_cell_on_bounds(cell)) {
@@ -33,9 +31,7 @@ CollisionManager::unregister_box(const CollisionBox * box)
     for (const Vec2<int> & cell : it->second) {
         if (is_cell_on_bounds(cell)) {
             GridCell & cellBoxes = get_cell(cell);
-            cellBoxes.erase(
-              std::remove(cellBoxes.begin(), cellBoxes.end(), box),
-              cellBoxes.end());
+            cellBoxes.erase(std::remove(cellBoxes.begin(), cellBoxes.end(), box), cellBoxes.end());
         }
     }
 
@@ -43,9 +39,7 @@ CollisionManager::unregister_box(const CollisionBox * box)
 }
 
 bool
-CollisionManager::check_collision_at(const Vec2<float> & position,
-                                     const Vec2<int> & size,
-                                     CollisionTag tag) const
+CollisionManager::check_collision_at(const Vec2<float> & position, const Vec2<int> & size, CollisionTag tag) const
 {
     const std::vector<Vec2<int>> cells = get_cells_within(position, size);
 
@@ -67,8 +61,7 @@ CollisionManager::check_collision_at(const Vec2<float> & position,
 }
 
 std::vector<const CollisionBox *>
-CollisionManager::get_collisions_at(const Vec2<float> & position,
-                                    const Vec2<int> & size) const
+CollisionManager::get_collisions_at(const Vec2<float> & position, const Vec2<int> & size) const
 {
 
     std::vector<const CollisionBox *> result;
@@ -87,10 +80,8 @@ CollisionManager::get_collisions_at(const Vec2<float> & position,
             visited.insert(box);
 
             const Vec2<float> boxPosition = box->position;
-            if (position.x < (boxPosition.x + box->size.x) &&
-                (position.x + size.x) > boxPosition.x &&
-                position.y < (boxPosition.y + box->size.y) &&
-                (position.y + size.y) > boxPosition.y) {
+            if (position.x < (boxPosition.x + box->size.x) && (position.x + size.x) > boxPosition.x &&
+                position.y < (boxPosition.y + box->size.y) && (position.y + size.y) > boxPosition.y) {
                 result.push_back(box);
             }
         }
@@ -100,9 +91,7 @@ CollisionManager::get_collisions_at(const Vec2<float> & position,
 }
 
 void
-CollisionManager::update_box_position(const CollisionBox * box,
-                                      const Vec2<float> & oldPos,
-                                      const Vec2<float> & newPos)
+CollisionManager::update_box_position(const CollisionBox * box, const Vec2<float> & oldPos, const Vec2<float> & newPos)
 {
     std::vector<Vec2<int>> oldCells = get_cells_within(oldPos, box->size);
     std::vector<Vec2<int>> newCells = get_cells_within(newPos, box->size);
@@ -110,9 +99,7 @@ CollisionManager::update_box_position(const CollisionBox * box,
     for (const Vec2<int> & cell : oldCells) {
         if (is_cell_on_bounds(cell)) {
             GridCell & cellBoxes = get_cell(cell);
-            cellBoxes.erase(
-              std::remove(cellBoxes.begin(), cellBoxes.end(), box),
-              cellBoxes.end());
+            cellBoxes.erase(std::remove(cellBoxes.begin(), cellBoxes.end(), box), cellBoxes.end());
         }
     }
 
@@ -126,14 +113,12 @@ CollisionManager::update_box_position(const CollisionBox * box,
 }
 
 std::vector<Vec2<int>>
-CollisionManager::get_cells_within(const Vec2<float> & position,
-                                   const Vec2<int> & size) const
+CollisionManager::get_cells_within(const Vec2<float> & position, const Vec2<int> & size) const
 {
     std::vector<Vec2<int>> cells;
 
     const Vec2<int> topLeft = position_to_grid_cell(position);
-    const Vec2<int> bottomRight = position_to_grid_cell(
-      { position.x + size.x - 1, position.y + size.y - 1 });
+    const Vec2<int> bottomRight = position_to_grid_cell({ position.x + size.x - 1, position.y + size.y - 1 });
 
     for (int x = topLeft.x; x <= bottomRight.x; x++) {
         for (int y = topLeft.y; y <= bottomRight.y; y++) {
@@ -155,8 +140,8 @@ CollisionManager::position_to_grid_cell(const Vec2<float> & position) const
 bool
 CollisionManager::is_cell_on_bounds(const Vec2<int> & cell) const
 {
-    return (cell.x >= 0 && cell.x < static_cast<int>(_grid.size()) &&
-            cell.y >= 0 && cell.y < static_cast<int>(_grid[0].size()));
+    return (cell.x >= 0 && cell.x < static_cast<int>(_grid.size()) && cell.y >= 0 &&
+            cell.y < static_cast<int>(_grid[0].size()));
 }
 
 bool
@@ -165,6 +150,5 @@ CollisionManager::aabb_check(const Vec2<float> & p1,
                              const Vec2<float> & p2,
                              const Vec2<int> & s2) const
 {
-    return (p1.x < (p2.x + s2.x) && (p1.x + s1.x) > p2.x &&
-            p1.y < (p2.y + s2.y) && (p1.y + s1.y) > p2.y);
+    return (p1.x < (p2.x + s2.x) && (p1.x + s1.x) > p2.x && p1.y < (p2.y + s2.y) && (p1.y + s1.y) > p2.y);
 }

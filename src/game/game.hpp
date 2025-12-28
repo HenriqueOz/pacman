@@ -9,15 +9,12 @@
 #include "game/input.hpp"
 #include "game/input_manager.hpp"
 #include "game/world.hpp"
-#include "pure/collision_manager.hpp"
+#include "game/collision_manager.hpp"
 
 class Game
 {
   public:
-    Game(World & world,
-         InputManager & inputManager,
-         Input & input,
-         CollisionManager & collision);
+    Game(World & world, InputManager & inputManager, Input & input, CollisionManager & collision);
     ~Game();
 
     bool is_running() const;

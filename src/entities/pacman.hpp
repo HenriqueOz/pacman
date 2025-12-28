@@ -4,19 +4,15 @@
 #include <SDL3/SDL_render.h>
 
 #include "game/input.hpp"
-#include "pure/collision_box.hpp"
-#include "pure/collision_manager.hpp"
-#include "pure/sprite.hpp"
-#include "utils.hpp"
+#include "game/collision_box.hpp"
+#include "game/collision_manager.hpp"
+#include "game/sprite.hpp"
+#include "game/utils.hpp"
 
 class Pacman
 {
   public:
-    Pacman(float x,
-           float y,
-           SDL_Renderer * renderer,
-           Input & input,
-           CollisionManager & collision);
+    Pacman(float x, float y, SDL_Renderer * renderer, Input & input, CollisionManager & collision);
     ~Pacman() = default;
 
     void update(float deltaTime);
