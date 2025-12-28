@@ -1,25 +1,12 @@
 #include <cstdint>
 #include <iostream>
 
-#include <SDL3/SDL_stdinc.h>
-#include <SDL3/SDL_timer.h>
-#include <SDL3/SDL_blendmode.h>
-#include <SDL3/SDL_events.h>
-#include <SDL3/SDL_oldnames.h>
-#include <SDL3/SDL_rect.h>
-#include <SDL3/SDL_render.h>
-#include <SDL3/SDL_video.h>
-#include <SDL3_ttf/SDL_ttf.h>
-
 #include "config/config.hpp"
 #include "game/game.hpp"
 
 using namespace config;
 
-Game::Game(World & world,
-           InputManager & inputManager,
-           Input & input,
-           CollisionManager & collision)
+Game::Game(World & world, InputManager & inputManager, Input & input, CollisionManager & collision)
   : _isRunning(false)
   , _inputManager(inputManager)
   , _world(world)
@@ -69,25 +56,18 @@ Game::init()
     _isRunning = false;
 
     if (!TTF_Init()) {
-        std::cerr << "ERROR::SDL::FAILED_TO_INIT_TTF: " << SDL_GetError()
-                  << std::endl;
+        std::cerr << "ERROR::SDL::FAILED_TO_INIT_TTF: " << SDL_GetError() << std::endl;
         return;
     }
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
-        std::cerr << "ERROR::SDL::FAILED_TO_INIT_VIDEO_SUBMODULE: "
-                  << SDL_GetError() << std::endl;
+        std::cerr << "ERROR::SDL::FAILED_TO_INIT_VIDEO_SUBMODULE: " << SDL_GetError() << std::endl;
         return;
     }
 
-    if (!SDL_CreateWindowAndRenderer(window::kTitle,
-                                     window::kWidth,
-                                     window::kHeight,
-                                     SDL_WINDOW_HIGH_PIXEL_DENSITY,
-                                     &_window,
-                                     &_renderer)) {
-        std::cerr << "ERROR::GAME::COULD_NOT_CREATE_WINDOW: " << SDL_GetError()
-                  << std::endl;
+    if (!SDL_CreateWindowAndRenderer(
+          window::kTitle, window::kWidth, window::kHeight, SDL_WINDOW_HIGH_PIXEL_DENSITY, &_window, &_renderer)) {
+        std::cerr << "ERROR::GAME::COULD_NOT_CREATE_WINDOW: " << SDL_GetError() << std::endl;
         return;
     }
 
@@ -98,27 +78,21 @@ Game::init()
                                      view::kGameTextureHeight);
 
     if (!_gameTexture) {
-        std::cerr << "ERROR::GAME::COULD_NOT_CREATE_gameTexture: "
-                  << SDL_GetError() << std::endl;
+        std::cerr << "ERROR::GAME::COULD_NOT_CREATE_gameTexture: " << SDL_GetError() << std::endl;
         return;
     }
 
-    _guiTexture = SDL_CreateTexture(_renderer,
-                                    SDL_PIXELFORMAT_ARGB8888,
-                                    SDL_TEXTUREACCESS_TARGET,
-                                    view::kSurfaceWidth,
-                                    view::kSurfaceHeight);
+    _guiTexture = SDL_CreateTexture(
+      _renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET, view::kSurfaceWidth, view::kSurfaceHeight);
 
     if (!_guiTexture) {
-        std::cerr << "ERROR::GAME::COULD_NOT_CREATE_guiTexture: "
-                  << SDL_GetError() << std::endl;
+        std::cerr << "ERROR::GAME::COULD_NOT_CREATE_guiTexture: " << SDL_GetError() << std::endl;
         return;
     }
 
     _textEngine = TTF_CreateRendererTextEngine(_renderer);
     if (!_textEngine) {
-        std::cerr << "ERROR::GAME::FAILED_TO_CREATE_RENDERER_textEngine: "
-                  << SDL_GetError() << std::endl;
+        std::cerr << "ERROR::GAME::FAILED_TO_CREATE_RENDERER_textEngine: " << SDL_GetError() << std::endl;
         return;
     }
 
@@ -176,9 +150,9 @@ Game::render()
     SDL_RenderTexture(_renderer, _guiTexture, nullptr, nullptr);
 
     // Presenting the final result
-    SDL_SetRenderScale(_renderer,
-                       static_cast<float>(window::kHorizontalScale),
-                       static_cast<float>(window::kVerticalScale));
+    SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderScale(
+      _renderer, static_cast<float>(window::kHorizontalScale), static_cast<float>(window::kVerticalScale));
 
     SDL_RenderPresent(_renderer);
 }

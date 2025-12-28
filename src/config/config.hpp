@@ -12,10 +12,8 @@ const std::filesystem::path kRoot{ "assets" };
 const std::filesystem::path kMapCsv = assets::kRoot / "map/map.csv";
 
 const std::filesystem::path kSpritesRoot = assets::kRoot / "sprites";
-const std::filesystem::path kPacmanIdleSprite =
-  assets::kSpritesRoot / "test.png";
-const std::filesystem::path kPelletIdleSprite =
-  assets::kSpritesRoot / "pellet.png";
+const std::filesystem::path kPacmanIdleSprite = assets::kSpritesRoot / "test.png";
+const std::filesystem::path kPelletIdleSprite = assets::kSpritesRoot / "pellet.png";
 }
 
 namespace tile {
@@ -25,28 +23,23 @@ constexpr std::uint32_t kTileWidth = 16;
 constexpr std::uint32_t kTileHeight = 16;
 }
 
+namespace view {
+constexpr std::uint32_t kGuiTopHeight = tile::kTileHeight * 4;
+constexpr std::uint32_t kGuiBottomHeight = tile::kTileHeight * 4;
+constexpr std::uint32_t kGameTextureWidth = tile::kTileWidth * tile::kHorizontalTiles;
+constexpr std::uint32_t kGameTextureHeight = tile::kTileHeight * tile::kVerticalTiles;
+constexpr std::uint32_t kSurfaceHeight = kGuiTopHeight + kGameTextureHeight + kGuiBottomHeight;
+constexpr std::uint32_t kSurfaceWidth = view::kGameTextureWidth;
+}
+
 namespace window {
 constexpr std::uint32_t kHorizontalScale = 1;
 constexpr std::uint32_t kVerticalScale = 1;
-constexpr std::uint32_t kWidth =
-  (tile::kTileWidth * tile::kHorizontalTiles) * window::kHorizontalScale;
-constexpr std::uint32_t kHeight =
-  (tile::kTileHeight * tile::kVerticalTiles) * window::kVerticalScale;
+constexpr std::uint32_t kWidth = view::kSurfaceWidth * window::kHorizontalScale;
+constexpr std::uint32_t kHeight = view::kSurfaceHeight * window::kVerticalScale;
 constexpr const char * kTitle = "Pacman";
 constexpr std::uint32_t kFps = 60;
 constexpr std::uint32_t kFrameDelay = 1000 / window::kFps;
-}
-
-namespace view {
-constexpr std::uint32_t kGuiTopHeight = 128;
-constexpr std::uint32_t kGuiBottomHeight = 1280;
-constexpr std::uint32_t kGameTextureWidth =
-  tile::kTileWidth * tile::kHorizontalTiles;
-constexpr std::uint32_t kGameTextureHeight =
-  tile::kTileHeight * tile::kVerticalTiles;
-constexpr std::uint32_t kSurfaceHeight =
-  kGuiTopHeight + kGameTextureHeight + kGuiBottomHeight;
-constexpr std::uint32_t kSurfaceWidth = view::kGameTextureWidth;
 }
 
 }

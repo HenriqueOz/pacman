@@ -5,7 +5,8 @@
 
 #include "SDL3/SDL_pixels.h"
 #include "SDL3/SDL_render.h"
-#include "pure/utils.hpp"
+
+#include "game/utils.hpp"
 
 enum CollisionTag : std::uint8_t
 {
@@ -22,9 +23,7 @@ class CollisionBox
     Vec2<float> position;
     CollisionTag tag;
 
-    CollisionBox(const Vec2<float> position,
-                 const Vec2<int> size,
-                 const CollisionTag tag);
+    CollisionBox(const Vec2<float> position, const Vec2<int> size, const CollisionTag tag);
 
     ~CollisionBox() = default;
 

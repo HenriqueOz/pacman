@@ -7,8 +7,8 @@
 #include <SDL3/SDL_render.h>
 
 #include "game/input.hpp"
-#include "pure/pacman.hpp"
-#include "pure/pellet.hpp"
+#include "entities/pacman.hpp"
+#include "entities/pellet.hpp"
 
 class World
 {
@@ -16,9 +16,7 @@ class World
     World() = default;
     ~World() = default;
 
-    void initialize(SDL_Renderer * renderer,
-                    Input & input,
-                    CollisionManager & collision);
+    void initialize(SDL_Renderer * renderer, Input & input, CollisionManager & collision);
     void update(float deltaTime);
     void render(SDL_Renderer * renderer);
     void renderGui(SDL_Renderer * renderer);

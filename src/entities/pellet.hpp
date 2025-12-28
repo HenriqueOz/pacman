@@ -3,18 +3,15 @@
 
 #include <SDL3/SDL_render.h>
 
-#include "pure/collision_box.hpp"
-#include "pure/collision_manager.hpp"
-#include "pure/sprite.hpp"
-#include "utils.hpp"
+#include "game/collision_box.hpp"
+#include "game/collision_manager.hpp"
+#include "game/sprite.hpp"
+#include "game/utils.hpp"
 
 class Pellet
 {
   public:
-    Pellet(float x,
-           float y,
-           SDL_Renderer * renderer,
-           CollisionManager & collision);
+    Pellet(float x, float y, SDL_Renderer * renderer, CollisionManager & collision);
     ~Pellet();
 
     void update(float deltaTime);
