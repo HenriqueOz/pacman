@@ -2,7 +2,6 @@
 #define CONFIG_H
 
 #include <cstdint>
-#include <string>
 #include <filesystem>
 
 namespace config {
@@ -14,6 +13,7 @@ const std::filesystem::path kMapCsv = assets::kRoot / "map/map.csv";
 const std::filesystem::path kSpritesRoot = assets::kRoot / "sprites";
 const std::filesystem::path kPacmanIdleSprite = assets::kSpritesRoot / "test.png";
 const std::filesystem::path kPelletIdleSprite = assets::kSpritesRoot / "pellet.png";
+const std::filesystem::path kWallIdleSprite = assets::kSpritesRoot / "wall.png";
 }
 
 namespace tile {
@@ -33,8 +33,8 @@ constexpr std::uint32_t kSurfaceWidth = view::kGameTextureWidth;
 }
 
 namespace window {
-constexpr std::uint32_t kHorizontalScale = 1;
-constexpr std::uint32_t kVerticalScale = 1;
+constexpr std::uint32_t kHorizontalScale = 2;
+constexpr std::uint32_t kVerticalScale = 2;
 constexpr std::uint32_t kWidth = view::kSurfaceWidth * window::kHorizontalScale;
 constexpr std::uint32_t kHeight = view::kSurfaceHeight * window::kVerticalScale;
 constexpr const char * kTitle = "Pacman";

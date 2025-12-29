@@ -22,7 +22,7 @@ class CollisionManager
     void register_box(const CollisionBox * box);
     void unregister_box(const CollisionBox * box);
 
-    void update_box_position(const CollisionBox * box, const Vec2<float> & oldPos, const Vec2<float> & newPos);
+    void update_box_position(CollisionBox * box, const Vec2<float> & newPos);
 
     bool check_collision_at(const Vec2<float> & position, const Vec2<int> & size, CollisionTag tag) const;
 

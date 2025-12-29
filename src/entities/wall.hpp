@@ -1,23 +1,19 @@
-#ifndef PELLET_H_
-#define PELLET_H_
+#ifndef WALL_H_
+#define WALL_H_
 
 #include <SDL3/SDL_render.h>
 
-#include "game/collision_box.hpp"
 #include "game/collision_manager.hpp"
 #include "game/sprite.hpp"
-#include "game/utils.hpp"
 
-class Pellet
+class Wall
 {
   public:
-    Pellet(float x, float y, SDL_Renderer * renderer, CollisionManager & collision);
-    ~Pellet();
+    Wall(float x, float y, SDL_Renderer * renderer, CollisionManager & collision);
+    ~Wall();
 
     void update(float deltaTime);
     void render(SDL_Renderer * renderer) const;
-
-    const Vec2<float> & get_position() const { return _position; }
 
   private:
     CollisionManager & _collision;
@@ -26,8 +22,6 @@ class Pellet
     Vec2<int> _size{};
     Sprite _sprite;
     CollisionBox _bbox;
-
-    bool _eaten = false;
 };
 
 #endif

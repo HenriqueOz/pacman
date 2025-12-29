@@ -6,6 +6,7 @@
 
 #include <SDL3/SDL_render.h>
 
+#include "entities/wall.hpp"
 #include "game/input.hpp"
 #include "entities/pacman.hpp"
 #include "entities/pellet.hpp"
@@ -24,6 +25,7 @@ class World
   private:
     std::unique_ptr<Pacman> _pacman;
     std::vector<std::unique_ptr<Pellet>> _pellets;
+    std::vector<std::unique_ptr<Wall>> _walls;
 };
 
 #endif

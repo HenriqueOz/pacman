@@ -91,9 +91,9 @@ CollisionManager::get_collisions_at(const Vec2<float> & position, const Vec2<int
 }
 
 void
-CollisionManager::update_box_position(const CollisionBox * box, const Vec2<float> & oldPos, const Vec2<float> & newPos)
+CollisionManager::update_box_position(CollisionBox * box, const Vec2<float> & newPos)
 {
-    std::vector<Vec2<int>> oldCells = get_cells_within(oldPos, box->size);
+    std::vector<Vec2<int>> oldCells = get_cells_within(box->position, box->size);
     std::vector<Vec2<int>> newCells = get_cells_within(newPos, box->size);
 
     for (const Vec2<int> & cell : oldCells) {
@@ -110,6 +110,7 @@ CollisionManager::update_box_position(const CollisionBox * box, const Vec2<float
     }
 
     _boxCells[box] = newCells;
+    box->position = newPos;
 }
 
 std::vector<Vec2<int>>

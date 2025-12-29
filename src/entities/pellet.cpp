@@ -1,4 +1,3 @@
-#include "SDL3/SDL_log.h"
 #include "SDL3/SDL_render.h"
 
 #include "config/config.hpp"
@@ -22,15 +21,19 @@ Pellet::~Pellet()
 void
 Pellet::update(float deltaTime)
 {
-    _collected = _collision.check_collision_at(_bbox.position, _bbox.size, CollisionTag::pacman);
-
-    if (_collected) {
-        mark_to_delete();
+    if (_eaten) {
+        return;
     }
+
+    _eaten = _collision.check_collision_at(_bbox.position, _bbox.size, CollisionTag::pacman);
 }
 
 void
 Pellet::render(SDL_Renderer * renderer) const
 {
+    if (_eaten) {
+        return;
+    }
+
     _sprite.render(renderer);
 }
