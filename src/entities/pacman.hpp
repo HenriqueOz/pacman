@@ -27,11 +27,14 @@ class Pacman
 
     Vec2<float> _position{};
     Vec2<int> _direction{};
+    Vec2<int> _size{ 16, 16 };
     Sprite _sprite;
     CollisionBox _bbox;
-    float _speed = 60.0f;
+    float _baseSpeed = 60.0f;
+    float _speed = _baseSpeed;
 
     void update_direction(Input & input);
+    void wrap_around_screen();
 };
 
 #endif

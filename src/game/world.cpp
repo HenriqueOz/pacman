@@ -6,30 +6,26 @@
 #include "config/config.hpp"
 
 void
-World::initialize(SDL_Renderer * renderer,
-                  Input & input,
-                  CollisionManager & collision)
+World::initialize(SDL_Renderer * renderer, Input & input, CollisionManager & collision)
 {
-    _pellets.resize(50);
+    // for (std::size_t i = 0; i < config::tile::kHorizontalTiles; i++) {
+    //     _walls.push_back(std::make_unique<Wall>(i * config::tile::kTileWidth, 0, renderer, collision));
+    //     _walls.push_back(std::make_unique<Wall>(i * config::tile::kTileWidth,
+    //                                             (config::tile::kVerticalTiles - 1) * config::tile::kTileHeight,
+    //                                             renderer,
+    //                                             collision));
+    // }
 
-    int pelletX = 0;
-    int pelletY = 0;
-    int row = 0;
-    int col = 0;
-
-    for (std::size_t i = 0; i < _pellets.size(); i++) {
-        if (i == config::tile::kHorizontalTiles) {
-            col = 0;
-            row++;
-        }
-
-        pelletX = config::tile::kTileWidth * col;
-        pelletY = config::tile::kTileHeight * row;
-
-        _pellets[i] =
-          std::make_unique<Pellet>(pelletX, pelletY, renderer, collision);
-        col++;
-    }
+    _walls.push_back(std::make_unique<Wall>(
+      config::view::kGameTextureWidth / 2, config::view::kGameTextureHeight / 2, renderer, collision));
+    _walls.push_back(std::make_unique<Wall>(config::view::kGameTextureWidth / 2 - config::tile::kTileWidth * 2,
+                                            config::view::kGameTextureHeight / 2,
+                                            renderer,
+                                            collision));
+    _walls.push_back(std::make_unique<Wall>(config::view::kGameTextureWidth / 2 - config::tile::kTileWidth,
+                                            config::view::kGameTextureHeight / 2 - config::tile::kTileHeight,
+                                            renderer,
+                                            collision));
 
     _pacman = std::make_unique<Pacman>(10, 10, renderer, input, collision);
 }
@@ -37,26 +33,24 @@ World::initialize(SDL_Renderer * renderer,
 void
 World::update(float deltaTime)
 {
-    for (auto it = _pellets.begin(); it != _pellets.end();) {
-        if ((*it)->is_marked_to_delete()) {
-            it = _pellets.erase(it);
-        } else {
-            ++it;
-        }
-    }
+    _pacman->update(deltaTime);
 
     for (const std::unique_ptr<Pellet> & pellet : _pellets) {
         pellet->update(deltaTime);
     }
-    _pacman->update(deltaTime);
 }
 
 void
 World::render(SDL_Renderer * renderer)
 {
     _pacman->render(renderer);
+
     for (const std::unique_ptr<Pellet> & pellet : _pellets) {
         pellet->render(renderer);
+    }
+
+    for (const std::unique_ptr<Wall> & wall : _walls) {
+        wall->render(renderer);
     }
 }
 
