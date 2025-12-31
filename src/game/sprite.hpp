@@ -1,7 +1,6 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
 
-#include <string>
 #include <filesystem>
 
 #include <SDL3/SDL_render.h>
@@ -12,9 +11,8 @@ class Sprite
 {
   public:
     Vec2<float> position{};
-    Vec2<int> size{};
 
-    Sprite(Vec2<float> _position, Vec2<int> _size, SDL_Renderer * renderer, const std::filesystem::path & filepath);
+    Sprite(Vec2<float> _position, SDL_Renderer * renderer, const std::filesystem::path & filepath);
     ~Sprite();
 
     void render(SDL_Renderer * renderer) const;

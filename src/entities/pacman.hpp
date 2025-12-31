@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL_render.h>
 
+#include "config/config.hpp"
 #include "game/input.hpp"
 #include "game/collision_box.hpp"
 #include "game/collision_manager.hpp"
@@ -12,7 +13,7 @@
 class Pacman
 {
   public:
-    Pacman(float x, float y, SDL_Renderer * renderer, Input & input, CollisionManager & collision);
+    Pacman(Vec2<float> position, SDL_Renderer * renderer, Input & input, CollisionManager & collision);
     ~Pacman() = default;
 
     void update(float deltaTime);
@@ -27,10 +28,9 @@ class Pacman
 
     Vec2<float> _position{};
     Vec2<int> _direction{};
-    Vec2<int> _size{ 16, 16 };
     Sprite _sprite;
     CollisionBox _bbox;
-    float _baseSpeed = 60.0f;
+    float _baseSpeed = config::tile::kTileWidth * 4.0f;
     float _speed = _baseSpeed;
 
     void update_direction(Input & input);

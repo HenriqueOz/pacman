@@ -11,16 +11,16 @@ const std::filesystem::path kRoot{ "assets" };
 const std::filesystem::path kMapCsv = assets::kRoot / "map/map.csv";
 
 const std::filesystem::path kSpritesRoot = assets::kRoot / "sprites";
-const std::filesystem::path kPacmanIdleSprite = assets::kSpritesRoot / "test.png";
+const std::filesystem::path kPacmanIdleSprite = assets::kSpritesRoot / "pacman.png";
 const std::filesystem::path kPelletIdleSprite = assets::kSpritesRoot / "pellet.png";
 const std::filesystem::path kWallIdleSprite = assets::kSpritesRoot / "wall.png";
 }
 
 namespace tile {
-constexpr std::uint32_t kHorizontalTiles = 28;
+constexpr std::uint32_t kHorizontalTiles = 27;
 constexpr std::uint32_t kVerticalTiles = 31;
-constexpr std::uint32_t kTileWidth = 16;
-constexpr std::uint32_t kTileHeight = 16;
+constexpr std::uint32_t kTileWidth = 8;
+constexpr std::uint32_t kTileHeight = 8;
 }
 
 namespace view {
@@ -33,8 +33,8 @@ constexpr std::uint32_t kSurfaceWidth = view::kGameTextureWidth;
 }
 
 namespace window {
-constexpr std::uint32_t kHorizontalScale = 2;
-constexpr std::uint32_t kVerticalScale = 2;
+constexpr std::uint32_t kHorizontalScale = 3;
+constexpr std::uint32_t kVerticalScale = 3;
 constexpr std::uint32_t kWidth = view::kSurfaceWidth * window::kHorizontalScale;
 constexpr std::uint32_t kHeight = view::kSurfaceHeight * window::kVerticalScale;
 constexpr const char * kTitle = "Pacman";

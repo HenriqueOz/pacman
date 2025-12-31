@@ -4,9 +4,8 @@
 
 #include "sprite.hpp"
 
-Sprite::Sprite(Vec2<float> _position, Vec2<int> _size, SDL_Renderer * renderer, const std::filesystem::path & filepath)
-  : size(_size)
-  , position(_position)
+Sprite::Sprite(Vec2<float> _position, SDL_Renderer * renderer, const std::filesystem::path & filepath)
+  : position(_position)
 {
     this->load_image(renderer, filepath);
 }
@@ -38,9 +37,10 @@ Sprite::render(SDL_Renderer * renderer) const
     if (!_texture)
         return;
 
-    const SDL_FRect destination = {
-        .x = position.x, .y = position.y, .w = static_cast<float>(size.x), .h = static_cast<float>(size.y)
-    };
+    const SDL_FRect destination = { .x = position.x,
+                                    .y = position.y,
+                                    .w = static_cast<float>(_textureSize.x),
+                                    .h = static_cast<float>(_textureSize.y) };
 
     SDL_RenderTexture(renderer, _texture, nullptr, &destination);
 }

@@ -1,3 +1,6 @@
+#include <SDL3/SDL_hints.h>
+#include <SDL3/SDL_oldnames.h>
+#include <SDL3/SDL_video.h>
 #include <cstdint>
 #include <iostream>
 
@@ -77,6 +80,8 @@ Game::init()
                                      view::kGameTextureWidth,
                                      view::kGameTextureHeight);
 
+    SDL_SetTextureScaleMode(_gameTexture, SDL_SCALEMODE_NEAREST);
+
     if (!_gameTexture) {
         std::cerr << "ERROR::GAME::COULD_NOT_CREATE_gameTexture: " << SDL_GetError() << std::endl;
         return;
@@ -89,6 +94,8 @@ Game::init()
         std::cerr << "ERROR::GAME::COULD_NOT_CREATE_guiTexture: " << SDL_GetError() << std::endl;
         return;
     }
+
+    SDL_SetTextureScaleMode(_guiTexture, SDL_SCALEMODE_NEAREST);
 
     _textEngine = TTF_CreateRendererTextEngine(_renderer);
     if (!_textEngine) {

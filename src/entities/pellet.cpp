@@ -1,14 +1,16 @@
 #include "SDL3/SDL_render.h"
 
 #include "config/config.hpp"
+#include "game/utils.hpp"
 #include "pellet.hpp"
 
-Pellet::Pellet(float x, float y, SDL_Renderer * renderer, CollisionManager & collision)
+Pellet::Pellet(Vec2<float> position, SDL_Renderer * renderer, CollisionManager & collision)
   : _collision(collision)
-  , _position{ x, y }
-  , _size{ 8, 8 }
-  , _bbox({ x + _size.x, y + _size.y }, _size, CollisionTag::pellet)
-  , _sprite({ x + _size.x, y + _size.y }, _size, renderer, config::assets::kPelletIdleSprite)
+  , _position(position)
+  , _bbox({ _position.x + config::tile::kTileWidth / 2.0f, position.y + config::tile::kTileHeight / 2.0f },
+          { config::tile::kTileWidth / 4, config::tile::kTileHeight / 4 },
+          CollisionTag::pellet)
+  , _sprite(_position, renderer, config::assets::kPelletIdleSprite)
 {
     collision.register_box(&_bbox);
 }
