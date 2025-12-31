@@ -2,6 +2,7 @@
 #define UTILS_H_
 
 #include "SDL3/SDL_render.h"
+#include "config/config.hpp"
 
 template<typename T>
 struct Vec2
@@ -18,6 +19,19 @@ get_texture_size(SDL_Texture * t)
     float w, h;
     SDL_GetTextureSize(t, &w, &h);
     return { static_cast<int>(w), static_cast<int>(h) };
+}
+
+inline int
+sign(int value)
+{
+    return (value > 0) - (value < 0);
+}
+
+inline Vec2<float>
+tile_to_position(Vec2<int> tile)
+{
+    return { static_cast<float>(tile.x * config::tile::kTileWidth),
+             static_cast<float>(tile.y * config::tile::kTileHeight) };
 }
 
 #endif

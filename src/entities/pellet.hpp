@@ -11,7 +11,7 @@
 class Pellet
 {
   public:
-    Pellet(float x, float y, SDL_Renderer * renderer, CollisionManager & collision);
+    Pellet(Vec2<float> position, SDL_Renderer * renderer, CollisionManager & collision);
     ~Pellet();
 
     void update(float deltaTime);
@@ -23,7 +23,6 @@ class Pellet
     CollisionManager & _collision;
 
     Vec2<float> _position{};
-    Vec2<int> _size{};
     Sprite _sprite;
     CollisionBox _bbox;
 

@@ -5,11 +5,12 @@
 
 #include "game/collision_manager.hpp"
 #include "game/sprite.hpp"
+#include "game/utils.hpp"
 
 class Wall
 {
   public:
-    Wall(float x, float y, SDL_Renderer * renderer, CollisionManager & collision);
+    Wall(Vec2<float> position, SDL_Renderer * renderer, CollisionManager & collision);
     ~Wall();
 
     void update(float deltaTime);
@@ -19,7 +20,6 @@ class Wall
     CollisionManager & _collision;
 
     Vec2<float> _position{};
-    Vec2<int> _size{};
     Sprite _sprite;
     CollisionBox _bbox;
 };

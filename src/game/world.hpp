@@ -10,11 +10,13 @@
 #include "game/input.hpp"
 #include "entities/pacman.hpp"
 #include "entities/pellet.hpp"
+#include "game/map.hpp"
 
 class World
 {
   public:
-    World() = default;
+    World(Map & map)
+      : _map(map) {};
     ~World() = default;
 
     void initialize(SDL_Renderer * renderer, Input & input, CollisionManager & collision);
@@ -26,6 +28,8 @@ class World
     std::unique_ptr<Pacman> _pacman;
     std::vector<std::unique_ptr<Pellet>> _pellets;
     std::vector<std::unique_ptr<Wall>> _walls;
+
+    Map & _map;
 };
 
 #endif

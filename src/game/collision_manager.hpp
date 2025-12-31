@@ -11,12 +11,12 @@
 
 using GridCell = std::vector<const CollisionBox *>;
 
-using MapGrid = std::array<std::array<GridCell, config::tile::kHorizontalTiles>, config::tile::kVerticalTiles>;
+using CollisionGrid = std::array<std::array<GridCell, config::tile::kVerticalTiles>, config::tile::kHorizontalTiles>;
 
 class CollisionManager
 {
   public:
-    CollisionManager(MapGrid & grid);
+    CollisionManager(CollisionGrid & grid);
     ~CollisionManager() = default;
 
     void register_box(const CollisionBox * box);
@@ -29,7 +29,7 @@ class CollisionManager
     std::vector<const CollisionBox *> get_collisions_at(const Vec2<float> & position, const Vec2<int> & size) const;
 
   private:
-    MapGrid & _grid;
+    CollisionGrid & _grid;
     std::unordered_map<const CollisionBox *, std::vector<Vec2<int>>> _boxCells;
 
     Vec2<int> position_to_grid_cell(const Vec2<float> & position) const;

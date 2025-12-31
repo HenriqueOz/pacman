@@ -1,33 +1,39 @@
-#include <cstddef>
-
 #include "SDL3/SDL_render.h"
+#include "game/map.hpp"
+#include "game/utils.hpp"
+#include <memory>
+#include <vector>
 
 #include "game/world.hpp"
-#include "config/config.hpp"
 
 void
 World::initialize(SDL_Renderer * renderer, Input & input, CollisionManager & collision)
 {
-    // for (std::size_t i = 0; i < config::tile::kHorizontalTiles; i++) {
-    //     _walls.push_back(std::make_unique<Wall>(i * config::tile::kTileWidth, 0, renderer, collision));
-    //     _walls.push_back(std::make_unique<Wall>(i * config::tile::kTileWidth,
-    //                                             (config::tile::kVerticalTiles - 1) * config::tile::kTileHeight,
-    //                                             renderer,
-    //                                             collision));
-    // }
+    Vec2<int> tile{ 0, 0 };
+    const MapMatrix & matrix = _map.get_map_matrix();
 
-    _walls.push_back(std::make_unique<Wall>(
-      config::view::kGameTextureWidth / 2, config::view::kGameTextureHeight / 2, renderer, collision));
-    _walls.push_back(std::make_unique<Wall>(config::view::kGameTextureWidth / 2 - config::tile::kTileWidth * 2,
-                                            config::view::kGameTextureHeight / 2,
-                                            renderer,
-                                            collision));
-    _walls.push_back(std::make_unique<Wall>(config::view::kGameTextureWidth / 2 - config::tile::kTileWidth,
-                                            config::view::kGameTextureHeight / 2 - config::tile::kTileHeight,
-                                            renderer,
-                                            collision));
+    for (const std::vector<MapTags> & row : matrix) {
+        for (const MapTags tag : row) {
+            const Vec2<float> position = tile_to_position(tile);
 
-    _pacman = std::make_unique<Pacman>(10, 10, renderer, input, collision);
+            switch (tag) {
+                case kEmpty:
+                    break;
+                case kPellet:
+                    _pellets.push_back(std::make_unique<Pellet>(position, renderer, collision));
+                    break;
+                case kWall:
+                    _walls.push_back(std::make_unique<Wall>(position, renderer, collision));
+                    break;
+                case kPacmanSpawn:
+                    _pacman = std::make_unique<Pacman>(position, renderer, input, collision);
+                    break;
+            }
+            tile.x++;
+        }
+        tile.x = 0;
+        tile.y++;
+    }
 }
 
 void

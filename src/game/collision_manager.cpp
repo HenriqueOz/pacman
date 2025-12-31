@@ -4,7 +4,7 @@
 
 #include "collision_manager.hpp"
 
-CollisionManager::CollisionManager(MapGrid & grid)
+CollisionManager::CollisionManager(CollisionGrid & grid)
   : _grid(grid)
 {
 }
