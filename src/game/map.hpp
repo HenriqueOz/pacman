@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <filesystem>
+#include <vector>
 
 enum MapTags : std::uint8_t
 {
@@ -10,6 +11,9 @@ enum MapTags : std::uint8_t
     kWall = 1,
     kPellet = 2,
     kPacmanSpawn = 3,
+    kSuperPellet = 4,
+    kBlinkySpawn = 5,
+    kGhostExit = 6,
     kTotalItems
 };
 

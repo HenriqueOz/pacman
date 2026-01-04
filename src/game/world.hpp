@@ -6,10 +6,12 @@
 
 #include <SDL3/SDL_render.h>
 
-#include "entities/wall.hpp"
-#include "game/input.hpp"
+#include "entities/ghost.hpp"
 #include "entities/pacman.hpp"
 #include "entities/pellet.hpp"
+#include "entities/wall.hpp"
+#include "game/collision_manager.hpp"
+#include "game/input.hpp"
 #include "game/map.hpp"
 
 class World
@@ -28,6 +30,7 @@ class World
     std::unique_ptr<Pacman> _pacman;
     std::vector<std::unique_ptr<Pellet>> _pellets;
     std::vector<std::unique_ptr<Wall>> _walls;
+    std::vector<std::unique_ptr<Ghost>> _ghosts;
 
     Map & _map;
 };
