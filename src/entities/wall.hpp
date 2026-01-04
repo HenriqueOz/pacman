@@ -10,7 +10,7 @@
 class Wall
 {
   public:
-    Wall(Vec2<float> position, SDL_Renderer * renderer, CollisionManager & collision);
+    Wall(bool isGhostDoor, Vec2<float> position, SDL_Renderer * renderer, CollisionManager & collision);
     ~Wall();
 
     void render(SDL_Renderer * renderer) const;
@@ -21,6 +21,7 @@ class Wall
     Vec2<float> _position{};
     Sprite _sprite;
     CollisionBox _bbox;
+    bool _isGhostDoor;
 };
 
 #endif

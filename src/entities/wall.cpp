@@ -1,10 +1,10 @@
 #include "entities/wall.hpp"
-#include "config/config.hpp"
-#include "game/utils.hpp"
+#include "game/collision_box.hpp"
 
-Wall::Wall(Vec2<float> position, SDL_Renderer * renderer, CollisionManager & collision)
+Wall::Wall(bool isGhostDoor, Vec2<float> position, SDL_Renderer * renderer, CollisionManager & collision)
   : _collision(collision)
   , _position(position)
+  , _isGhostDoor(isGhostDoor)
   , _bbox(_position, { config::tile::kTileWidth, config::tile::kTileHeight }, CollisionTag::wall)
   , _sprite(_position, renderer, config::assets::kWallIdleSprite)
 {
@@ -19,5 +19,6 @@ Wall::~Wall()
 void
 Wall::render(SDL_Renderer * renderer) const
 {
-    _sprite.render(renderer);
+    if (!_isGhostDoor)
+        _sprite.render(renderer);
 }

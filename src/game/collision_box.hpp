@@ -13,7 +13,8 @@ enum CollisionTag : std::uint8_t
     pacman = 1,
     ghost = 2,
     pellet = 3,
-    wall = 4
+    wall = 4,
+    ghostDoor = 5
 };
 
 class CollisionBox

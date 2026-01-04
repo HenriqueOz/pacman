@@ -34,7 +34,6 @@ class Ghost
     Vec2<float> _exitPosition{};
     Vec2<float> _position{};
     Vec2<float> _doorPosition{};
-    Vec2<int> _tile{};
     Vec2<int> _previousTile{};
     Vec2<int> _direction{};
     Sprite _sprite;
@@ -46,7 +45,8 @@ class Ghost
     float _baseSpeed = 0.5f;
     float _speed = _baseSpeed;
 
-    void update_direction(const Vec2<float> targetPosition);
+    void update_direction_to_target(const Vec2<float> targetPosition);
+    void exit_spawn();
     Vec2<float> get_target(const Vec2<float> pacmanPosition);
     bool is_direction_available(const Vec2<int> direction) const;
 };

@@ -28,13 +28,14 @@ World::initialize(SDL_Renderer * renderer, Input & input, CollisionManager & col
                     _pellets.push_back(std::make_unique<Pellet>(PelletType::kNormal, position, renderer, collision));
                     break;
                 case kWall:
-                    _walls.push_back(std::make_unique<Wall>(position, renderer, collision));
-                    break;
-                case kPacmanSpawn:
-                    _pacman = std::make_unique<Pacman>(position, renderer, input, collision);
+                    _walls.push_back(std::make_unique<Wall>(false, position, renderer, collision));
                     break;
                 case kGhostExit:
                     ghostExitPos = position;
+                    _walls.push_back(std::make_unique<Wall>(true, position, renderer, collision));
+                    break;
+                case kPacmanSpawn:
+                    _pacman = std::make_unique<Pacman>(position, renderer, input, collision);
                     break;
                 case kBlinkySpawn:
                     _ghosts.push_back(
