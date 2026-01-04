@@ -28,11 +28,12 @@ target_sources(
         ${SRC_FILES}
 )
 
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND}
-    -E copy_directory ${assets_dir} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
+add_custom_target(CopyAssets
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${assets_dir} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/assets
+    COMMENT "Copying assets..."
 )
+
+add_dependencies(${PROJECT_NAME} CopyAssets)
 
 add_custom_command(
   TARGET ${PROJECT_NAME} POST_BUILD

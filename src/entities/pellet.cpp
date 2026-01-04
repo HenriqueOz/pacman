@@ -4,9 +4,10 @@
 #include "game/utils.hpp"
 #include "pellet.hpp"
 
-Pellet::Pellet(Vec2<float> position, SDL_Renderer * renderer, CollisionManager & collision)
+Pellet::Pellet(PelletType type, Vec2<float> position, SDL_Renderer * renderer, CollisionManager & collision)
   : _collision(collision)
   , _position(position)
+  , _type(type)
   , _bbox({ _position.x + config::tile::kTileWidth / 2.0f, position.y + config::tile::kTileHeight / 2.0f },
           { config::tile::kTileWidth / 4, config::tile::kTileHeight / 4 },
           CollisionTag::pellet)

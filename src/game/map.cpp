@@ -37,12 +37,12 @@ Map::parse_map_and_store(const std::filesystem::path & filePath)
             const MapTags tag = map_tag_from_char(c);
             _map[row][col] = tag;
 
-            if (col < _map[0].capacity()) {
+            if (col < _map[0].capacity() - 1) {
                 col++;
             }
         }
         col = 0;
-        if (row < _map.capacity()) {
+        if (row < _map.capacity() - 1) {
             row++;
         }
     }

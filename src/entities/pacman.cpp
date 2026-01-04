@@ -10,7 +10,7 @@ Pacman::Pacman(Vec2<float> position, SDL_Renderer * renderer, Input & input, Col
   : _input(input)
   , _collision(collision)
   , _position(position)
-  , _direction{ 1, 0 }
+  , _direction{ 0, 0 }
   , _sprite(_position, renderer, config::assets::kPacmanIdleSprite)
   , _bbox(_position, { config::tile::kTileWidth, config::tile::kTileHeight }, CollisionTag::pacman)
 {
@@ -21,7 +21,7 @@ void
 Pacman::update(float deltaTime)
 {
     update_direction(_input);
-    wrap_around_screen();
+    _position = wrap_position_by_size_around_screen(_position, _sprite.get_image_size());
 
     float hspd = 0.5 * _direction.x;
     float vspd = 0.5 * _direction.y;
@@ -76,21 +76,5 @@ Pacman::update_direction(Input & input)
 
     if (!_collision.check_collision_at(checkPos, _bbox.size, CollisionTag::wall)) {
         _direction = newDirection;
-    }
-}
-
-void
-Pacman::wrap_around_screen()
-{
-    if (_position.x + _bbox.size.x < 0) {
-        _position.x = static_cast<float>(config::view::kGameTextureWidth);
-    } else if (_position.x > static_cast<float>(config::view::kGameTextureWidth)) {
-        _position.x = -_bbox.size.x;
-    }
-
-    if (_position.y + _bbox.size.y < 0) {
-        _position.y = static_cast<float>(config::view::kGameTextureHeight);
-    } else if (_position.y > static_cast<float>(config::view::kGameTextureHeight)) {
-        _position.y = -_bbox.size.y;
     }
 }

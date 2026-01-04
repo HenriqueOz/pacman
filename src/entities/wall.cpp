@@ -17,11 +17,6 @@ Wall::~Wall()
 }
 
 void
-Wall::update(float deltaTime)
-{
-}
-
-void
 Wall::render(SDL_Renderer * renderer) const
 {
     _sprite.render(renderer);

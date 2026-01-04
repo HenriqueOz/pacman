@@ -13,7 +13,6 @@ class Wall
     Wall(Vec2<float> position, SDL_Renderer * renderer, CollisionManager & collision);
     ~Wall();
 
-    void update(float deltaTime);
     void render(SDL_Renderer * renderer) const;
 
   private:
