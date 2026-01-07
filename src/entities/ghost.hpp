@@ -30,14 +30,14 @@ class Ghost
   private:
     CollisionManager & _collision;
     GhostType _type;
+    Sprite _sprite;
+    CollisionBox _bbox;
+
     Vec2<float> _spawnPosition{};
     Vec2<float> _exitPosition{};
     Vec2<float> _position{};
     Vec2<float> _doorPosition{};
-    Vec2<int> _previousTile{};
     Vec2<int> _direction{};
-    Sprite _sprite;
-    CollisionBox _bbox;
 
     int _spawnCooldown{ 120 };
     bool _hasExitedSpawn = false;

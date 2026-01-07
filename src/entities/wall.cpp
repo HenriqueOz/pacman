@@ -8,6 +8,11 @@ Wall::Wall(bool isGhostDoor, Vec2<float> position, SDL_Renderer * renderer, Coll
   , _bbox(_position, { config::tile::kTileWidth, config::tile::kTileHeight }, CollisionTag::wall)
   , _sprite(_position, renderer, config::assets::kWallIdleSprite)
 {
+    if (_isGhostDoor) {
+        _bbox.tag = CollisionTag::ghostDoor;
+        _bbox.size.x = 2 * config::tile::kTileWidth;
+    }
+
     collision.register_box(&_bbox);
 }
 
@@ -21,4 +26,6 @@ Wall::render(SDL_Renderer * renderer) const
 {
     if (!_isGhostDoor)
         _sprite.render(renderer);
+
+    _bbox.render(renderer, { 255, 0, 0, 255 });
 }

@@ -18,7 +18,7 @@ const std::filesystem::path kWallIdleSprite = assets::kSpritesRoot / "wall.png";
 }
 
 namespace tile {
-constexpr std::uint32_t kHorizontalTiles = 27;
+constexpr std::uint32_t kHorizontalTiles = 28;
 constexpr std::uint32_t kVerticalTiles = 31;
 constexpr std::uint32_t kTileWidth = 8;
 constexpr std::uint32_t kTileHeight = 8;

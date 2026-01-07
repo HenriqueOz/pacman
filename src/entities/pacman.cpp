@@ -26,25 +26,18 @@ Pacman::update(float deltaTime)
     float hspd = 0.5 * _direction.x;
     float vspd = 0.5 * _direction.y;
 
-    if (_direction.x != 0) {
+    if (hspd != 0) {
         if (_collision.check_collision_at({ _position.x + hspd, _position.y }, _bbox.size, CollisionTag::wall)) {
-            while (!_collision.check_collision_at(
-              { _position.x + _direction.x, _position.y }, _bbox.size, CollisionTag::wall)) {
-                _position.x += _direction.x;
-            }
             hspd = 0;
         }
     }
 
-    if (_direction.y != 0) {
+    if (vspd != 0) {
         if (_collision.check_collision_at({ _position.x, _position.y + vspd }, _bbox.size, CollisionTag::wall)) {
-            while (!_collision.check_collision_at(
-              { _position.x, _position.y + _direction.y }, _bbox.size, CollisionTag::wall)) {
-                _position.y += _direction.y;
-            }
-            vspd = 0.;
+            vspd = 0;
         }
     }
+
     _position = { _position.x + hspd, _position.y + vspd };
     _sprite.position = _position;
     _collision.update_box_position(&_bbox, _position);

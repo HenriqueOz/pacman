@@ -3,6 +3,7 @@
 
 #include "SDL3/SDL_render.h"
 
+#include "config/config.hpp"
 #include "entities/ghost.hpp"
 #include "entities/pacman.hpp"
 #include "entities/pellet.hpp"
@@ -31,16 +32,22 @@ World::initialize(SDL_Renderer * renderer, Input & input, CollisionManager & col
                     _walls.push_back(std::make_unique<Wall>(false, position, renderer, collision));
                     break;
                 case kGhostExit:
-                    ghostExitPos = position;
+                    ghostExitPos = { position.x + config::tile::kTileWidth, position.y };
                     _walls.push_back(std::make_unique<Wall>(true, position, renderer, collision));
                     break;
-                case kPacmanSpawn:
-                    _pacman = std::make_unique<Pacman>(position, renderer, input, collision);
+                case kPacmanSpawn: {
+                    const Vec2<float> pacmanPosition =
+                      Vec2<float>(position.x + config::tile::kTileWidth / 2.0f, position.y);
+                    _pacman = std::make_unique<Pacman>(pacmanPosition, renderer, input, collision);
                     break;
-                case kBlinkySpawn:
+                }
+                case kBlinkySpawn: {
+                    const Vec2<float> blinkyPosition =
+                      Vec2<float>(position.x + config::tile::kTileWidth / 2.0f, position.y);
                     _ghosts.push_back(
-                      std::make_unique<Ghost>(GhostType::kBlinky, position, ghostExitPos, renderer, collision));
+                      std::make_unique<Ghost>(GhostType::kBlinky, blinkyPosition, ghostExitPos, renderer, collision));
                     break;
+                }
             }
             tile.x++;
         }
