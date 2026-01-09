@@ -1,7 +1,10 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#include <cmath>
+
 #include "SDL3/SDL_render.h"
+
 #include "config/config.hpp"
 
 template<typename T>
@@ -64,7 +67,7 @@ wrap_position_by_size_around_screen(const Vec2<float> position, const Vec2<int> 
 inline float
 dot_distance(Vec2<float> p1, Vec2<float> p2)
 {
-    return std::sqrtf(std::powf(p2.x - p1.x, 2.0f) + std::powf(p2.y - p1.y, 2.0f));
+    return std::sqrt(std::pow(p2.x - p1.x, 2.0f) + std::pow(p2.y - p1.y, 2.0f));
 }
 
 #endif

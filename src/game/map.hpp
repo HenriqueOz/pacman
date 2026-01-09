@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <vector>
 
-enum MapTags : std::uint8_t
+enum class MapTags : std::uint8_t
 {
     kEmpty = 0,
     kWall = 1,

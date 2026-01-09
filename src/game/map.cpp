@@ -54,7 +54,7 @@ MapTags
 Map::map_tag_from_char(char value) const
 {
     const int intValue = std::atoi(&value);
-    if (intValue < 0 || intValue >= MapTags::kTotalItems) {
+    if (intValue < 0 || intValue >= static_cast<int>(MapTags::kTotalItems)) {
         return MapTags::kEmpty;
     }
 

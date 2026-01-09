@@ -24,7 +24,7 @@ class CollisionManager
 
     void update_box_position(CollisionBox * box, const Vec2<float> & newPos);
 
-    bool check_collision_at(const Vec2<float> & position, const Vec2<int> & size, CollisionTag tag) const;
+    bool check_collision_at(const Vec2<float> & position, const Vec2<int> & size, const CollisionTagBitMask mask) const;
 
     std::vector<const CollisionBox *> get_collisions_at(const Vec2<float> & position, const Vec2<int> & size) const;
 

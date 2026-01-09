@@ -2,6 +2,7 @@
 #define WALL_H_
 
 #include <SDL3/SDL_render.h>
+#include <memory>
 
 #include "game/collision_manager.hpp"
 #include "game/sprite.hpp"
@@ -18,9 +19,11 @@ class Wall
   private:
     CollisionManager & _collision;
 
+    std::unique_ptr<Sprite> _sprite;
+    std::unique_ptr<CollisionBox> _bbox;
+
     Vec2<float> _position{};
-    Sprite _sprite;
-    CollisionBox _bbox;
+
     bool _isGhostDoor;
 };
 

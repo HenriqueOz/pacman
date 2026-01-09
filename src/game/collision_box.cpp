@@ -1,16 +1,27 @@
 #include "collision_box.hpp"
+#include "collision_manager.hpp"
 
-CollisionBox::CollisionBox(const Vec2<float> position, const Vec2<int> size, const CollisionTag tag)
+CollisionBox::CollisionBox(CollisionManager & collision,
+                           const Vec2<float> position,
+                           const Vec2<int> size,
+                           const CollisionTagBit tag)
   : position(position)
-  , tag(tag)
-  , size(size)
+  , _tag(tag)
+  , _size(size)
+  , _collision(collision)
 {
+    _collision.register_box(this);
+}
+
+CollisionBox::~CollisionBox()
+{
+    _collision.unregister_box(this);
 }
 
 void
 CollisionBox::render(SDL_Renderer * renderer, SDL_Color && color) const
 {
-    const SDL_FRect rect = { position.x, position.y, static_cast<float>(size.x), static_cast<float>(size.y) };
+    const SDL_FRect rect = { position.x, position.y, static_cast<float>(_size.x), static_cast<float>(_size.y) };
 
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, 63);
     SDL_RenderFillRect(renderer, &rect);

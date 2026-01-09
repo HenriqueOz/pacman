@@ -1,6 +1,8 @@
 #ifndef PACMAN_H_
 #define PACMAN_H_
 
+#include <memory>
+
 #include <SDL3/SDL_render.h>
 
 #include "config/config.hpp"
@@ -26,15 +28,18 @@ class Pacman
     CollisionManager & _collision;
     Input & _input;
 
+    std::unique_ptr<Sprite> _sprite;
+    std::unique_ptr<CollisionBox> _bbox;
+
     Vec2<float> _position{};
     Vec2<int> _direction{};
-    Sprite _sprite;
-    CollisionBox _bbox;
+
     float _baseSpeed = config::tile::kTileWidth * 4.0f;
     float _speed = _baseSpeed;
 
     void update_direction(Input & input);
     void wrap_around_screen();
+    CollisionTagBitMask get_collision_mask() const;
 };
 
 #endif

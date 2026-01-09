@@ -13,6 +13,7 @@
 #include "game/collision_manager.hpp"
 #include "game/input.hpp"
 #include "game/map.hpp"
+#include "game_state.hpp"
 
 class World
 {
@@ -27,6 +28,8 @@ class World
     void renderGui(SDL_Renderer * renderer);
 
   private:
+    GameState _state;
+
     std::unique_ptr<Pacman> _pacman;
     std::vector<std::unique_ptr<Pellet>> _pellets;
     std::vector<std::unique_ptr<Wall>> _walls;

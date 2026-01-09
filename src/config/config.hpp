@@ -13,7 +13,9 @@ const std::filesystem::path kMapCsv = assets::kRoot / "map/map.csv";
 const std::filesystem::path kSpritesRoot = assets::kRoot / "sprites";
 const std::filesystem::path kPacmanIdleSprite = assets::kSpritesRoot / "pacman.png";
 const std::filesystem::path kBlinkyIdleSprite = assets::kSpritesRoot / "blinky.png";
+const std::filesystem::path kFrightenedIdleSprite = assets::kSpritesRoot / "frightened.png";
 const std::filesystem::path kPelletIdleSprite = assets::kSpritesRoot / "pellet.png";
+const std::filesystem::path kSuperPelletIdleSprite = assets::kSpritesRoot / "super_pellet.png";
 const std::filesystem::path kWallIdleSprite = assets::kSpritesRoot / "wall.png";
 }
 

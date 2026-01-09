@@ -66,11 +66,9 @@ class Registry
         std::type_index typeIndex(typeid(std::decay_t<C>));
         std::size_t componentIndex = _componentsIndexes.at(typeIndex);
 
-        std::tuple<std::unordered_map<std::size_t, Component>,
-                   ComponentBitset> & data = _entities[id];
+        std::tuple<std::unordered_map<std::size_t, Component>, ComponentBitset> & data = _entities[id];
 
-        std::unordered_map<std::size_t, Component> & components =
-          std::get<0>(data);
+        std::unordered_map<std::size_t, Component> & components = std::get<0>(data);
         components[componentIndex] = component;
 
         ComponentBitset & bitset = std::get<1>(data);
@@ -90,8 +88,7 @@ class Registry
         if (!bitset.test(idx))
             return nullptr;
 
-        std::unordered_map<std::size_t, Component> & components =
-          std::get<0>(it->second);
+        std::unordered_map<std::size_t, Component> & components = std::get<0>(it->second);
 
         const auto & componentIt = components.find(idx);
         if (componentIt == components.end())
@@ -113,8 +110,7 @@ class Registry
         if (!bitset.test(componentIndex))
             return nullptr;
 
-        const std::unordered_map<std::size_t, Component> & entityComponents =
-          std::get<0>(it->second);
+        const std::unordered_map<std::size_t, Component> & entityComponents = std::get<0>(it->second);
 
         const auto & componentIt = entityComponents.find(componentIndex);
         if (componentIt == entityComponents.end())
@@ -153,10 +149,7 @@ class Registry
     Entity _lastEntityId = 0;
     std::uint64_t _livingEntitiesCount = 0;
 
-    std::unordered_map<
-      Entity,
-      std::tuple<std::unordered_map<std::size_t, Component>, ComponentBitset>>
-      _entities;
+    std::unordered_map<Entity, std::tuple<std::unordered_map<std::size_t, Component>, ComponentBitset>> _entities;
     std::unordered_map<std::type_index, std::size_t> _componentsIndexes;
 
     std::queue<Entity> _freeEntities;
@@ -165,8 +158,7 @@ class Registry
     inline void register_components_from_variant(std::variant<C...>)
     {
         std::size_t index = 0;
-        ([&] { _componentsIndexes[std::type_index(typeid(C))] = index++; }(),
-         ...);
+        ([&] { _componentsIndexes[std::type_index(typeid(C))] = index++; }(), ...);
     }
 
     template<typename C>
