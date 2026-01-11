@@ -15,7 +15,7 @@ class Pacman
 {
   public:
     Pacman(Vec2<float> position, SDL_Renderer * renderer, Input & input, CollisionManager & collision);
-    ~Pacman() = default;
+    ~Pacman();
 
     void update(float deltaTime);
     void render(SDL_Renderer * renderer);

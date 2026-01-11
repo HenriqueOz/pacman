@@ -17,7 +17,13 @@ Pacman::Pacman(Vec2<float> position, SDL_Renderer * renderer, Input & input, Col
 {
     _sprite = std::make_unique<Sprite>(_position, renderer, config::assets::kPacmanIdleSprite);
     _bbox = std::make_unique<CollisionBox>(
-      _collision, _position, Vec2<int>(config::tile::kTileWidth, config::tile::kTileHeight), CollisionTagBit::kPacman);
+      _position, Vec2<int>(config::tile::kTileWidth, config::tile::kTileHeight), CollisionTagBit::kPacman);
+    _collision.register_box(_bbox.get());
+}
+
+Pacman::~Pacman()
+{
+    _collision.unregister_box(_bbox.get());
 }
 
 void

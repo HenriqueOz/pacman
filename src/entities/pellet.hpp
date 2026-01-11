@@ -28,7 +28,7 @@ class Pellet
     void update(float deltaTime, GameState & gameState);
     void render(SDL_Renderer * renderer) const;
 
-    const Vec2<float> & get_position() const { return _position; }
+    const bool is_eaten() const { return _eaten; }
 
   private:
     CollisionManager & _collision;

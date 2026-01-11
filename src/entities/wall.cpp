@@ -16,11 +16,15 @@ Wall::Wall(bool isGhostDoor, Vec2<float> position, SDL_Renderer * renderer, Coll
         bboxSize.x = 2 * config::tile::kTileWidth;
     }
 
-    _bbox = std::make_unique<CollisionBox>(_collision, _position, bboxSize, bboxTag);
+    _bbox = std::make_unique<CollisionBox>(_position, bboxSize, bboxTag);
+    _collision.register_box(_bbox.get());
     _sprite = std::make_unique<Sprite>(_position, renderer, config::assets::kWallIdleSprite);
 }
 
-Wall::~Wall() {}
+Wall::~Wall()
+{
+    _collision.unregister_box(_bbox.get());
+}
 
 void
 Wall::render(SDL_Renderer * renderer) const

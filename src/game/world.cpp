@@ -16,6 +16,8 @@
 void
 World::initialize(SDL_Renderer * renderer, Input & input, CollisionManager & collision)
 {
+    _gui = std::make_unique<Gui>(renderer);
+
     Vec2<int> tile{ 0, 0 };
     const MapMatrix & matrix = _map.get_map_matrix();
     Vec2<float> ghostExitPos{};
@@ -60,19 +62,48 @@ World::initialize(SDL_Renderer * renderer, Input & input, CollisionManager & col
 }
 
 void
+World::reset(SDL_Renderer * renderer, Input & input, CollisionManager & collision)
+{
+    _gui.reset();
+    _pacman.reset();
+    _pellets.clear();
+    _walls.clear();
+    _ghosts.clear();
+
+    _gameState = GameState();
+
+    initialize(renderer, input, collision);
+}
+
+void
 World::update(float deltaTime)
 {
-    _state.update();
+    _gameState.update();
+
+    if (_gameState.has_ended()) {
+        return;
+    }
+
+    bool allFoodsEaten = true;
 
     if (_pacman != nullptr)
         _pacman->update(deltaTime);
 
     for (const std::unique_ptr<Pellet> & pellet : _pellets) {
-        pellet->update(deltaTime, _state);
+        pellet->update(deltaTime, _gameState);
+
+        if (!pellet->is_eaten()) {
+            allFoodsEaten = false;
+        }
+    }
+
+    if (allFoodsEaten) {
+        _gameState.set_state(State::kWin);
+        return;
     }
 
     for (const std::unique_ptr<Ghost> & ghost : _ghosts) {
-        ghost->update(deltaTime, _pacman->get_position(), _state);
+        ghost->update(deltaTime, _pacman->get_position(), _gameState);
     }
 }
 
@@ -98,4 +129,7 @@ World::render(SDL_Renderer * renderer)
 void
 World::renderGui(SDL_Renderer * renderer)
 {
+    if (_gui != nullptr) {
+        _gui->render(renderer, _gameState);
+    }
 }

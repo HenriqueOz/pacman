@@ -8,8 +8,6 @@
 
 #include "game/utils.hpp"
 
-class CollisionManager;
-
 enum class CollisionTagBit : std::uint8_t
 {
     kNone = 0,
@@ -39,11 +37,7 @@ class CollisionBox
   public:
     Vec2<float> position;
 
-    CollisionBox(CollisionManager & collision,
-                 const Vec2<float> position,
-                 const Vec2<int> size,
-                 const CollisionTagBit tag);
-    ~CollisionBox();
+    CollisionBox(const Vec2<float> position, const Vec2<int> size, const CollisionTagBit tag);
 
     void render(SDL_Renderer * renderer, SDL_Color && color) const;
 
@@ -51,7 +45,6 @@ class CollisionBox
     inline CollisionTagBitMask get_tag_mask() const { return static_cast<CollisionTagBitMask>(_tag); };
 
   private:
-    CollisionManager & _collision;
     const Vec2<int> _size;
     const CollisionTagBit _tag;
 };

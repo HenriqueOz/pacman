@@ -46,11 +46,17 @@ Ghost::Ghost(GhostType type,
 
     const Vec2<int> bboxSize = { config::tile::kTileWidth, config::tile::kTileHeight };
 
-    _bbox = std::make_unique<CollisionBox>(_collision, _position, bboxSize, CollisionTagBit::kGhost);
+    _bbox = std::make_unique<CollisionBox>(_position, bboxSize, CollisionTagBit::kGhost);
+    _collision.register_box(_bbox.get());
     _normalSprite = std::make_unique<Sprite>(_position, renderer, sprites[_type]);
     _frightenedSprite = std::make_unique<Sprite>(_position, renderer, config::assets::kFrightenedIdleSprite);
     _eatenSprite = std::make_unique<Sprite>(_position, renderer, config::assets::kEatenIdleSprite);
     _scatterPosition = get_ghost_scatter_position(_type);
+}
+
+Ghost::~Ghost()
+{
+    _collision.unregister_box(_bbox.get());
 }
 
 void
@@ -115,10 +121,12 @@ Ghost::handle_state(const Vec2<float> pacmanPosition, GameState & gameState)
         case GhostState::kChasing:
             update_chasing_state(gameState);
             update_direction_to_target(pacmanPosition);
+            kill_pacman_on_touch(gameState);
             break;
         case GhostState::kScattered:
             update_chasing_state(gameState);
             update_direction_to_target(_scatterPosition);
+            kill_pacman_on_touch(gameState);
             break;
         case GhostState::kFrightened:
             frightened_state(gameState);
@@ -210,6 +218,15 @@ Ghost::enter_spawn()
     } else {
         _spawnTimer = _spawnDuration;
         _state = GhostState::kSpawing;
+    }
+}
+
+void
+Ghost::kill_pacman_on_touch(GameState & gameState)
+{
+    if (_collision.check_collision_at(
+          _position, _bbox->get_size(), static_cast<CollisionTagBitMask>(CollisionTagBit::kPacman))) {
+        gameState.set_state(State::kGameOver);
     }
 }
 

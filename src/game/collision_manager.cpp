@@ -1,3 +1,4 @@
+#include <SDL3/SDL_log.h>
 #include <algorithm>
 #include <unordered_set>
 #include <vector>
@@ -19,6 +20,8 @@ CollisionManager::register_box(const CollisionBox * box)
             get_cell(cell).push_back(box);
         }
     }
+
+    _boxCells[box] = cells;
 }
 
 void

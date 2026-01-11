@@ -7,6 +7,7 @@
 #include <SDL3/SDL_render.h>
 
 #include "entities/ghost.hpp"
+#include "entities/gui.hpp"
 #include "entities/pacman.hpp"
 #include "entities/pellet.hpp"
 #include "entities/wall.hpp"
@@ -23,13 +24,17 @@ class World
     ~World() = default;
 
     void initialize(SDL_Renderer * renderer, Input & input, CollisionManager & collision);
+    void reset(SDL_Renderer * renderer, Input & input, CollisionManager & collision);
     void update(float deltaTime);
     void render(SDL_Renderer * renderer);
     void renderGui(SDL_Renderer * renderer);
 
-  private:
-    GameState _state;
+    inline const GameState & get_game_state() const { return _gameState; };
 
+  private:
+    GameState _gameState;
+
+    std::unique_ptr<Gui> _gui;
     std::unique_ptr<Pacman> _pacman;
     std::vector<std::unique_ptr<Pellet>> _pellets;
     std::vector<std::unique_ptr<Wall>> _walls;

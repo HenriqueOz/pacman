@@ -16,11 +16,15 @@ Pellet::Pellet(PelletType type, Vec2<float> position, SDL_Renderer * renderer, C
                                        _position.y + config::tile::kTileHeight / 2.0f };
     const Vec2<int> bboxSize = { config::tile::kTileWidth / 4, config::tile::kTileHeight / 4 };
 
-    _bbox = std::make_unique<CollisionBox>(_collision, bboxPosition, bboxSize, CollisionTagBit::kPellet);
+    _bbox = std::make_unique<CollisionBox>(bboxPosition, bboxSize, CollisionTagBit::kPellet);
+    _collision.register_box(_bbox.get());
     _sprite = std::make_unique<Sprite>(_position, renderer, get_sprite_path());
 }
 
-Pellet::~Pellet() {}
+Pellet::~Pellet()
+{
+    _collision.unregister_box(_bbox.get());
+}
 
 void
 Pellet::update(float deltaTime, GameState & gameState)

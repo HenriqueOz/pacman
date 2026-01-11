@@ -36,7 +36,7 @@ class Ghost
           Vec2<float> exitPosition,
           SDL_Renderer * renderer,
           CollisionManager & collision);
-    ~Ghost() = default;
+    ~Ghost();
 
     void update(float deltaTime, const Vec2<float> pacmanPosition, GameState & gameState);
     void render(SDL_Renderer * renderer) const;
@@ -76,6 +76,8 @@ class Ghost
 
     void exit_spawn();
     void enter_spawn();
+
+    void kill_pacman_on_touch(GameState & gameState);
 
     void update_direction_to_target(const Vec2<float> targetPosition);
     void update_direction_randomly();

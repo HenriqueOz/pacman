@@ -121,6 +121,11 @@ Game::handle_input()
         if (event.type == SDL_EVENT_QUIT) {
             _isRunning = false;
         }
+
+        const bool gameHasEnded = _world.get_game_state().has_ended();
+        if (gameHasEnded && event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_R) {
+            _world.reset(_renderer, _input, _collision);
+        }
     }
 }
 

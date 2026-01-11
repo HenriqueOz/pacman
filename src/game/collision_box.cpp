@@ -1,21 +1,10 @@
 #include "collision_box.hpp"
-#include "collision_manager.hpp"
 
-CollisionBox::CollisionBox(CollisionManager & collision,
-                           const Vec2<float> position,
-                           const Vec2<int> size,
-                           const CollisionTagBit tag)
+CollisionBox::CollisionBox(const Vec2<float> position, const Vec2<int> size, const CollisionTagBit tag)
   : position(position)
   , _tag(tag)
   , _size(size)
-  , _collision(collision)
 {
-    _collision.register_box(this);
-}
-
-CollisionBox::~CollisionBox()
-{
-    _collision.unregister_box(this);
 }
 
 void

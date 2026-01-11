@@ -10,6 +10,9 @@ namespace assets {
 const std::filesystem::path kRoot{ "assets" };
 const std::filesystem::path kMapCsv = assets::kRoot / "map/map.csv";
 
+const std::filesystem::path kFontsRoot = assets::kRoot / "fonts";
+const std::filesystem::path kArcadeFont = assets::kFontsRoot / "arcadeclassic.ttf";
+
 const std::filesystem::path kSpritesRoot = assets::kRoot / "sprites";
 const std::filesystem::path kPacmanIdleSprite = assets::kSpritesRoot / "pacman.png";
 const std::filesystem::path kBlinkyIdleSprite = assets::kSpritesRoot / "blinky.png";
