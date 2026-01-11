@@ -48,16 +48,17 @@ inline Vec2<float>
 wrap_position_by_size_around_screen(const Vec2<float> position, const Vec2<int> size)
 {
     Vec2<float> newPos = position;
+    const int threshold = 1;
 
-    if (position.x + size.x < 0) {
+    if (position.x + (size.x + threshold) < 0) {
         newPos.x = static_cast<float>(config::view::kGameTextureWidth);
-    } else if (position.x > static_cast<float>(config::view::kGameTextureWidth)) {
+    } else if (position.x > static_cast<float>(config::view::kGameTextureWidth - threshold)) {
         newPos.x = -size.x;
     }
 
-    if (position.y + size.y < 0) {
+    if (position.y + (size.y + threshold) < 0) {
         newPos.y = static_cast<float>(config::view::kGameTextureHeight);
-    } else if (position.y > static_cast<float>(config::view::kGameTextureHeight)) {
+    } else if (position.y > static_cast<float>(config::view::kGameTextureHeight - threshold)) {
         newPos.y = -size.y;
     }
 

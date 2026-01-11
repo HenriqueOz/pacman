@@ -4,6 +4,7 @@
 #include <limits>
 #include <memory>
 #include <random>
+#include <sal.h>
 #include <vector>
 
 #include <SDL3/SDL_log.h>
@@ -46,8 +47,9 @@ Ghost::Ghost(GhostType type,
     const Vec2<int> bboxSize = { config::tile::kTileWidth, config::tile::kTileHeight };
 
     _bbox = std::make_unique<CollisionBox>(_collision, _position, bboxSize, CollisionTagBit::kGhost);
-    _sprite = std::make_unique<Sprite>(_position, renderer, sprites[_type]);
+    _normalSprite = std::make_unique<Sprite>(_position, renderer, sprites[_type]);
     _frightenedSprite = std::make_unique<Sprite>(_position, renderer, config::assets::kFrightenedIdleSprite);
+    _eatenSprite = std::make_unique<Sprite>(_position, renderer, config::assets::kEatenIdleSprite);
     _scatterPosition = get_ghost_scatter_position(_type);
 }
 
@@ -77,8 +79,10 @@ Ghost::update(float deltaTime, const Vec2<float> pacmanPosition, GameState & gam
 
     _position = { _position.x + hspd, _position.y + vspd };
 
-    _sprite->position = _position;
+    _normalSprite->position = _position;
     _frightenedSprite->position = _position;
+    _eatenSprite->position = _position;
+
     _collision.update_box_position(_bbox.get(), _position);
 }
 
@@ -89,11 +93,14 @@ Ghost::render(SDL_Renderer * renderer) const
         case GhostState::kSpawing:
         case GhostState::kChasing:
         case GhostState::kScattered:
-            _sprite->render(renderer);
+            _normalSprite->render(renderer);
+            break;
+        case GhostState::kEnteringSpawn:
+        case GhostState::kEaten:
+            _eatenSprite->render(renderer);
             break;
         case GhostState::kFrightened:
             _frightenedSprite->render(renderer);
-        case GhostState::kEaten:
             break;
     }
 }
@@ -114,11 +121,44 @@ Ghost::handle_state(const Vec2<float> pacmanPosition, GameState & gameState)
             update_direction_to_target(_scatterPosition);
             break;
         case GhostState::kFrightened:
-            _state = gameState.are_ghosts_frightened() ? _state : GhostState::kChasing;
-            update_direction_randomly();
+            frightened_state(gameState);
             break;
         case GhostState::kEaten:
+            eaten_state();
             break;
+        case GhostState::kEnteringSpawn:
+            enter_spawn();
+            break;
+    }
+}
+
+void
+Ghost::frightened_state(GameState & gameState)
+{
+    _state = gameState.are_ghosts_frightened() ? _state : GhostState::kChasing;
+    update_direction_randomly();
+
+    if (_collision.check_collision_at(
+          _position, _bbox->get_size(), static_cast<CollisionTagBitMask>(CollisionTagBit::kPacman))) {
+        _position = tile_to_position(position_to_tile(_position));
+        _direction = { 0, 0 };
+        _state = GhostState::kEaten;
+    }
+}
+
+void
+Ghost::eaten_state()
+{
+    _speed = _eatenSpeed;
+
+    const Vec2<float> exitTarget = { _exitPosition.x, _exitPosition.y - config::tile::kTileHeight };
+    if (dot_distance(_position, exitTarget) == 0.0f) {
+        _speed = _baseSpeed;
+        _direction = { 0, 0 };
+        _position.x = _spawnPosition.x;
+        _state = GhostState::kEnteringSpawn;
+    } else {
+        update_direction_to_target(exitTarget);
     }
 }
 
@@ -157,9 +197,19 @@ Ghost::exit_spawn()
             _direction = { 0, -1 };
         } else {
             _direction = { -1, 0 };
-            _hasExitedSpawn = true;
             _state = GhostState::kChasing;
         }
+    }
+}
+
+void
+Ghost::enter_spawn()
+{
+    if (dot_distance(_position, _spawnPosition) > 0.0f) {
+        _direction = { 0, 1 };
+    } else {
+        _spawnTimer = _spawnDuration;
+        _state = GhostState::kSpawing;
     }
 }
 
@@ -217,7 +267,9 @@ Ghost::update_direction_to_target(const Vec2<float> targetPosition)
 CollisionTagBitMask
 Ghost::get_collision_mask() const
 {
-    const CollisionTagBit ghostDoorTag = !_hasExitedSpawn ? CollisionTagBit::kNone : CollisionTagBit::kGhostDoor;
+    const CollisionTagBit ghostDoorTag = _state == GhostState::kSpawing || _state == GhostState::kEnteringSpawn
+                                           ? CollisionTagBit::kNone
+                                           : CollisionTagBit::kGhostDoor;
     return CollisionTagBit::kWall | ghostDoorTag;
 }
 

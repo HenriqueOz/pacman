@@ -5,7 +5,6 @@
 
 #include <SDL3/SDL_render.h>
 
-#include "config/config.hpp"
 #include "game/input.hpp"
 #include "game/collision_box.hpp"
 #include "game/collision_manager.hpp"
@@ -34,7 +33,7 @@ class Pacman
     Vec2<float> _position{};
     Vec2<int> _direction{};
 
-    float _baseSpeed = config::tile::kTileWidth * 4.0f;
+    float _baseSpeed = 0.5f;
     float _speed = _baseSpeed;
 
     void update_direction(Input & input);

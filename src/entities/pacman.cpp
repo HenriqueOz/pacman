@@ -1,7 +1,8 @@
+#include <memory>
+
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_keycode.h>
 #include <SDL3/SDL_render.h>
-#include <memory>
 
 #include "config/config.hpp"
 #include "game/collision_box.hpp"
@@ -25,21 +26,25 @@ Pacman::update(float deltaTime)
     update_direction(_input);
     _position = wrap_position_by_size_around_screen(_position, _sprite->get_image_size());
 
-    float hspd = 0.5 * _direction.x;
-    float vspd = 0.5 * _direction.y;
+    float hspd = _baseSpeed * _direction.x;
+    float vspd = _baseSpeed * _direction.y;
 
-    if (hspd != 0) {
-        if (_collision.check_collision_at(
-              { _position.x + hspd, _position.y }, _bbox->get_size(), get_collision_mask())) {
-            hspd = 0;
+    if (hspd != 0 &&
+        _collision.check_collision_at({ _position.x + hspd, _position.y }, _bbox->get_size(), get_collision_mask())) {
+        while (!_collision.check_collision_at(
+          { _position.x + _direction.x, _position.y }, _bbox->get_size(), get_collision_mask())) {
+            _position.x += _direction.x;
         }
+        hspd = 0;
     }
 
-    if (vspd != 0) {
-        if (_collision.check_collision_at(
-              { _position.x, _position.y + vspd }, _bbox->get_size(), get_collision_mask())) {
-            vspd = 0;
+    if (vspd != 0 &&
+        _collision.check_collision_at({ _position.x, _position.y + vspd }, _bbox->get_size(), get_collision_mask())) {
+        while (!_collision.check_collision_at(
+          { _position.x, _position.y + _direction.y }, _bbox->get_size(), get_collision_mask())) {
+            _position.y += _direction.y;
         }
+        vspd = 0.;
     }
 
     _position = { _position.x + hspd, _position.y + vspd };

@@ -24,7 +24,8 @@ enum class GhostState : std::uint8_t
     kChasing,
     kScattered,
     kFrightened,
-    kEaten
+    kEaten,
+    kEnteringSpawn
 };
 
 class Ghost
@@ -45,8 +46,9 @@ class Ghost
     GhostType _type;
     GhostState _state{ GhostState::kSpawing };
 
-    std::unique_ptr<Sprite> _sprite;
+    std::unique_ptr<Sprite> _normalSprite;
     std::unique_ptr<Sprite> _frightenedSprite;
+    std::unique_ptr<Sprite> _eatenSprite;
     std::unique_ptr<CollisionBox> _bbox;
 
     std::random_device _rd;
@@ -65,19 +67,22 @@ class Ghost
     int _spawnDuration{ 120 };
     int _spawnTimer{ _spawnDuration };
     int _targetSwitchTimer{};
-    bool _hasExitedSpawn{ false };
     bool _isDead{ false };
     float _baseSpeed{ 0.5f };
+    float _eatenSpeed{ 1.0f };
     float _speed{ _baseSpeed };
 
     void update_chasing_state(GameState & gameState);
 
     void exit_spawn();
+    void enter_spawn();
 
     void update_direction_to_target(const Vec2<float> targetPosition);
     void update_direction_randomly();
 
     void handle_state(const Vec2<float> pacmanPosition, GameState & gameState);
+    void frightened_state(GameState & gameState);
+    void eaten_state();
 
     std::vector<Vec2<int>> get_available_directions() const;
     bool is_direction_available(const Vec2<int> direction) const;
