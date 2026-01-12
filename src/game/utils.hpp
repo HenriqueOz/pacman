@@ -50,16 +50,16 @@ wrap_position_by_size_around_screen(const Vec2<float> position, const Vec2<int> 
     Vec2<float> newPos = position;
     const int threshold = 1;
 
-    if (position.x + (size.x + threshold) < 0) {
-        newPos.x = static_cast<float>(config::view::kGameTextureWidth) - threshold;
-    } else if (position.x > static_cast<float>(config::view::kGameTextureWidth - threshold)) {
-        newPos.x = -size.x + threshold;
+    if (position.x < 0) {
+        newPos.x = static_cast<float>(config::view::kGameTextureWidth) - size.x;
+    } else if (position.x > static_cast<float>(config::view::kGameTextureWidth) - size.x) {
+        newPos.x = 0;
     }
 
-    if (position.y + (size.y + threshold) < 0) {
-        newPos.y = static_cast<float>(config::view::kGameTextureHeight) - threshold;
-    } else if (position.y > static_cast<float>(config::view::kGameTextureHeight - threshold)) {
-        newPos.y = -size.y + threshold;
+    if (position.y < 0) {
+        newPos.y = static_cast<float>(config::view::kGameTextureHeight) - size.y;
+    } else if (position.y > static_cast<float>(config::view::kGameTextureHeight) - size.y) {
+        newPos.y = 0;
     }
 
     return newPos;

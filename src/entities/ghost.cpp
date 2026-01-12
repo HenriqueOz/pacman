@@ -62,8 +62,6 @@ Ghost::~Ghost()
 void
 Ghost::update(float deltaTime, const Vec2<float> pacmanPosition, GameState & gameState)
 {
-    _position = wrap_position_by_size_around_screen(_position, { config::tile::kTileWidth, config::tile::kTileHeight });
-
     handle_state(pacmanPosition, gameState);
 
     float hspd = _speed * _direction.x;
@@ -84,6 +82,7 @@ Ghost::update(float deltaTime, const Vec2<float> pacmanPosition, GameState & gam
     }
 
     _position = { _position.x + hspd, _position.y + vspd };
+    _position = wrap_position_by_size_around_screen(_position, { config::tile::kTileWidth, config::tile::kTileHeight });
 
     _normalSprite->position = _position;
     _frightenedSprite->position = _position;

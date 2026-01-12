@@ -30,7 +30,6 @@ void
 Pacman::update(float deltaTime)
 {
     update_direction(_input);
-    _position = wrap_position_by_size_around_screen(_position, _sprite->get_image_size());
 
     float hspd = _baseSpeed * _direction.x;
     float vspd = _baseSpeed * _direction.y;
@@ -54,6 +53,7 @@ Pacman::update(float deltaTime)
     }
 
     _position = { _position.x + hspd, _position.y + vspd };
+    _position = wrap_position_by_size_around_screen(_position, _bbox->get_size());
     _sprite->position = _position;
     _collision.update_box_position(_bbox.get(), _position);
 }
@@ -62,6 +62,7 @@ void
 Pacman::render(SDL_Renderer * renderer)
 {
     _sprite->render(renderer);
+    _bbox->render(renderer, { 255, 0, 0, 255 });
 }
 
 void
