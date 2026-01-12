@@ -62,7 +62,6 @@ void
 Pacman::render(SDL_Renderer * renderer)
 {
     _sprite->render(renderer);
-    _bbox->render(renderer, { 255, 0, 0, 255 });
 }
 
 void

@@ -4,7 +4,6 @@
 #include <limits>
 #include <memory>
 #include <random>
-#include <sal.h>
 #include <vector>
 
 #include <SDL3/SDL_log.h>
@@ -27,6 +26,8 @@ get_ghost_scatter_position(GhostType type)
             return tile_to_position({ config::tile::kHorizontalTiles, 0 });
             break;
     }
+
+    return {};
 }
 
 Ghost::Ghost(GhostType type,
