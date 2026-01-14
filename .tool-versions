@@ -1,1 +1,2 @@
-cmake 4.0.0
+cmake 4.2.0
+ninja 1.13.2

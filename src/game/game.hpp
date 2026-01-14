@@ -1,17 +1,20 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "input_manager.hpp"
-#include "world.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
+#include "game/input.hpp"
+#include "game/input_manager.hpp"
+#include "game/world.hpp"
+#include "game/collision_manager.hpp"
+
 class Game
 {
   public:
-    Game(World & world, InputManager & inputManager);
+    Game(World & world, InputManager & inputManager, Input & input, CollisionManager & collision);
     ~Game();
 
     bool is_running() const;
@@ -21,7 +24,7 @@ class Game
   private:
     void init();
     void render();
-    void update(float delta_time);
+    void update(float deltaTime);
     void clean();
     void handle_input();
 
@@ -36,7 +39,9 @@ class Game
     bool _isRunning;
 
     InputManager & _inputManager;
+    Input & _input;
     World & _world;
+    CollisionManager & _collision;
 };
 
 #endif
