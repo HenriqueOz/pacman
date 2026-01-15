@@ -41,3 +41,9 @@ cmake --build build
 ```
 
 The game will be in this path `./build/bin`. Copy its content to any place you like, just remember to put everything inside a folder
+
+---
+
+<div align="center">
+  <i>Made listening city pop</i>
+</div>
