@@ -9,6 +9,10 @@ If someday I have the interest in implementing the remaining ghosts I will touch
 
 I reached my objective, by understanding how to make something without an engine, even if this is quite simple, it was really joyful to develop.
 
+## Gameplay Demo
+
+<https://raw.githubusercontent.com/henriqueoz/pacman/main/repo_resources/gameplay.mp4>
+
 ## Build
 
 To build the project you will need a C/C++ compiler, CMake (>= 3.26) and Vcpkg.
