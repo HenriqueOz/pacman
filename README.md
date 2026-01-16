@@ -35,5 +35,5 @@ The game will be in this path `./build/bin`. Copy its content to any folder you 
 ---
 
 <div align="center">
-  <i>Made listening Anri and Meiko Nakahari</i>
+  <i>Made listening Anri and Meiko Nakahara</i>
 </div>
