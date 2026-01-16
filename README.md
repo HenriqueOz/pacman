@@ -11,39 +11,25 @@ I reached my objective, by understanding how to make something without an engine
 
 ## Build
 
-To build the project you will need a C/C++ compiler, CMake (>= 3.26) and the Vcpkg
+To build the project you will need a C/C++ compiler, CMake (>= 3.26) and Vcpkg.
 
 Having all of these and after cloning the project. Do the following in the project's folder:
 
-In the project root, create the file: `CMakeUserPresets.json`
-
-```json
-{
-  "version": 2,
-  "configurePresets": [
-    {
-      "name": "release",
-      "inherits": "vcpkg",
-      "cacheVariables": {
-        "VCPKG_ROOT": "\<Path to vcpkg\>",
-        "CMAKE_BUILD_TYPE": "Release"
-      }
-    }
-  ]
-}
+```bash
+# On Windows
+cmake --preset=windows-release
+# On Linux
+cmake --preset=linux-release
 ```
 
-Then run the following commands
-
 ```bash
-cmake --preset=release
 cmake --build build
 ```
 
-The game will be in this path `./build/bin`. Copy its content to any place you like, just remember to put everything inside a folder
+The game will be in this path `./build/bin`. Copy its content to any folder you like.
 
 ---
 
 <div align="center">
-  <i>Made listening city pop</i>
+  <i>Made listening Anri and Meiko Nakahari</i>
 </div>

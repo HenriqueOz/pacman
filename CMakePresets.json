@@ -8,6 +8,22 @@
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
       }
+    },
+    {
+      "name": "linux-release",
+      "inherits": "vcpkg",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "VCPKG_TARGET_TRIPLET": "x64-linux-static"
+      }
+    },
+    {
+      "name": "windows-release",
+      "inherits": "vcpkg",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static"
+      }
     }
   ]
 }
