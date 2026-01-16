@@ -14,7 +14,7 @@
       "inherits": "vcpkg",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "VCPKG_TARGET_TRIPLET": "x64-linux-static"
+        "VCPKG_TARGET_TRIPLET": "x64-linux-release"
       }
     },
     {
@@ -22,7 +22,7 @@
       "inherits": "vcpkg",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "VCPKG_TARGET_TRIPLET": "x64-windows-static"
+        "VCPKG_TARGET_TRIPLET": "x64-windows-release"
       }
     }
   ]
