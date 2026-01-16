@@ -11,7 +11,7 @@ I reached my objective, by understanding how to make something without an engine
 
 ## Gameplay Demo
 
-<https://raw.githubusercontent.com/henriqueoz/pacman/main/repo_resources/gameplay.mp4>
+https://private-user-images.githubusercontent.com/126339520/537040446-c450388c-5c62-4a3e-91a3-c2af78b023f1.mp4
 
 ## Build
 
